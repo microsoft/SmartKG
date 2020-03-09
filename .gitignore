@@ -348,3 +348,12 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+src/KGBot/.config/
+src/KGManagement/.config/
+src/DataProcessor/.config/
+src/KGBot/KGBot.csproj.user
+src/KGManagement/KGManagement.csproj.user
+src/DataProcessor/DataProcessor.csproj.user
+src/KGBot/Properties/PublishProfiles

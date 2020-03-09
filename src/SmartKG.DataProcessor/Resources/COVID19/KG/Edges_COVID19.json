@@ -1,0 +1,466 @@
+[
+  {
+    "headVertexId": "vertex_virus",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_dnavirus"
+  },
+  {
+    "headVertexId": "vertex_virus",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_rnavirus"
+  },
+  {
+    "headVertexId": "vertex_virus",
+    "relationType": "入侵",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_immunesystem"
+  },
+  {
+    "headVertexId": "vertex_dnavirus",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_t2"
+  },
+  {
+    "headVertexId": "vertex_rnavirus",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_hiv"
+  },
+  {
+    "headVertexId": "vertex_rnavirus",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_coronavirus"
+  },
+  {
+    "headVertexId": "vertex_hiv",
+    "relationType": "导致",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_aids"
+  },
+  {
+    "headVertexId": "vertex_coronavirus",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_sars"
+  },
+  {
+    "headVertexId": "vertex_coronavirus",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_mers"
+  },
+  {
+    "headVertexId": "vertex_coronavirus",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_2019ncov"
+  },
+  {
+    "headVertexId": "vertex_sars",
+    "relationType": "导致",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_sarspneu"
+  },
+  {
+    "headVertexId": "vertex_mers",
+    "relationType": "导致",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_merspneu"
+  },
+  {
+    "headVertexId": "vertex_2019ncov",
+    "relationType": "导致",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_coronapneu"
+  },
+  {
+    "headVertexId": "vertex_immunesystem",
+    "relationType": "启示",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_immuneimprove"
+  },
+  {
+    "headVertexId": "vertex_immunesystem",
+    "relationType": "作用",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_defendvirus"
+  },
+  {
+    "headVertexId": "vertex_immunesystem",
+    "relationType": "分类",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_immunetype"
+  },
+  {
+    "headVertexId": "vertex_immunetype",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_cellimmune"
+  },
+  {
+    "headVertexId": "vertex_immunetype",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_liquidimmune"
+  },
+  {
+    "headVertexId": "vertex_defendvirus",
+    "relationType": "成功",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_healthy"
+  },
+  {
+    "headVertexId": "vertex_defendvirus",
+    "relationType": "失败",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_ill"
+  },
+  {
+    "headVertexId": "vertex_pneumonia",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_normalpneu"
+  },
+  {
+    "headVertexId": "vertex_pneumonia",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_sarspneu"
+  },
+  {
+    "headVertexId": "vertex_pneumonia",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_merspneu"
+  },
+  {
+    "headVertexId": "vertex_pneumonia",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_coronapneu"
+  },
+  {
+    "headVertexId": "vertex_2019ncov",
+    "relationType": "源头",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_bat"
+  },
+  {
+    "headVertexId": "vertex_2019ncov",
+    "relationType": "中间宿主",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_pangolin"
+  },
+  {
+    "headVertexId": "vertex_coronapneu",
+    "relationType": "传播",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_spread"
+  },
+  {
+    "headVertexId": "vertex_coronapneu",
+    "relationType": "措施",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_prevent"
+  },
+  {
+    "headVertexId": "vertex_coronapneu",
+    "relationType": "措施",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_treat"
+  },
+  {
+    "headVertexId": "vertex_coronapneu",
+    "relationType": "措施",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_diagnosis"
+  },
+  {
+    "headVertexId": "vertex_diagnosis",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_hybrid"
+  },
+  {
+    "headVertexId": "vertex_diagnosis",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_pcr"
+  },
+  {
+    "headVertexId": "vertex_spread",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_spray"
+  },
+  {
+    "headVertexId": "vertex_spread",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_contact"
+  },
+  {
+    "headVertexId": "vertex_spread",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_soil"
+  },
+  {
+    "headVertexId": "vertex_spread",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_aerosol"
+  },
+  {
+    "headVertexId": "vertex_prevent",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_washhands"
+  },
+  {
+    "headVertexId": "vertex_prevent",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_protect"
+  },
+  {
+    "headVertexId": "vertex_prevent",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_isolation"
+  },
+  {
+    "headVertexId": "vertex_prevent",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_vaccine"
+  },
+  {
+    "headVertexId": "vertex_treat",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_medicine"
+  },
+  {
+    "headVertexId": "vertex_treat",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_serum"
+  },
+  {
+    "headVertexId": "vertex_treat",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_medicalappliance"
+  },
+  {
+    "headVertexId": "vertex_hybrid",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_albumen"
+  },
+  {
+    "headVertexId": "vertex_pcr",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_nuclearacid"
+  },
+  {
+    "headVertexId": "vertex_washhands",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_water"
+  },
+  {
+    "headVertexId": "vertex_washhands",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_soap"
+  },
+  {
+    "headVertexId": "vertex_protect",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_mask"
+  },
+  {
+    "headVertexId": "vertex_protect",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_protectionsuit"
+  },
+  {
+    "headVertexId": "vertex_isolation",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_food"
+  },
+  {
+    "headVertexId": "vertex_isolation",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_house"
+  },
+  {
+    "headVertexId": "vertex_vaccine",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_2019ncvaccin"
+  },
+  {
+    "headVertexId": "vertex_medicine",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_sminhibitor"
+  },
+  {
+    "headVertexId": "vertex_serum",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_2019ncantibody"
+  },
+  {
+    "headVertexId": "vertex_medicalappliance",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_ecmo"
+  },
+  {
+    "headVertexId": "vertex_medicalappliance",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_respirator"
+  },
+  {
+    "headVertexId": "vertex_medicalappliance",
+    "relationType": "需要",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_oxygenuptake"
+  },
+  {
+    "headVertexId": "vertex_sminhibitor",
+    "relationType": "包含",
+    "scenarios": [
+      "COVID19"
+    ],
+    "tailVertexId": "vertex_remdesivir"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DataProcessor": {
+      "commandName": "Project",
+      "commandLineArgs": "--all "
+    }
+  }
+}

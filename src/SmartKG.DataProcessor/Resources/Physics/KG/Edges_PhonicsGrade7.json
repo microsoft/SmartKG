@@ -1,0 +1,98 @@
+[
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian2"
+  },
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian3"
+  },
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian4"
+  },
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian8"
+  },
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian11"
+  },
+  {
+    "headVertexId": "entity_gainian4",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian5"
+  },
+  {
+    "headVertexId": "entity_gainian4",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian6"
+  },
+  {
+    "headVertexId": "entity_gainian4",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian7"
+  },
+  {
+    "headVertexId": "entity_gainian8",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian9"
+  },
+  {
+    "headVertexId": "entity_gainian8",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian10"
+  },
+  {
+    "headVertexId": "entity_gainian11",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian12"
+  },
+  {
+    "headVertexId": "entity_gainian11",
+    "relationType": "包含",
+    "scenarios": [
+      "PhonicsGrade7"
+    ],
+    "tailVertexId": "entity_gainian13"
+  }
+]

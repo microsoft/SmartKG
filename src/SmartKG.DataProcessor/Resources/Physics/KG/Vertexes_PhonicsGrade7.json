@@ -1,0 +1,234 @@
+[
+  {
+    "id": "entity_gainian1",
+    "label": "物理概念",
+    "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
+    "name": "声现象",
+    "nodeType": "ROOT",
+    "properties": [],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian2",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "产生",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "原因",
+        "value": "声源的振动"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian3",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "传播",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "条件",
+        "value": "需要介质"
+      },
+      {
+        "name": "形式",
+        "value": "声波"
+      },
+      {
+        "name": "速度",
+        "value": "v固＞v液＞v气；15℃空气中传播速度为340m/s"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian4",
+    "label": "物理概念",
+    "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
+    "name": "特性",
+    "nodeType": "MIDDLE",
+    "properties": [],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian5",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "音调",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "表示声音的高低"
+      },
+      {
+        "name": "影响因素",
+        "value": "发生物体振动的频率"
+      },
+      {
+        "name": "分类",
+        "value": "超声波、声音、次声波"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian6",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "响度",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "人耳感受到的声音强弱"
+      },
+      {
+        "name": "影响因素",
+        "value": "发声体的振幅、距离发声体的远近"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian7",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "音色",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "每个物体发出的声音特有的品质"
+      },
+      {
+        "name": "影响因素",
+        "value": "发声体材料、结构、振动方式"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian8",
+    "label": "物理概念",
+    "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
+    "name": "声的利用",
+    "nodeType": "MIDDLE",
+    "properties": [],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian9",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "传递信息",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "内容",
+        "value": "回声定位、声呐、B超等"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian10",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "传递能量",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "内容",
+        "value": "超声波碎石、超声波清洗机器等"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian11",
+    "label": "物理概念",
+    "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
+    "name": "类别",
+    "nodeType": "MIDDLE",
+    "properties": [],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian12",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "乐音",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "物理角度定义",
+        "value": "指发生物体有规律振动产生的声音"
+      },
+      {
+        "name": "环境角度定义",
+        "value": "指悦耳动听、令人愉悦的声音"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  },
+  {
+    "id": "entity_gainian13",
+    "label": "物理概念",
+    "leadSentence": "",
+    "name": "噪声",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "物理角度定义",
+        "value": "发声体做无规则的振动时发出的声音"
+      },
+      {
+        "name": "环境角度定义",
+        "value": "凡是妨碍人正常休息，学习和工作的声音，以及对人民要听的声音起干扰作用的声音都属于噪声"
+      },
+      {
+        "name": "等级",
+        "value": "用分贝表示dB"
+      },
+      {
+        "name": "危害",
+        "value": "影响注意力甚至是身体健康"
+      },
+      {
+        "name": "噪声控制途径",
+        "value": "1.声源处减弱  2.传播过程中减弱  3.人耳出减弱"
+      }
+    ],
+    "scenarios": [
+      "PhonicsGrade7"
+    ]
+  }
+]

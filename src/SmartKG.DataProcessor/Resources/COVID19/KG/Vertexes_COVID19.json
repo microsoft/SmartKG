@@ -1,0 +1,1090 @@
+[
+  {
+    "id": "vertex_virus",
+    "label": "病毒",
+    "leadSentence": "和病毒相关的话题包括：",
+    "name": "病毒",
+    "nodeType": "ROOT",
+    "properties": [
+      {
+        "name": "增殖过程",
+        "value": "吸附->注入->合成->组装"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_dnavirus",
+    "label": "病毒",
+    "leadSentence": "DNA病毒有很多种，例如：",
+    "name": "DNA病毒",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "增殖过程",
+        "value": "吸附->注入->合成->组装"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_rnavirus",
+    "label": "病毒",
+    "leadSentence": "RNA病毒了有很多种，例如：",
+    "name": "RNA病毒",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "增殖过程",
+        "value": "吸附->注入->合成->组装"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_t2",
+    "label": "病毒",
+    "leadSentence": "",
+    "name": "大肠杆菌T2噬菌体",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "宿主",
+        "value": "侵染大场杆菌"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_hiv",
+    "label": "病毒",
+    "leadSentence": "",
+    "name": "HIV",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "别名",
+        "value": "艾滋病毒"
+      },
+      {
+        "name": "增殖过程",
+        "value": "逆转录"
+      },
+      {
+        "name": "侵染对象",
+        "value": "T细胞CD4"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_coronavirus",
+    "label": "病毒",
+    "leadSentence": "冠状病毒也有很多种，大家比较熟悉的有：",
+    "name": "冠状病毒",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "命名原因",
+        "value": "病毒长得像“皇冠”"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_sars",
+    "label": "病毒",
+    "leadSentence": "",
+    "name": "SARS",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "别名",
+        "value": "非典病毒"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_mers",
+    "label": "病毒",
+    "leadSentence": "",
+    "name": "MERS",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "别名",
+        "value": "中东呼吸综合症冠状病毒"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_2019ncov",
+    "label": "病毒",
+    "leadSentence": "和它相关的咨询有：",
+    "name": "COVID-19",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "别名",
+        "value": "新型冠状病毒"
+      },
+      {
+        "name": "增殖过程",
+        "value": "1. RNA复制；2. 转录翻译"
+      },
+      {
+        "name": "侵染对象",
+        "value": "粘膜细胞ACE"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_aids",
+    "label": "疾病",
+    "leadSentence": "",
+    "name": "艾滋病",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "别名",
+        "value": "AIDS"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_immunesystem",
+    "label": "免疫",
+    "leadSentence": "人体免疫系统相关话题有：",
+    "name": "人体免疫系统",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "功能",
+        "value": "免疫系统具有免疫监视、防御、调控的作用"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_immuneimprove",
+    "label": "免疫",
+    "leadSentence": "",
+    "name": "提高免疫",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "功能",
+        "value": "增加免疫可以抵抗病毒的侵染"
+      },
+      {
+        "name": "方法",
+        "value": "锻炼身体、营养均衡、生活规律"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_healthy",
+    "label": "状态",
+    "leadSentence": "",
+    "name": "保持健康",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "结果",
+        "value": "能让我们有充沛的精力工作和生活"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_ill",
+    "label": "状态",
+    "leadSentence": "",
+    "name": "患病",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "结果",
+        "value": "需要去医院治疗"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_defendvirus",
+    "label": "免疫",
+    "leadSentence": "",
+    "name": "抵抗病毒",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "结果",
+        "value": "人体免疫可以抵抗病毒"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_immunetype",
+    "label": "免疫",
+    "leadSentence": "",
+    "name": "免疫类别",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "分类",
+        "value": "免疫分为特异性免疫和非特异性免疫，特异性免疫包括细胞免疫和体液免疫"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_cellimmune",
+    "label": "免疫",
+    "leadSentence": "",
+    "name": "细胞免疫",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "指T细胞介导的免疫应答"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_liquidimmune",
+    "label": "免疫",
+    "leadSentence": "",
+    "name": "体液免疫",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "指B细胞介导的免疫应答"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_bat",
+    "label": "动物",
+    "leadSentence": "",
+    "name": "蝙蝠",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "脊索动物门、哺乳纲下的一类动物，是哺乳动物中唯一能够真正飞翔的兽类"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_pangolin",
+    "label": "动物",
+    "leadSentence": "",
+    "name": "穿山甲",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "是鳞甲目、穿山甲科的哺乳动物"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_pneumonia",
+    "label": "疾病",
+    "leadSentence": "肺炎的种类很多，包括：",
+    "name": "肺炎",
+    "nodeType": "ROOT",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "要指由细菌、病毒等病原体引起的肺部感染"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_normalpneu",
+    "label": "疾病",
+    "leadSentence": "",
+    "name": "普通肺炎",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "死亡率",
+        "value": 0.0064
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_sarspneu",
+    "label": "疾病",
+    "leadSentence": "",
+    "name": "SARS肺炎",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "别名",
+        "value": "非典"
+      },
+      {
+        "name": "死亡率",
+        "value": 0.1
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_merspneu",
+    "label": "疾病",
+    "leadSentence": "",
+    "name": "MERS肺炎",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "别名",
+        "value": "中东肺炎"
+      },
+      {
+        "name": "死亡率",
+        "value": 0.3
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_coronapneu",
+    "label": "疾病",
+    "leadSentence": "新冠肺炎相关信息有：",
+    "name": "新型冠状病毒肺炎",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "别名",
+        "value": "新冠肺"
+      },
+      {
+        "name": "死亡率",
+        "value": 0.02
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_diagnosis",
+    "label": "措施",
+    "leadSentence": "诊断方法有：",
+    "name": "诊断",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "从医学角度对人们的精神和体质状态作出的判断"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_hybrid",
+    "label": "诊断方法",
+    "leadSentence": "",
+    "name": "抗体抗原杂交",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "检测方法",
+        "value": "试剂盒"
+      },
+      {
+        "name": "检测目标",
+        "value": "蛋白"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_pcr",
+    "label": "诊断方法",
+    "leadSentence": "",
+    "name": "RT-PCR",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "检测方法",
+        "value": "试剂盒"
+      },
+      {
+        "name": "检测目标",
+        "value": "核酸"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_spread",
+    "label": "措施",
+    "leadSentence": "传播途径有：",
+    "name": "传播",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "病原体从传染源排出体外，经过一定的传播方式，到达与侵入新的易感者的过程"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_spray",
+    "label": "传播途径",
+    "leadSentence": "",
+    "name": "飞沫",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "空气飞沫传播，是空气传播的一种方式"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_contact",
+    "label": "传播途径",
+    "leadSentence": "",
+    "name": "接触",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "指病原体通过媒介物直接或间接接触，直接接触传播指病原体从传染源直接传播至易感者合适的侵入门户，间接接触传播指间接接触了被污染的物品所造成的传播"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_soil",
+    "label": "传播途径",
+    "leadSentence": "",
+    "name": "粪口",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "细菌、病毒通过大便排出体外污染环境,然后又进入人体消化道感染人;"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_aerosol",
+    "label": "传播途径",
+    "leadSentence": "",
+    "name": "气溶胶",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "气溶胶是指悬浮在气体介质中的固态或液态颗粒所组成的气态分散系统。"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_prevent",
+    "label": "措施",
+    "leadSentence": "预防手段有：",
+    "name": "预防",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "预防是指预先做好事物发展过程中可能出现偏离主观预期轨道或客观普遍规律的应对措施"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_washhands",
+    "label": "措施",
+    "leadSentence": "",
+    "name": "洗手",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "是否可行",
+        "value": "是"
+      },
+      {
+        "name": "所需资源",
+        "value": "水、肥皂（或洗手液）"
+      },
+      {
+        "name": "是否有效",
+        "value": "部分有效"
+      },
+      {
+        "name": "方法",
+        "value": "七步洗手法"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_protect",
+    "label": "措施",
+    "leadSentence": "",
+    "name": "物理防护",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "是否可行",
+        "value": "是"
+      },
+      {
+        "name": "所需资源",
+        "value": "口罩"
+      },
+      {
+        "name": "是否有效",
+        "value": "部分有效"
+      },
+      {
+        "name": "方法",
+        "value": "佩戴"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_isolation",
+    "label": "措施",
+    "leadSentence": "",
+    "name": "隔离",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "是否可行",
+        "value": "是"
+      },
+      {
+        "name": "所需资源",
+        "value": "房屋、食品"
+      },
+      {
+        "name": "是否有效",
+        "value": "完全有效"
+      },
+      {
+        "name": "方法",
+        "value": "独立居住"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_vaccine",
+    "label": "措施",
+    "leadSentence": "",
+    "name": "打疫苗",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "是否可行",
+        "value": "否"
+      },
+      {
+        "name": "所需资源",
+        "value": "2019-ncov疫苗"
+      },
+      {
+        "name": "是否有效",
+        "value": "未知"
+      },
+      {
+        "name": "方法",
+        "value": "注射"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_treat",
+    "label": "措施",
+    "leadSentence": "治疗方法有：",
+    "name": "治疗",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "定义",
+        "value": "通常是指干预或改变特定健康状态的过程"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_medicine",
+    "label": "措施",
+    "leadSentence": "",
+    "name": "服药",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "是否可行",
+        "value": "是"
+      },
+      {
+        "name": "所需资源",
+        "value": "小分子抑制剂"
+      },
+      {
+        "name": "是否有效",
+        "value": "部分有效"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_serum",
+    "label": "措施",
+    "leadSentence": "",
+    "name": "注射血清",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "是否可行",
+        "value": "是"
+      },
+      {
+        "name": "所需资源",
+        "value": "2019-ncov抗体"
+      },
+      {
+        "name": "是否有效",
+        "value": "部分有效"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_medicalappliance",
+    "label": "措施",
+    "leadSentence": "",
+    "name": "器械治疗",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "是否可行",
+        "value": "是"
+      },
+      {
+        "name": "所需资源",
+        "value": "吸氧机"
+      },
+      {
+        "name": "是否有效",
+        "value": "部分有效"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_sminhibitor",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "小分子抑制剂",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "药品"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_remdesivir",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "Remdesivir",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "药品"
+      },
+      {
+        "name": "适用人群",
+        "value": "轻症病人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_ecmo",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "ecmo",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "医疗器械"
+      },
+      {
+        "name": "适用人群",
+        "value": "重症病人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_respirator",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "呼吸机",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "医疗器械"
+      },
+      {
+        "name": "适用人群",
+        "value": "重症病人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_2019ncantibody",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "2019-ncov抗体",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "血清"
+      },
+      {
+        "name": "适用人群",
+        "value": "轻症病人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_2019ncvaccin",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "2019-ncov疫苗",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "疫苗"
+      },
+      {
+        "name": "状态",
+        "value": "研发中"
+      },
+      {
+        "name": "预计上市日期",
+        "value": "未知"
+      },
+      {
+        "name": "适用人群",
+        "value": "健康人群"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_oxygenuptake",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "吸氧机",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "医疗器械"
+      },
+      {
+        "name": "适用人群",
+        "value": "轻症病人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_water",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "水",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "普通物资"
+      },
+      {
+        "name": "适用人群",
+        "value": "所有人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_food",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "食物",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "普通物资"
+      },
+      {
+        "name": "适用人群",
+        "value": "所有人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_house",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "房屋",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "普通物资"
+      },
+      {
+        "name": "适用人群",
+        "value": "所有人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_soap",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "肥皂（洗手液）",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "普通物资"
+      },
+      {
+        "name": "适用人群",
+        "value": "所有人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_mask",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "口罩",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "医疗器械"
+      },
+      {
+        "name": "适用人群",
+        "value": "所有人"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_protectionsuit",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "防护服",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "医疗器械"
+      },
+      {
+        "name": "适用人群",
+        "value": "医护人员"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_albumen",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "蛋白试剂盒",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "医疗器械"
+      },
+      {
+        "name": "适用人群",
+        "value": "疑似、病患"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  },
+  {
+    "id": "vertex_nuclearacid",
+    "label": "物资",
+    "leadSentence": "",
+    "name": "核酸试剂盒",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "类别",
+        "value": "医疗器械"
+      },
+      {
+        "name": "适用人群",
+        "value": "疑似、病患"
+      }
+    ],
+    "scenarios": [
+      "COVID19"
+    ]
+  }
+]
