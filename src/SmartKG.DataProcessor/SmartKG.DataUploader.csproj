@@ -31,7 +31,9 @@
 </ItemGroup>
 
 <ItemGroup>
-  <Folder Include="Resources\" />
+  <Folder Include="Resources\_DataPreProcess\excel\" />
+  <Folder Include="Resources\_DataPreProcess\scripts\" />
+  <Folder Include="Resources\_Template\" />
 </ItemGroup>
 
 <ItemGroup>

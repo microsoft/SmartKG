@@ -1,7 +1,7 @@
 [
   {
     "id": "entity_gainian1",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "声现象",
     "nodeType": "ROOT",
@@ -12,7 +12,7 @@
   },
   {
     "id": "entity_gainian2",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "产生",
     "nodeType": "LEAF",
@@ -28,7 +28,7 @@
   },
   {
     "id": "entity_gainian3",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "传播",
     "nodeType": "LEAF",
@@ -52,7 +52,7 @@
   },
   {
     "id": "entity_gainian4",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "特性",
     "nodeType": "MIDDLE",
@@ -63,7 +63,7 @@
   },
   {
     "id": "entity_gainian5",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "音调",
     "nodeType": "LEAF",
@@ -87,7 +87,7 @@
   },
   {
     "id": "entity_gainian6",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "响度",
     "nodeType": "LEAF",
@@ -107,7 +107,7 @@
   },
   {
     "id": "entity_gainian7",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "音色",
     "nodeType": "LEAF",
@@ -127,7 +127,7 @@
   },
   {
     "id": "entity_gainian8",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "声的利用",
     "nodeType": "MIDDLE",
@@ -138,7 +138,7 @@
   },
   {
     "id": "entity_gainian9",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "传递信息",
     "nodeType": "LEAF",
@@ -154,7 +154,7 @@
   },
   {
     "id": "entity_gainian10",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "传递能量",
     "nodeType": "LEAF",
@@ -170,7 +170,7 @@
   },
   {
     "id": "entity_gainian11",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "类别",
     "nodeType": "MIDDLE",
@@ -181,7 +181,7 @@
   },
   {
     "id": "entity_gainian12",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "乐音",
     "nodeType": "LEAF",
@@ -201,7 +201,7 @@
   },
   {
     "id": "entity_gainian13",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "噪声",
     "nodeType": "LEAF",

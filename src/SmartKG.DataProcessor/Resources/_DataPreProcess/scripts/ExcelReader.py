@@ -1,20 +1,24 @@
-#-*- coding: utf-8 -*-
-
 import json
-import uuid
-
 from xlrd import open_workbook
+import os.path
+from os import path
 
-defualt_rules = []
 
-def convertFile(path, scenarios, cleanNLU):
-    vJsonPath = "..\\..\\KG\\" + "Vertexes_" + scenarios[0] + ".json"
-    eJsonPath = "..\\..\\KG\\" + "Edges_" + scenarios[0] + ".json"
+def checkDir(dir):
+    if not path.exists(dir):
+        os.mkdir(dir)
+        print(dir + " is created to contain KG and NLU files.")
+    else:
+        if os.path.isdir(dir):
+            print(dir + " exists, and KG and NLU files will be created in it.")
+        else:
+            os.mkdir(dir)
+            print(dir + " is created to contain KG and NLU files.")
+    return
 
-    intentPath = "..\\..\\NLU\\intentrules.tsv"
-    entityMapPath = "..\\..\\NLU\\entitymap.tsv"
 
-    wb = open_workbook(path)
+def convertFile(excelPath, default_rules, scenarios, vJsonPath, eJsonPath, intentPath, entityMapPath, cleanNLU):
+    wb = open_workbook(excelPath)
     sheet_vertexes = wb.sheets()[0]
     sheet_edges = wb.sheets()[1]
 
@@ -123,7 +127,7 @@ def convertFile(path, scenarios, cleanNLU):
 
     rule_lines = ""
     if cleanNLU:
-        for rule in defualt_rules:
+        for rule in default_rules:
             rule_lines += rule + "\n"
         for scenario in scenarios:
             rule_lines += scenario + "\tPOSITIVE\t" + nodeNameRule
@@ -134,10 +138,3 @@ def convertFile(path, scenarios, cleanNLU):
     with open(intentPath, type, encoding="utf-8") as rf:
         rf.write(rule_lines)
     return
-
-if __name__ == "__main__":
-
-    srcPath = "..\\excel\\"
-    filePath = srcPath + "SmartKG_KGDesc_virsus.xlsx"
-    convertFile(filePath, ["COVID19"], True)
-

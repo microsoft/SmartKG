@@ -1,7 +1,7 @@
 [
   {
     "id": "entity_gainian1000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "力",
     "nodeType": "ROOT",
@@ -29,7 +29,7 @@
   },
   {
     "id": "entity_gainian2000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "重力",
     "nodeType": "LEAF",
@@ -57,7 +57,7 @@
   },
   {
     "id": "entity_gainian3000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "弹力",
     "nodeType": "MIDDLE",
@@ -77,7 +77,7 @@
   },
   {
     "id": "entity_gainian4000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "弹簧测力计",
     "nodeType": "LEAF",
@@ -105,7 +105,7 @@
   },
   {
     "id": "entity_gainian5000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "弹性形变",
     "nodeType": "ROOT",
@@ -121,7 +121,7 @@
   },
   {
     "id": "entity_gainian6000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "弹簧伸长与压缩时的力，压力、支持力、绳子拉力等",
     "nodeType": "LEAF",
@@ -132,7 +132,7 @@
   },
   {
     "id": "entity_gainian7000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "摩擦力",
     "nodeType": "LEAF",
@@ -168,7 +168,7 @@
   },
   {
     "id": "entity_gainian8000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "机械运动",
     "nodeType": "ROOT",
@@ -184,7 +184,7 @@
   },
   {
     "id": "entity_gainian9000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "描述运动位置",
     "nodeType": "MIDDLE",
@@ -195,7 +195,7 @@
   },
   {
     "id": "entity_gainian10000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "长度",
     "nodeType": "LEAF",
@@ -219,7 +219,7 @@
   },
   {
     "id": "entity_gainian11000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "时间",
     "nodeType": "LEAF",
@@ -243,7 +243,7 @@
   },
   {
     "id": "entity_gainian12000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "参照物",
     "nodeType": "LEAF",
@@ -267,7 +267,7 @@
   },
   {
     "id": "entity_gainian13000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "描述运动快慢",
     "nodeType": "MIDDLE",
@@ -283,7 +283,7 @@
   },
   {
     "id": "entity_gainian14000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "速度",
     "nodeType": "MIDDLE",
@@ -311,7 +311,7 @@
   },
   {
     "id": "entity_gainian15000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "直线运动",
     "nodeType": "MIDDLE",
@@ -322,7 +322,7 @@
   },
   {
     "id": "entity_gainian16000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "曲线运动",
     "nodeType": "LEAF",
@@ -333,7 +333,7 @@
   },
   {
     "id": "entity_gainian17000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "匀速直线运动",
     "nodeType": "LEAF",
@@ -344,7 +344,7 @@
   },
   {
     "id": "entity_gainian18000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "变速直线运动",
     "nodeType": "MIDDLE",
@@ -355,7 +355,7 @@
   },
   {
     "id": "entity_gainian19000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "相关的概念有下面这些，请输入对应选项查看详情",
     "name": "运动和力的关系",
     "nodeType": "MIDDLE",
@@ -366,7 +366,7 @@
   },
   {
     "id": "entity_gainian20000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "牛顿第一定律",
     "nodeType": "LEAF",
@@ -382,7 +382,7 @@
   },
   {
     "id": "entity_gainian21000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "惯性",
     "nodeType": "LEAF",
@@ -398,7 +398,7 @@
   },
   {
     "id": "entity_gainian22000",
-    "label": "物理概念",
+    "label": "",
     "leadSentence": "",
     "name": "二力平衡",
     "nodeType": "LEAF",
