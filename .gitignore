@@ -357,3 +357,4 @@ src/KGBot/KGBot.csproj.user
 src/KGManagement/KGManagement.csproj.user
 src/DataProcessor/DataProcessor.csproj.user
 src/KGBot/Properties/PublishProfiles
+src/SmartKG.DataProcessor/Resources/_DataPreProcess/scripts/.idea/
