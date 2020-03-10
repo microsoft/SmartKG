@@ -1,0 +1,1090 @@
+[
+  {
+    "id": "vertex_virus",
+    "label": "virus",
+    "leadSentence": "topics about virus",
+    "name": "virus",
+    "nodeType": "ROOT",
+    "properties": [
+      {
+        "name": "propagation process",
+        "value": "adsorb->inject->compound->assemble"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_dnavirus",
+    "label": "virus",
+    "leadSentence": "There are many types of DNA viruses, for example:",
+    "name": "DNA virus",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "propagation process",
+        "value": "adsorb->inject->compound->assemble"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_rnavirus",
+    "label": "virus",
+    "leadSentence": "There are many types of RNA viruses, for example:",
+    "name": "RNA virus",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "propagation process",
+        "value": "adsorb->inject->compound->assemble"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_t2",
+    "label": "virus",
+    "leadSentence": "",
+    "name": "Escherichia coli T2 phage",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "host",
+        "value": "Infection with e. coli"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_hiv",
+    "label": "virus",
+    "leadSentence": "",
+    "name": "HIV",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "alias",
+        "value": "HIV Virus"
+      },
+      {
+        "name": "propagation process",
+        "value": "reverse transcription"
+      },
+      {
+        "name": "infect object",
+        "value": "T cell CD4"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_coronavirus",
+    "label": "virus",
+    "leadSentence": "There are also many types of coronavirus, some of which are familiar:",
+    "name": "coronavirus",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "naming reseaon",
+        "value": "The virus looks like a crown"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_sars",
+    "label": "virus",
+    "leadSentence": "",
+    "name": "SARS",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "alias",
+        "value": "SARS"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_mers",
+    "label": "virus",
+    "leadSentence": "",
+    "name": "MERS",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "alias",
+        "value": "Middle East respiratory syndrome coronavirus"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_2019ncov",
+    "label": "virus",
+    "leadSentence": "related consultation:",
+    "name": "COVID-19",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "alias",
+        "value": "Coronavirus "
+      },
+      {
+        "name": "propagation process",
+        "value": "1. RNA duplicate；2. transcription translation "
+      },
+      {
+        "name": "infect object ",
+        "value": "Mucosal cell ACE"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_aids",
+    "label": "disease",
+    "leadSentence": "",
+    "name": "AIDS",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "alias",
+        "value": "AIDS"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_immunesystem",
+    "label": "immune",
+    "leadSentence": "topics about human immnue system",
+    "name": "immune system",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "function",
+        "value": "The immune system has the function of immune surveillance, defense and regulation"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_immuneimprove",
+    "label": "immune",
+    "leadSentence": "",
+    "name": "immuneimprove",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "function",
+        "value": "The enhanced immunity can resist the infection of the virus"
+      },
+      {
+        "name": "solution",
+        "value": "work out, balanced diet, regular life"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_healthy",
+    "label": "status",
+    "leadSentence": "",
+    "name": "healthy",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "result ",
+        "value": "Can let us have the abundant energy work and the life"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_ill",
+    "label": "status",
+    "leadSentence": "",
+    "name": "ill",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "result ",
+        "value": "need go to hospital for treatment "
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_defendvirus",
+    "label": "immune",
+    "leadSentence": "",
+    "name": "defend virus",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "result ",
+        "value": "The body's immunity can resist the virus"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_immunetype",
+    "label": "immune",
+    "leadSentence": "",
+    "name": "immune type",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "classify",
+        "value": "Immunity is divided into specific immunity and non-specific immunity, specific immunity including cellular immunity and humoral immunity"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_cellimmune",
+    "label": "immune",
+    "leadSentence": "",
+    "name": "cell immune",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "means T cell mediated immune response"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_liquidimmune",
+    "label": "immune",
+    "leadSentence": "",
+    "name": "liquid immune",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "means B cell mediated immune response"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_bat",
+    "label": "animal",
+    "leadSentence": "",
+    "name": "bat",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "The phylum chordate, a group of animals of the class mammalia is the only mammal that can really fly"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_pangolin",
+    "label": "animal",
+    "leadSentence": "",
+    "name": "pangolin",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "It is a mammal of the family pangolin of the order scalenidae"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_pneumonia",
+    "label": "disease",
+    "leadSentence": "There are many types of pneumonia, including:",
+    "name": "pneumonia",
+    "nodeType": "ROOT",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "Pulmonary infection caused by pathogens such as bacteria and viruses"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_normalpneu",
+    "label": "disease",
+    "leadSentence": "",
+    "name": "normal pneumonia",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "mortality",
+        "value": 0.0064
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_sarspneu",
+    "label": "disease",
+    "leadSentence": "",
+    "name": "SARS  pneumonia",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "alias",
+        "value": "SARS"
+      },
+      {
+        "name": "mortality",
+        "value": 0.1
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_merspneu",
+    "label": "disease",
+    "leadSentence": "",
+    "name": "MERS pneumonia",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "alias",
+        "value": "middle east pneumonia"
+      },
+      {
+        "name": "mortality",
+        "value": 0.3
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_coronapneu",
+    "label": "disease",
+    "leadSentence": "info about Covid-19",
+    "name": "corona  pneumonia",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "alias",
+        "value": "Coronavirus"
+      },
+      {
+        "name": "mortality",
+        "value": 0.02
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_diagnosis",
+    "label": "implementation",
+    "leadSentence": "diagnosis solutions:",
+    "name": "diagnosis",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "A medical judgment of a person's mental and physical state"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_hybrid",
+    "label": "diagnosis",
+    "leadSentence": "",
+    "name": "hybrid",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "test solution",
+        "value": "testing kit"
+      },
+      {
+        "name": "test target ",
+        "value": "albumen"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_pcr",
+    "label": "diagnosis",
+    "leadSentence": "",
+    "name": "RT-PCR",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "test solution",
+        "value": "testing kit"
+      },
+      {
+        "name": "test target ",
+        "value": ""
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_spread",
+    "label": "implementation",
+    "leadSentence": "transmission routes",
+    "name": "spread",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "Pathogen from the source of infection out of the body, through a certain mode of transmission, to reach and invade the process of the new susceptible"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_spray",
+    "label": "route transmission",
+    "leadSentence": "",
+    "name": "spray",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "Airborne droplets are a form of airborne transmission"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_contact",
+    "label": "route transmission",
+    "leadSentence": "",
+    "name": "contact ",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "Direct contact refers to the direct or indirect contact of the pathogen through the medium, direct contact refers to the spread of the pathogen from the source of infection directly to the susceptible person appropriate invasion portal, indirect contact refers to the spread caused by indirect contact with contaminated items"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_soil",
+    "label": "route transmission",
+    "leadSentence": "",
+    "name": "soil",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "Bacteria and viruses are excreted in the stool to pollute the environment, and then enter the human digestive tract to infect people."
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_aerosol",
+    "label": "route transmission",
+    "leadSentence": "",
+    "name": "aersol",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "Aerosols are gaseous dispersion systems composed of solid or liquid particles suspended in gaseous media."
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_prevent",
+    "label": "implementation",
+    "leadSentence": "prevention ways",
+    "name": "prevent",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "Prevention is to do a good job in advance in the development of things may deviate from the subjective expected track or the objective general law of the response measures"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_washhands",
+    "label": "implementation",
+    "leadSentence": "",
+    "name": "washhands",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "whether feasible ",
+        "value": "yes"
+      },
+      {
+        "name": "needed resources",
+        "value": "water, soap"
+      },
+      {
+        "name": "whether valid ",
+        "value": "partial response"
+      },
+      {
+        "name": "solution",
+        "value": "7steps wash hands"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_protect",
+    "label": "implementation",
+    "leadSentence": "",
+    "name": "phsical protection ",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "whether feasible ",
+        "value": "yes"
+      },
+      {
+        "name": "needed resources",
+        "value": "mask"
+      },
+      {
+        "name": "whether valid ",
+        "value": "partial response "
+      },
+      {
+        "name": "solution",
+        "value": "wear"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_isolation",
+    "label": "implementation",
+    "leadSentence": "",
+    "name": "quarantine",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "whether feasible ",
+        "value": "yes"
+      },
+      {
+        "name": "needed resources",
+        "value": "house, food"
+      },
+      {
+        "name": "whether valid ",
+        "value": "all response "
+      },
+      {
+        "name": "solution",
+        "value": "live alone"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_vaccine",
+    "label": "implementation",
+    "leadSentence": "",
+    "name": "vaccine",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "whether feasible ",
+        "value": "no"
+      },
+      {
+        "name": "needed resources",
+        "value": "2019-ncov vaccine"
+      },
+      {
+        "name": "whether valid ",
+        "value": "unknow"
+      },
+      {
+        "name": "solution",
+        "value": "injection"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_treat",
+    "label": "implementation",
+    "leadSentence": "treament solutions:",
+    "name": "treatment",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "definition",
+        "value": "It usually refers to the process of intervening or changing a particular state of health"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_medicine",
+    "label": "implementation",
+    "leadSentence": "",
+    "name": "take medicine",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "whether feasible ",
+        "value": "yes"
+      },
+      {
+        "name": "needed resources",
+        "value": "Small molecule inhibitor"
+      },
+      {
+        "name": "whether valid ",
+        "value": "partial response "
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_serum",
+    "label": "implementation",
+    "leadSentence": "",
+    "name": "serum injection",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "whether feasible ",
+        "value": "yes"
+      },
+      {
+        "name": "needed resources",
+        "value": "2019-ncov antibody"
+      },
+      {
+        "name": "whether valid ",
+        "value": "partial response "
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_medicalappliance",
+    "label": "implementation",
+    "leadSentence": "",
+    "name": "medicalappliance",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "whether feasible ",
+        "value": "yes"
+      },
+      {
+        "name": "needed resources",
+        "value": "oxygen machine "
+      },
+      {
+        "name": "whether valid ",
+        "value": "partial response "
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_sminhibitor",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "sminhibitor",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medicine"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_remdesivir",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "Remdesivir",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medicine"
+      },
+      {
+        "name": "fit people",
+        "value": "mild patients"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_ecmo",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "ecmo",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medical appliance"
+      },
+      {
+        "name": "fit people",
+        "value": "severe patients"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_respirator",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "respirator",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medical appliance"
+      },
+      {
+        "name": "fit people",
+        "value": "severe patients"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_2019ncantibody",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "2019-ncov antibody",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "serum"
+      },
+      {
+        "name": "fit people",
+        "value": "mild patients"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_2019ncvaccin",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "2019-nco vaccine",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "vaccine"
+      },
+      {
+        "name": "status",
+        "value": "develop in process"
+      },
+      {
+        "name": "estimated releasing date ",
+        "value": "unknow"
+      },
+      {
+        "name": "fit people",
+        "value": "healthy people"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_oxygenuptake",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "oxygen machine ",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medical appliance"
+      },
+      {
+        "name": "fit people",
+        "value": "mild patients"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_water",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "water",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "normal goods"
+      },
+      {
+        "name": "fit people",
+        "value": "all people"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_food",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "food",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "normal goods"
+      },
+      {
+        "name": "fit people",
+        "value": "all people"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_house",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "house",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "normal goods"
+      },
+      {
+        "name": "fit people",
+        "value": "all people"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_soap",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "soap",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "normal goods"
+      },
+      {
+        "name": "fit people",
+        "value": "all people"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_mask",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "mask",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medical appliance"
+      },
+      {
+        "name": "fit people",
+        "value": "all people"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_protectionsuit",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "protection suit",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medical appliance"
+      },
+      {
+        "name": "fit people",
+        "value": "medical staffs"
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_albumen",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "albumen",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medical appliance"
+      },
+      {
+        "name": "fit people",
+        "value": "suspected, patients "
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  },
+  {
+    "id": "vertex_nuclearacid",
+    "label": "goods",
+    "leadSentence": "",
+    "name": "nuclear acid",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "category",
+        "value": "medical appliance"
+      },
+      {
+        "name": "fit people",
+        "value": "suspected, patients "
+      }
+    ],
+    "scenarios": [
+      "COVID19_en"
+    ]
+  }
+]

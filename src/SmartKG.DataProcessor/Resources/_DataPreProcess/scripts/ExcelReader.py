@@ -4,6 +4,19 @@ import os.path
 from os import path
 
 
+def generateOutputPaths(outputDir, suffix):
+    checkDir(outputDir)
+    checkDir(outputDir + "\\KG\\")
+    checkDir(outputDir + "\\NLU\\")
+
+    vJsonPath = outputDir + "\\KG\\" + "Vertexes_" + suffix + ".json"
+    eJsonPath = outputDir + "\\KG\\" + "Edges_" + suffix + ".json"
+
+    intentPath = outputDir + "\\NLU\\intentrules.tsv"
+    entityMapPath = outputDir + "\\NLU\\entitymap.tsv"
+
+    return vJsonPath, eJsonPath, intentPath, entityMapPath
+
 def checkDir(dir):
     if not path.exists(dir):
         os.mkdir(dir)

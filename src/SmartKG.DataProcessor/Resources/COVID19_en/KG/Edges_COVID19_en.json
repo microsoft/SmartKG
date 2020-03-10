@@ -1,0 +1,466 @@
+[
+  {
+    "headVertexId": "vertex_virus",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_dnavirus"
+  },
+  {
+    "headVertexId": "vertex_virus",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_rnavirus"
+  },
+  {
+    "headVertexId": "vertex_virus",
+    "relationType": "invade",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_immunesystem"
+  },
+  {
+    "headVertexId": "vertex_dnavirus",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_t2"
+  },
+  {
+    "headVertexId": "vertex_rnavirus",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_hiv"
+  },
+  {
+    "headVertexId": "vertex_rnavirus",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_coronavirus"
+  },
+  {
+    "headVertexId": "vertex_hiv",
+    "relationType": "resultin",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_aids"
+  },
+  {
+    "headVertexId": "vertex_coronavirus",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_sars"
+  },
+  {
+    "headVertexId": "vertex_coronavirus",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_mers"
+  },
+  {
+    "headVertexId": "vertex_coronavirus",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_2019ncov"
+  },
+  {
+    "headVertexId": "vertex_sars",
+    "relationType": "resultin",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_sarspneu"
+  },
+  {
+    "headVertexId": "vertex_mers",
+    "relationType": "resultin",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_merspneu"
+  },
+  {
+    "headVertexId": "vertex_2019ncov",
+    "relationType": "resultin",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_coronapneu"
+  },
+  {
+    "headVertexId": "vertex_immunesystem",
+    "relationType": "revelation",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_immuneimprove"
+  },
+  {
+    "headVertexId": "vertex_immunesystem",
+    "relationType": "function",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_defendvirus"
+  },
+  {
+    "headVertexId": "vertex_immunesystem",
+    "relationType": "classify",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_immunetype"
+  },
+  {
+    "headVertexId": "vertex_immunetype",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_cellimmune"
+  },
+  {
+    "headVertexId": "vertex_immunetype",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_liquidimmune"
+  },
+  {
+    "headVertexId": "vertex_defendvirus",
+    "relationType": "success",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_healthy"
+  },
+  {
+    "headVertexId": "vertex_defendvirus",
+    "relationType": "fail",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_ill"
+  },
+  {
+    "headVertexId": "vertex_pneumonia",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_normalpneu"
+  },
+  {
+    "headVertexId": "vertex_pneumonia",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_sarspneu"
+  },
+  {
+    "headVertexId": "vertex_pneumonia",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_merspneu"
+  },
+  {
+    "headVertexId": "vertex_pneumonia",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_coronapneu"
+  },
+  {
+    "headVertexId": "vertex_2019ncov",
+    "relationType": "source",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_bat"
+  },
+  {
+    "headVertexId": "vertex_2019ncov",
+    "relationType": "inermediate host",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_pangolin"
+  },
+  {
+    "headVertexId": "vertex_coronapneu",
+    "relationType": "spread",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_spread"
+  },
+  {
+    "headVertexId": "vertex_coronapneu",
+    "relationType": "implementation",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_prevent"
+  },
+  {
+    "headVertexId": "vertex_coronapneu",
+    "relationType": "implementation",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_treat"
+  },
+  {
+    "headVertexId": "vertex_coronapneu",
+    "relationType": "implementation",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_diagnosis"
+  },
+  {
+    "headVertexId": "vertex_diagnosis",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_hybrid"
+  },
+  {
+    "headVertexId": "vertex_diagnosis",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_pcr"
+  },
+  {
+    "headVertexId": "vertex_spread",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_spray"
+  },
+  {
+    "headVertexId": "vertex_spread",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_contact"
+  },
+  {
+    "headVertexId": "vertex_spread",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_soil"
+  },
+  {
+    "headVertexId": "vertex_spread",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_aerosol"
+  },
+  {
+    "headVertexId": "vertex_prevent",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_washhands"
+  },
+  {
+    "headVertexId": "vertex_prevent",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_protect"
+  },
+  {
+    "headVertexId": "vertex_prevent",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_isolation"
+  },
+  {
+    "headVertexId": "vertex_prevent",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_vaccine"
+  },
+  {
+    "headVertexId": "vertex_treat",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_medicine"
+  },
+  {
+    "headVertexId": "vertex_treat",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_serum"
+  },
+  {
+    "headVertexId": "vertex_treat",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_medicalappliance"
+  },
+  {
+    "headVertexId": "vertex_hybrid",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_albumen"
+  },
+  {
+    "headVertexId": "vertex_pcr",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_nuclearacid"
+  },
+  {
+    "headVertexId": "vertex_washhands",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_water"
+  },
+  {
+    "headVertexId": "vertex_washhands",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_soap"
+  },
+  {
+    "headVertexId": "vertex_protect",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_mask"
+  },
+  {
+    "headVertexId": "vertex_protect",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_protectionsuit"
+  },
+  {
+    "headVertexId": "vertex_isolation",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_food"
+  },
+  {
+    "headVertexId": "vertex_isolation",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_house"
+  },
+  {
+    "headVertexId": "vertex_vaccine",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_2019ncvaccin"
+  },
+  {
+    "headVertexId": "vertex_medicine",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_sminhibitor"
+  },
+  {
+    "headVertexId": "vertex_serum",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_2019ncantibody"
+  },
+  {
+    "headVertexId": "vertex_medicalappliance",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_ecmo"
+  },
+  {
+    "headVertexId": "vertex_medicalappliance",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_respirator"
+  },
+  {
+    "headVertexId": "vertex_medicalappliance",
+    "relationType": "need",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_oxygenuptake"
+  },
+  {
+    "headVertexId": "vertex_sminhibitor",
+    "relationType": "include",
+    "scenarios": [
+      "COVID19_en"
+    ],
+    "tailVertexId": "vertex_remdesivir"
+  }
+]
