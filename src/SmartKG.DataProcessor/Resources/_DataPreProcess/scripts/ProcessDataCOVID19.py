@@ -2,7 +2,7 @@
 
 from ExcelReader import convertFile
 from ExcelReader import generateOutputPaths
-
+from ExcelReader import generateSimilarWordMap
 
 if __name__ == "__main__":
     targetPath = "..\\..\\COVID19"
@@ -11,4 +11,6 @@ if __name__ == "__main__":
 
     excelPath = "..\\excel\\COVID19\\SmartKG_KGDesc_virsus.xlsx"
 
-    convertFile(excelPath, [], ["COVID19"], vJsonPath, eJsonPath, intentPath, entityMapPath, True)
+    similarWordMap = generateSimilarWordMap("..\\excel\\COVID19\\similarWords_COVID19_zn.tsv")
+
+    convertFile(excelPath, [], ["COVID19"], similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, True)

@@ -29,8 +29,31 @@ def checkDir(dir):
             print(dir + " is created to contain KG and NLU files.")
     return
 
+def generateSimilarWordMap(sfilePath):
+    similarWordMap = {}
 
-def convertFile(excelPath, default_rules, scenarios, vJsonPath, eJsonPath, intentPath, entityMapPath, cleanNLU):
+    if not sfilePath:
+        return similarWordMap
+
+    sfp = open(sfilePath, 'r', encoding="utf-8")
+    lines = sfp.readlines()
+
+    for line in lines:
+        if not line:
+            continue
+
+        line = line.strip()
+        tmps = line.split("\t")
+        if (len(tmps) != 2):
+            print("[Warning] in valid line:", line)
+            continue
+        stdWord = tmps[0]
+        similarWords = tmps[1].split(",")
+        similarWordMap[stdWord] = similarWords
+
+    return similarWordMap
+
+def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, cleanNLU):
     wb = open_workbook(excelPath)
     sheet_vertexes = wb.sheets()[0]
     sheet_edges = wb.sheets()[1]
@@ -109,16 +132,41 @@ def convertFile(excelPath, default_rules, scenarios, vJsonPath, eJsonPath, inten
 
     entity_lines = ""
     for nodeName in nodeNameSet:
+        if nodeName in similarWordMap:
+            similarWords = similarWordMap[nodeName]
+        else:
+            similarWords = []
         for scenario in scenarios:
             entity_lines += scenario + "\t" + nodeName + "\t" + nodeName + "\t" + "NodeName" + "\n"
 
+            if len(similarWordMap) > 0:
+                for sw in similarWords:
+                    entity_lines += scenario + "\t" + sw + "\t" + nodeName + "\t" + "NodeName" + "\n"
+
+
     for pn in propertyNameSet:
+        if pn in similarWordMap:
+            similarWords = similarWordMap[pn]
+        else:
+            similarWords = []
         for scenario in scenarios:
             entity_lines += scenario + "\t" + pn + "\t" + pn + "\t" + "PropertyName" + "\n"
 
+            if len(similarWordMap) > 0:
+                for sw in similarWords:
+                    entity_lines += scenario + "\t" + sw + "\t" + pn + "\t" + "NodeName" + "\n"
+
     for rt in relationTypeSet:
+        if rt in similarWordMap:
+            similarWords = similarWordMap[rt]
+        else:
+            similarWords = []
         for scenario in scenarios:
             entity_lines += scenario + "\t" + rt + "\t" + rt + "\t" + "RelationType" + "\n"
+
+            if len(similarWordMap) > 0:
+                for sw in similarWords:
+                    entity_lines += scenario + "\t" + sw + "\t" + rt + "\t" + "NodeName" + "\n"
 
     entity_lines = entity_lines[:-1]
 
