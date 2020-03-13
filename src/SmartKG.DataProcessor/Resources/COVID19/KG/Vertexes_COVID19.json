@@ -863,7 +863,7 @@
     "id": "vertex_2019ncantibody",
     "label": "物资",
     "leadSentence": "",
-    "name": "2019-ncov抗体",
+    "name": "COVID-19抗体",
     "nodeType": "LEAF",
     "properties": [
       {
@@ -883,7 +883,7 @@
     "id": "vertex_2019ncvaccin",
     "label": "物资",
     "leadSentence": "",
-    "name": "2019-ncov疫苗",
+    "name": "COVID-19疫苗",
     "nodeType": "LEAF",
     "properties": [
       {

@@ -39,6 +39,8 @@ namespace SmartKG.KGManagement.Controllers
             }
             else
             {
+                keyword = keyword.ToLower();
+
                 searchResult = new SearchResult(true, "根据\"" + keyword + "\"为您搜索到以下节点：");
                 GraphExecutor executor = new GraphExecutor();
                 List<VisulizedVertex> vvs = executor.SearchVertexesByName(keyword);
@@ -74,6 +76,9 @@ namespace SmartKG.KGManagement.Controllers
             }
             else
             {
+                name = name.ToLower();
+                value = value.ToLower();
+
                 GraphExecutor executor = new GraphExecutor();
                 List<VisulizedVertex> vvs = executor.FilterVertexesByProperty(name, value);
 

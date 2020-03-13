@@ -56,8 +56,10 @@ namespace SmartKG.KGBot.Controllers
                 if (string.IsNullOrWhiteSpace(sessionId))
                 {
                     sessionId = this.ControllerContext.HttpContext.Session.Id;
-                }            
-            
+                }
+
+                query = query.ToLower();
+
                 DialogManager dm = new DialogManager();
                 queryResult = await dm.Process(userId, sessionId, query, runningMode);            
             }

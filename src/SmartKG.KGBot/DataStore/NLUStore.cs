@@ -136,7 +136,11 @@ namespace SmartKG.KGBot.DataStore
 
                 foreach(string word in similarWords)
                 {
-                    if (query.Contains(word))
+                    string lowerWord = null;
+                    if (word != null)
+                        lowerWord = word.ToLower();
+                    
+                    if (query.Contains(lowerWord))
                     {
                         List<NLUEntity> entities = wordToEntity[word];
 
@@ -222,7 +226,7 @@ namespace SmartKG.KGBot.DataStore
             bool matched = true;
             foreach (string ruleSec in ruleSecs)
             {
-                Regex regex = new Regex(ruleSec);
+                Regex regex = new Regex(ruleSec.ToLower());
                 Match match = regex.Match(query);
                 if (!match.Success)
                 {
