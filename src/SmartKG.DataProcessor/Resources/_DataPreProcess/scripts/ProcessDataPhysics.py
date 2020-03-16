@@ -10,9 +10,9 @@ if __name__ == "__main__":
     targetPath = "..\\..\\Physics"
 
     vJsonPath, eJsonPath, intentPath, entityMapPath = generateOutputPaths(targetPath, "PhonicsGrade7")
-    excelPath = "..\\excel\\Physics\\知识图谱导入模板-初二物理上声学.xlsx"
+    excelPath = "..\\excel\\Physics\\SmartKG_KGDesc_PhonicsGrade7_zh.xlsx"
     convertFile(excelPath, [], ["PhonicsGrade7"], [], vJsonPath, eJsonPath, intentPath, entityMapPath, True)
 
     vJsonPath, eJsonPath, intentPath, entityMapPath = generateOutputPaths(targetPath, "MechanicsGrade7")
-    excelPath = "..\\excel\\Physics\\知识图谱导入模板-初二物理第一+七+八章.xlsx"
+    excelPath = "..\\excel\\Physics\\SmartKG_KGDesc_MechanicsGrade7_zh.xlsx"
     convertFile(excelPath, [], ["MechanicsGrade7"], [], vJsonPath, eJsonPath, intentPath, entityMapPath, False)

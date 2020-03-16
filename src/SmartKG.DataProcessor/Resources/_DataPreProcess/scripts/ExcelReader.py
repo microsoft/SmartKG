@@ -85,17 +85,17 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
 
     vertexes = []
 
-    for col in range(1, sheet_vertexes.ncols):
+    for row in range(1, sheet_vertexes.nrows):
 
-        if sheet_vertexes.cell_value(1, col) is not "":
+        if sheet_vertexes.cell_value(row, 1) is not "":
             data = {}
 
-            data["id"] = sheet_vertexes.cell_value(0, col)
-            data["name"] = sheet_vertexes.cell_value(1, col)
+            data["id"] = sheet_vertexes.cell_value(row, 0)
+            data["name"] = sheet_vertexes.cell_value(row, 1)
             nodeNameSet.add(data["name"])
-            data["label"] = sheet_vertexes.cell_value(2, col)
+            data["label"] = sheet_vertexes.cell_value(row, 2)
             data["scenarios"] = scenarios
-            data["leadSentence"] = sheet_vertexes.cell_value(3, col)
+            data["leadSentence"] = sheet_vertexes.cell_value(row, 3)
 
             vid = data["id"]
 
@@ -110,12 +110,12 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
 
             properties = []
 
-            for row in range(4, sheet_vertexes.nrows - 1, 2):
+            for col in range(4, sheet_vertexes.ncols - 1, 2):
                 property = {}
                 if sheet_vertexes.cell_value(row, col) is not "":
                     property["name"] = sheet_vertexes.cell_value(row, col)
                     propertyNameSet.add(property["name"])
-                    property["value"] = sheet_vertexes.cell_value(row + 1, col)
+                    property["value"] = sheet_vertexes.cell_value(row , col + 1)
                     properties.append(property)
 
             data["properties"] = properties

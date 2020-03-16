@@ -1,91 +1,91 @@
-COVID19_en	COVID-19	COVID-19	NodeName
-COVID19_en	soil	soil	NodeName
-COVID19_en	RT-PCR	RT-PCR	NodeName
-COVID19_en	liquid immune	liquid immune	NodeName
-COVID19_en	ill	ill	NodeName
-COVID19_en	corona  pneumonia	corona  pneumonia	NodeName
-COVID19_en	food	food	NodeName
-COVID19_en	normal pneumonia	normal pneumonia	NodeName
-COVID19_en	cell immune	cell immune	NodeName
-COVID19_en	virus	virus	NodeName
-COVID19_en	spray	spray	NodeName
-COVID19_en	sminhibitor	sminhibitor	NodeName
-COVID19_en	protection suit	protection suit	NodeName
-COVID19_en	immuneimprove	immuneimprove	NodeName
-COVID19_en	Remdesivir	Remdesivir	NodeName
-COVID19_en	washhands	washhands	NodeName
-COVID19_en	mask	mask	NodeName
-COVID19_en	AIDS	AIDS	NodeName
-COVID19_en	water	water	NodeName
-COVID19_en	2019-nco vaccine	2019-nco vaccine	NodeName
-COVID19_en	SARS	SARS	NodeName
 COVID19_en	aersol	aersol	NodeName
-COVID19_en	immune type	immune type	NodeName
-COVID19_en	treatment	treatment	NodeName
-COVID19_en	medicalappliance	medicalappliance	NodeName
+COVID19_en	protection suit	protection suit	NodeName
+COVID19_en	MERS	MERS	NodeName
+COVID19_en	AIDS	AIDS	NodeName
+COVID19_en	respirator	respirator	NodeName
+COVID19_en	water	water	NodeName
+COVID19_en	diagnosis	diagnosis	NodeName
+COVID19_en	2019-nco vaccine	2019-nco vaccine	NodeName
+COVID19_en	HIV	HIV	NodeName
+COVID19_en	immuneimprove	immuneimprove	NodeName
 COVID19_en	house	house	NodeName
-COVID19_en	SARS  pneumonia	SARS  pneumonia	NodeName
-COVID19_en	soap	soap	NodeName
+COVID19_en	prevent	prevent	NodeName
+COVID19_en	cell immune	cell immune	NodeName
+COVID19_en	ecmo	ecmo	NodeName
+COVID19_en	oxygen machine 	oxygen machine 	NodeName
+COVID19_en	2019-ncov antibody	2019-ncov antibody	NodeName
+COVID19_en	COVID-19	COVID-19	NodeName
+COVID19_en	medicalappliance	medicalappliance	NodeName
+COVID19_en	washhands	washhands	NodeName
+COVID19_en	DNA virus	DNA virus	NodeName
+COVID19_en	pneumonia	pneumonia	NodeName
+COVID19_en	immune system	immune system	NodeName
+COVID19_en	Remdesivir	Remdesivir	NodeName
+COVID19_en	SARS	SARS	NodeName
+COVID19_en	spray	spray	NodeName
+COVID19_en	phsical protection 	phsical protection 	NodeName
+COVID19_en	spread	spread	NodeName
+COVID19_en	normal pneumonia	normal pneumonia	NodeName
+COVID19_en	quarantine	quarantine	NodeName
+COVID19_en	mask	mask	NodeName
 COVID19_en	coronavirus	coronavirus	NodeName
 COVID19_en	hybrid	hybrid	NodeName
-COVID19_en	diagnosis	diagnosis	NodeName
-COVID19_en	respirator	respirator	NodeName
-COVID19_en	serum injection	serum injection	NodeName
-COVID19_en	RNA virus	RNA virus	NodeName
-COVID19_en	spread	spread	NodeName
+COVID19_en	sminhibitor	sminhibitor	NodeName
+COVID19_en	bat	bat	NodeName
+COVID19_en	ill	ill	NodeName
 COVID19_en	nuclear acid	nuclear acid	NodeName
 COVID19_en	healthy	healthy	NodeName
-COVID19_en	bat	bat	NodeName
-COVID19_en	quarantine	quarantine	NodeName
-COVID19_en	oxygen machine 	oxygen machine 	NodeName
-COVID19_en	defend virus	defend virus	NodeName
-COVID19_en	phsical protection 	phsical protection 	NodeName
-COVID19_en	2019-ncov antibody	2019-ncov antibody	NodeName
-COVID19_en	pneumonia	pneumonia	NodeName
-COVID19_en	DNA virus	DNA virus	NodeName
-COVID19_en	MERS	MERS	NodeName
-COVID19_en	take medicine	take medicine	NodeName
-COVID19_en	albumen	albumen	NodeName
-COVID19_en	MERS pneumonia	MERS pneumonia	NodeName
-COVID19_en	contact 	contact 	NodeName
-COVID19_en	ecmo	ecmo	NodeName
-COVID19_en	HIV	HIV	NodeName
-COVID19_en	immune system	immune system	NodeName
+COVID19_en	immune type	immune type	NodeName
 COVID19_en	vaccine	vaccine	NodeName
-COVID19_en	Escherichia coli T2 phage	Escherichia coli T2 phage	NodeName
+COVID19_en	albumen	albumen	NodeName
+COVID19_en	defend virus	defend virus	NodeName
+COVID19_en	contact 	contact 	NodeName
+COVID19_en	virus	virus	NodeName
+COVID19_en	corona  pneumonia	corona  pneumonia	NodeName
+COVID19_en	RNA virus	RNA virus	NodeName
+COVID19_en	take medicine	take medicine	NodeName
 COVID19_en	pangolin	pangolin	NodeName
-COVID19_en	prevent	prevent	NodeName
-COVID19_en	test solution	test solution	PropertyName
-COVID19_en	test target 	test target 	PropertyName
-COVID19_en	host	host	PropertyName
-COVID19_en	estimated releasing date 	estimated releasing date 	PropertyName
-COVID19_en	propagation process	propagation process	PropertyName
+COVID19_en	liquid immune	liquid immune	NodeName
+COVID19_en	serum injection	serum injection	NodeName
+COVID19_en	soil	soil	NodeName
+COVID19_en	soap	soap	NodeName
+COVID19_en	MERS pneumonia	MERS pneumonia	NodeName
+COVID19_en	RT-PCR	RT-PCR	NodeName
+COVID19_en	treatment	treatment	NodeName
+COVID19_en	SARS  pneumonia	SARS  pneumonia	NodeName
+COVID19_en	Escherichia coli T2 phage	Escherichia coli T2 phage	NodeName
+COVID19_en	food	food	NodeName
 COVID19_en	function	function	PropertyName
-COVID19_en	infect object	infect object	PropertyName
-COVID19_en	whether valid 	whether valid 	PropertyName
-COVID19_en	result 	result 	PropertyName
-COVID19_en	needed resources	needed resources	PropertyName
-COVID19_en	mortality	mortality	PropertyName
-COVID19_en	status	status	PropertyName
-COVID19_en	classify	classify	PropertyName
-COVID19_en	whether feasible 	whether feasible 	PropertyName
-COVID19_en	fit people	fit people	PropertyName
-COVID19_en	infect object 	infect object 	PropertyName
-COVID19_en	naming reseaon	naming reseaon	PropertyName
 COVID19_en	solution	solution	PropertyName
+COVID19_en	fit people	fit people	PropertyName
+COVID19_en	whether feasible 	whether feasible 	PropertyName
+COVID19_en	infect object	infect object	PropertyName
 COVID19_en	definition	definition	PropertyName
-COVID19_en	category	category	PropertyName
+COVID19_en	result 	result 	PropertyName
 COVID19_en	alias	alias	PropertyName
-COVID19_en	classify	classify	RelationType
-COVID19_en	function	function	RelationType
-COVID19_en	implementation	implementation	RelationType
-COVID19_en	resultin	resultin	RelationType
-COVID19_en	revelation	revelation	RelationType
+COVID19_en	test target 	test target 	PropertyName
+COVID19_en	whether valid 	whether valid 	PropertyName
+COVID19_en	propagation process	propagation process	PropertyName
+COVID19_en	estimated releasing date 	estimated releasing date 	PropertyName
+COVID19_en	naming reseaon	naming reseaon	PropertyName
+COVID19_en	infect object 	infect object 	PropertyName
+COVID19_en	mortality	mortality	PropertyName
+COVID19_en	host	host	PropertyName
+COVID19_en	category	category	PropertyName
+COVID19_en	classify	classify	PropertyName
+COVID19_en	test solution	test solution	PropertyName
+COVID19_en	needed resources	needed resources	PropertyName
+COVID19_en	status	status	PropertyName
+COVID19_en	inermediate host	inermediate host	RelationType
+COVID19_en	need	need	RelationType
 COVID19_en	source	source	RelationType
-COVID19_en	success	success	RelationType
+COVID19_en	resultin	resultin	RelationType
+COVID19_en	implementation	implementation	RelationType
+COVID19_en	function	function	RelationType
+COVID19_en	fail	fail	RelationType
 COVID19_en	invade	invade	RelationType
 COVID19_en	include	include	RelationType
-COVID19_en	fail	fail	RelationType
 COVID19_en	spread	spread	RelationType
-COVID19_en	need	need	RelationType
-COVID19_en	inermediate host	inermediate host	RelationType
+COVID19_en	success	success	RelationType
+COVID19_en	revelation	revelation	RelationType
+COVID19_en	classify	classify	RelationType

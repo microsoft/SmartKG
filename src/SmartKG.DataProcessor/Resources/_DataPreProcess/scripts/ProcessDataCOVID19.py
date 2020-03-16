@@ -9,7 +9,9 @@ if __name__ == "__main__":
 
     vJsonPath, eJsonPath, intentPath, entityMapPath = generateOutputPaths(targetPath, "COVID19")
 
-    excelPath = "..\\excel\\COVID19\\SmartKG_KGDesc_virsus.xlsx"
+    #excelPath = "..\\excel\\COVID19\\SmartKG_KGDesc_virsus.xlsx"
+
+    excelPath ="..\\excel\\COVID19\\SmartKG_KGDesc_COVID19_zh.xlsx"
 
     similarWordMap = generateSimilarWordMap("..\\excel\\COVID19\\similarWords_COVID19_zn.tsv")
 
