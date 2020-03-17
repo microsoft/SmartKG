@@ -20,7 +20,7 @@ namespace SmartKG.KGManagement.DataPersistance
             this.eColletion = eList;           
         }       
 
-        private (Dictionary<string, HashSet<string>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, Dictionary<RelationLink, List<string>>>) GenerateRelationship(List<Vertex> vertexes, List<Edge> edges)
+        private (Dictionary<string, HashSet<string>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, List<Edge>>) GenerateRelationship(List<Vertex> vertexes, List<Edge> edges)
         {            
             Dictionary<string, string> vertexIdNameMap = new Dictionary<string, string>();
             Dictionary<string, HashSet<string>> vertexNameIdsMap = new Dictionary<string, HashSet<string>>();
@@ -44,8 +44,24 @@ namespace SmartKG.KGManagement.DataPersistance
             Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationMap = new Dictionary<string, Dictionary<RelationLink, List<string>>>();
             Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationMap = new Dictionary<string, Dictionary<RelationLink, List<string>>>();
 
+
+            Dictionary<string, List<Edge>> scenarioEdgesMap = new Dictionary<string, List<Edge>>();
+
             foreach (Edge edge in edges)
             {
+                if (edge.scenarios != null && edge.scenarios.Count > 0)
+                {
+                    foreach(string scenario in edge.scenarios)
+                    {
+                        if (!scenarioEdgesMap.ContainsKey(scenario))
+                        {                         
+                            List<Edge> edgesForScenario = new List<Edge>();
+                            scenarioEdgesMap.Add(scenario, edgesForScenario);
+                        }
+                        scenarioEdgesMap[scenario].Add(edge);
+                    }
+                }
+
                 string headVertexId = edge.headVertexId;
                 string tailVertexId = edge.tailVertexId;
 
@@ -148,7 +164,7 @@ namespace SmartKG.KGManagement.DataPersistance
                 }
             }
 
-            return (vertexNameIdsMap, outRelationMap, inRelationMap);
+            return (vertexNameIdsMap, outRelationMap, inRelationMap, scenarioEdgesMap);
         }        
 
         public void ParseKG()
@@ -156,7 +172,7 @@ namespace SmartKG.KGManagement.DataPersistance
             List<Vertex> vertexes = this.vCollection; // this.GetVertexes(null);
             List<Edge> edges = this.eColletion; // this.GetEdges(null);
 
-            (Dictionary<string, HashSet<string>> nameIdMap, Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict,  Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict)  = this.GenerateRelationship(vertexes, edges);           
+            (Dictionary<string, HashSet<string>> nameIdMap, Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict,  Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict, Dictionary<string, List<Edge>> scenarioEdgesMap)  = this.GenerateRelationship(vertexes, edges);           
 
             Dictionary<string, List<Vertex>> vNameCache = new Dictionary<string, List<Vertex>>();
             Dictionary<string, Vertex> vIdCache = new Dictionary<string, Vertex>();
@@ -189,6 +205,7 @@ namespace SmartKG.KGManagement.DataPersistance
             store.SetOutRelationDict(outRelationDict);
             store.SetInRelationDict(inRelationDict);
             store.SetNameIdCache(nameIdMap);
+            store.SetScenarioEdgesDict(scenarioEdgesMap);
         }
     }
 }

@@ -39,6 +39,8 @@ namespace SmartKG.KGManagement.GraphSearch
                 return ConvertVertex(vertex);
         }
 
+        
+
         public List<VisulizedVertex> SearchVertexesByName(string keyword)
         {
             List<Vertex> searchedVertexes =  this.store.GetVertexByKeyword(keyword);
@@ -97,7 +99,29 @@ namespace SmartKG.KGManagement.GraphSearch
 
             return results;
         }
-        
+
+        public (List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
+        {
+            List<Vertex> catchedVertexes = this.store.GetVertexesByScenarios(scenarios);
+
+            List<VisulizedVertex> vvs = new List<VisulizedVertex>();
+
+            foreach(Vertex vertex in catchedVertexes)
+            {
+                vvs.Add(ConvertVertex(vertex));
+            }
+
+            List<Edge> catchedEdges = this.store.GetRelationsByScenarios(scenarios);
+
+            List<VisulizedEdge> ves = new List<VisulizedEdge>();
+
+            foreach(Edge edge in catchedEdges)
+            {
+                ves.Add(ConvertEdge(edge));
+            }
+            
+            return (vvs, ves);
+        }
 
         public (List<VisulizedVertex>, List<VisulizedEdge>) GetFirstLevelRelationships(string vId)
         {
@@ -215,6 +239,21 @@ namespace SmartKG.KGManagement.GraphSearch
             vv.label = vertex.label;
 
             return vv;
+        }
+
+        private VisulizedEdge ConvertEdge(Edge edge)
+        {
+            if (edge == null)
+            {
+                return null;
+            }
+
+            VisulizedEdge ve = new VisulizedEdge();
+            ve.sourceId = edge.headVertexId;
+            ve.targetId = edge.tailVertexId;
+            ve.value = edge.relationType;
+
+            return ve;
         }
     }
 }

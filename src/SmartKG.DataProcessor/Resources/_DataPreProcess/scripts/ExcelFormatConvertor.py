@@ -43,9 +43,9 @@ if __name__ == "__main__":
     #inputPath = "..\\excel\\Physics\\知识图谱导入模板-初二物理第一+七+八章.xlsx"
     #outputPath = "..\\excel\\Physics\\SmartKG_KGDesc_MechanicsGrade7_zh.xlsx"
 
-    inputPath = "..\\..\\_Template\\SmartKG_KGDesc_Template.xlsx"
-    outputPath = "..\\..\\_Template\\SmartKG_KGDesc_Template_new.xlsx"
+    #inputPath = "..\\..\\_Template\\SmartKG_KGDesc_Template.xlsx"
+    #outputPath = "..\\..\\_Template\\SmartKG_KGDesc_Template_new.xlsx"
 
-    convertFormat(inputPath, outputPath)
+    #convertFormat(inputPath, outputPath)
 
     print("Finished!")

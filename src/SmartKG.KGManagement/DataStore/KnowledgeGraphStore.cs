@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.WindowsAzure.Storage;
+using Serilog;
 using SmartKG.Common.Data.KG;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,16 @@ namespace SmartKG.KGManagement.DataStore
 {
     public sealed class KnowledgeGraphStore
     {
-        private static KnowledgeGraphStore uniqueInstance;        
-       
+        private static KnowledgeGraphStore uniqueInstance;
+
 
         private Dictionary<string, List<Vertex>> vertexNameCache { get; set; }
         private Dictionary<string, Vertex> vertexIdCache { get; set; }
-        private Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict { get; set; }        
+        private Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict { get; set; }
         private Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict { get; set; }
         private Dictionary<string, HashSet<string>> nameIdCache { get; set; }
+
+        private Dictionary<string, List<Edge>> scenarioEdgesDict {get;set;}
 
         private List<Vertex> rootVertexes { get; set; }
        
@@ -127,6 +130,68 @@ namespace SmartKG.KGManagement.DataStore
             {
                 return results;
             }
+        }
+
+        public List<Vertex> GetVertexesByScenarios(List<string> scenarios)
+        {
+            List<Vertex> allVertexes = this.vertexIdCache.Values.ToList();
+
+            if (scenarios == null || scenarios.Count == 0)
+            {
+                return allVertexes;
+            }
+
+            List<Vertex> catchedVertexes = new List<Vertex>();
+           
+            foreach (Vertex vertex in allVertexes)
+            {
+                if (vertex.scenarios == null || vertex.scenarios.Count == 0)
+                {
+                    continue;
+                }
+
+                foreach (string scenario in scenarios)
+                {
+                    if (vertex.scenarios.Contains(scenario))
+                    {
+                        catchedVertexes.Add(vertex);
+                        
+                        break;
+                    }
+                }
+            }
+
+            return catchedVertexes;
+        }
+
+        public List<Edge> GetRelationsByScenarios(List<string> scenarios)
+        {
+            List<Edge> results = new List<Edge>();
+            
+            if (scenarios == null || scenarios.Count == 0)
+            {
+                foreach(string key in this.scenarioEdgesDict.Keys)
+                {
+                    results.AddRange(this.scenarioEdgesDict[key]);
+                }
+            }
+            else
+            {
+                foreach(string scenario in scenarios)
+                {
+                    if (this.scenarioEdgesDict.ContainsKey(scenario))
+                    {
+                        results.AddRange(this.scenarioEdgesDict[scenario]);
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public void SetScenarioEdgesDict(Dictionary<string, List<Edge>> scenarioEdgesDict)
+        {
+            this.scenarioEdgesDict = scenarioEdgesDict;
         }
 
         public List<Vertex> GetAllVertexes()
