@@ -30,4 +30,12 @@ namespace SmartKG.KGManagement.Data.Response
             this.responseMessage = message;
         }
     }
+
+    public class ScenarioResult: IResult
+    {
+        public bool success { get; set; }
+        public string responseMessage { get; set; }
+
+        public List<string> scenarioNames { get; set; }
+    }
 }

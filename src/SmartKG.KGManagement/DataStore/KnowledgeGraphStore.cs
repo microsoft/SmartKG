@@ -21,6 +21,8 @@ namespace SmartKG.KGManagement.DataStore
         private Dictionary<string, List<Edge>> scenarioEdgesDict {get;set;}
 
         private List<Vertex> rootVertexes { get; set; }
+
+        private HashSet<string> scenarioNames { get; set; }
        
         private ILogger log;
 
@@ -47,6 +49,16 @@ namespace SmartKG.KGManagement.DataStore
         public List<Vertex> GetRootVertexes()
         {
             return this.rootVertexes;
+        }
+
+        public HashSet<string> GetScenarioNames()
+        {
+            return this.scenarioNames;
+        }
+
+        public void SetScenarioNames(HashSet<string> scenarios)
+        {
+            this.scenarioNames = scenarios;
         }
 
         public void SetVertexNameCache(Dictionary<string, List<Vertex>> vertexNameCache)
@@ -239,13 +251,8 @@ namespace SmartKG.KGManagement.DataStore
                 return null;
             }
 
-
             RelationLink targetLink = new RelationLink(relationType, scenarioName);
-
-            //relationType = targetLink.relationType;
-
-            //Dictionary<string, List<string>> allTypeChildrenIds = this.relationIdCache[vertexId].childrenIds;
-
+            
             Dictionary<string, HashSet<string>> childrenIds = new Dictionary<string, HashSet<string>>();
 
             if (outRelationDict.ContainsKey(vertexId))

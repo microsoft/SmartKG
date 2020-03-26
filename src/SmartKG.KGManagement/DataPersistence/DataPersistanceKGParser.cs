@@ -177,8 +177,13 @@ namespace SmartKG.KGManagement.DataPersistance
             Dictionary<string, List<Vertex>> vNameCache = new Dictionary<string, List<Vertex>>();
             Dictionary<string, Vertex> vIdCache = new Dictionary<string, Vertex>();
             List<Vertex> roots = new List<Vertex>();
+
+            HashSet<string> scenarioNames = new HashSet<string>();
+            
             foreach (Vertex vertex in vertexes)
-            {                
+            {
+                scenarioNames.UnionWith(vertex.scenarios);
+
                 if (vertex.nodeType == "ROOT")
                 {
                     roots.Add(vertex);
@@ -206,6 +211,7 @@ namespace SmartKG.KGManagement.DataPersistance
             store.SetInRelationDict(inRelationDict);
             store.SetNameIdCache(nameIdMap);
             store.SetScenarioEdgesDict(scenarioEdgesMap);
+            store.SetScenarioNames(scenarioNames);
         }
     }
 }

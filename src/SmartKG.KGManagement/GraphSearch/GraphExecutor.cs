@@ -5,6 +5,7 @@ using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SmartKG.KGManagement.GraphSearch
 {
@@ -98,6 +99,19 @@ namespace SmartKG.KGManagement.GraphSearch
             }
 
             return results;
+        }
+
+        public List<string> GetScenarioNames()
+        {
+            HashSet<string> names = this.store.GetScenarioNames();
+            if (names == null || names.Count == 0)
+            {
+                return null;
+            }
+            else
+            { 
+                return this.store.GetScenarioNames().ToList();
+            }
         }
 
         public (List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
