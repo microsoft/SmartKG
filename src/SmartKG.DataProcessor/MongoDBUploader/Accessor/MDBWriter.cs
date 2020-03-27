@@ -36,25 +36,14 @@ namespace MongoDBUploader.DataProcessor.Accessor
         
         }
 
-       /* public void CreateContextCollection()
-        {
-            var collection = db.GetCollection<DialogContext>("Contexts");
-                        
-            collection.DeleteMany(this.allFilter);
-            collection.InsertOne(new DialogContext("000", "000", 3));
-        }*/
-
         public void CreateKGCollections(List<Vertex> vertexes, List<Edge> edges)
         {
             IMongoCollection<Vertex> vCollection = db.GetCollection<Vertex>("Vertexes");
             vCollection.DeleteMany(this.allFilter);
 
             if (vertexes != null && vertexes.Count > 0)
-            { 
-                foreach (Vertex vertex in vertexes)
-                {
-                        vCollection.InsertOne(vertex);
-                }
+            {                 
+                vCollection.InsertMany(vertexes);                
             }
 
             IMongoCollection<Edge> eCollection = db.GetCollection<Edge>("Edges");
@@ -62,11 +51,8 @@ namespace MongoDBUploader.DataProcessor.Accessor
 
             
             if (edges != null && edges.Count > 0)
-            { 
-                foreach (Edge edge in edges)
-                {
-                    eCollection.InsertOne(edge);
-                }
+            {                 
+                eCollection.InsertMany(edges);                
             }
         }
 

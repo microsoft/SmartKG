@@ -41,7 +41,7 @@ namespace SmartKG.KGBot.DataPersistance
                 this.eList = importer.ParseEntityData();
                 this.eaList = importer.ParseEntityAttributeData();
             }
-            else
+            else if (persistanceType == "MongoDB")
             { 
                 BsonDocument allFilter = new BsonDocument();
 

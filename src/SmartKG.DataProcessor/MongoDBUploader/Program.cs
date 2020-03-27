@@ -82,19 +82,8 @@ namespace MongoDBUploader.DataProcessor
                 ImportNLU(nluPath);
             }
 
-            /*if (cleanContext)
-            {
-                CleanContext();
-            }*/
-            
-
             Console.WriteLine("Finished!");
         }
-
-        /*private static void CleanContext()
-        {            
-            writer.CreateContextCollection();
-        }*/
 
         private static void ImportNLU(string rootPath)
         {

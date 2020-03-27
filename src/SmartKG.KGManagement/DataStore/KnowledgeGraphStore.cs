@@ -1,5 +1,4 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Serilog;
+﻿using Serilog;
 using SmartKG.Common.Data.KG;
 using System;
 using System.Collections.Generic;
