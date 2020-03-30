@@ -1,8 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.Options;
-using System;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SmartKG.Common.Data.KG
 {

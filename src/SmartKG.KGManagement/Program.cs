@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace SmartKG.KGManagement

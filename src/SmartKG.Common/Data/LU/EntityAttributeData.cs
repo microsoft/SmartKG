@@ -1,4 +1,7 @@
-﻿namespace SmartKG.Common.Data.LU
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace SmartKG.Common.Data.LU
 {
     public class EntityAttributeData
     {

@@ -1,4 +1,6 @@
 ﻿
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace SmartKG.Common.Data.KG
 {   

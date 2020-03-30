@@ -1,4 +1,7 @@
-﻿using SmartKG.Common.Data.KG;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.Common.Data.KG;
 
 namespace SmartKG.KGBot.Data
 {

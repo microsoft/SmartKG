@@ -1,4 +1,7 @@
-﻿using SmartKG.KGBot.Data;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.KGBot.Data;
 using MongoDB.Driver;
 using Serilog;
 using System;

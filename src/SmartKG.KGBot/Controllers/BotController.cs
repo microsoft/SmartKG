@@ -1,4 +1,7 @@
-﻿using SmartKG.KGBot.Managment;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.KGBot.Managment;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

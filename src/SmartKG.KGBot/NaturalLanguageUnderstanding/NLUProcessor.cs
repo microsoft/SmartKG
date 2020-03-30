@@ -1,4 +1,7 @@
-﻿using SmartKG.Common.Data.LU;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.Common.Data.LU;
 using SmartKG.KGBot.DataStore;
 
 using System.Collections.Generic;

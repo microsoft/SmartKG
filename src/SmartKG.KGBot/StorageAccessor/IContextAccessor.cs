@@ -1,8 +1,7 @@
-﻿using SmartKG.KGBot.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.KGBot.Data;
 
 namespace SmartKG.KGBot.StorageAccessor
 {

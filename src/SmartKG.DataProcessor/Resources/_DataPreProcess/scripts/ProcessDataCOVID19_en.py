@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 from ExcelReader import convertFile
 from ExcelReader import generateOutputPaths
 

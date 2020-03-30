@@ -1,4 +1,7 @@
-﻿using MongoDBUploader.DataProcessor.Accessor;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using MongoDBUploader.DataProcessor.Accessor;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;

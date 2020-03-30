@@ -1,4 +1,7 @@
-﻿using SmartKG.KGManagement.Data.Response;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.KGManagement.Data.Response;
 
 namespace SmartKG.KGBot.Data.Response
 {

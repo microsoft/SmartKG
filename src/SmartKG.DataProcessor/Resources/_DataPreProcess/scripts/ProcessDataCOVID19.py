@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
 #-*- coding: utf-8 -*-
 
 from ExcelReader import convertFile

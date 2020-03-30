@@ -1,4 +1,7 @@
-﻿using SmartKG.KGManagement.Data.Response;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.KGManagement.Data.Response;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections;

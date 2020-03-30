@@ -1,4 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;

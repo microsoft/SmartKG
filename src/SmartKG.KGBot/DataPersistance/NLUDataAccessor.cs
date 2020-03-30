@@ -1,4 +1,7 @@
-﻿using CommonSmartKG.Common.Data.LU;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using CommonSmartKG.Common.Data.LU;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;

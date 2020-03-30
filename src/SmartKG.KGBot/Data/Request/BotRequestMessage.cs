@@ -1,4 +1,7 @@
-﻿namespace SmartKG.KGBot.Data.Request
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace SmartKG.KGBot.Data.Request
 {
     public class BotRequestMessage
     {

@@ -1,4 +1,7 @@
-﻿using SmartKG.KGManagement.DataStore;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.KGManagement.DataStore;
 using System;
 using System.Collections.Generic;
 using SmartKG.Common.Data.KG;

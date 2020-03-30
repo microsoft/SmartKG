@@ -1,4 +1,7 @@
-﻿using SmartKG.Common.Data.Visulization;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.Common.Data.Visulization;
 
 namespace SmartKG.Common.Utils
 {
