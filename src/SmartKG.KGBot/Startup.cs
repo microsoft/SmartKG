@@ -16,6 +16,7 @@ using Serilog;
 using SmartKG.KGBot.StorageAccessor;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.KG;
+using SmartKG.Common.Data.Visulization;
 
 namespace SmartKG.KGBot
 {
@@ -83,8 +84,10 @@ namespace SmartKG.KGBot
                 KGDataAccessor accessor = KGDataAccessor.GetInstance();
                 List<Vertex> vList = accessor.GetVertexCollection();
                 List<Edge> eList = accessor.GetEdgeCollection();
+                List<VisulizationConfig> vcList = accessor.GetVisulizationConfigs();
 
-                DataPersistanceKGParser kgParser = new DataPersistanceKGParser(vList, eList);
+
+                DataPersistanceKGParser kgParser = new DataPersistanceKGParser(vList, eList, vcList);
                 kgParser.ParseKG();
 
                 log.Information("Knowledge Graph is parsed.");

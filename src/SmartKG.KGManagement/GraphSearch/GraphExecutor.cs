@@ -117,6 +117,27 @@ namespace SmartKG.KGManagement.GraphSearch
             }
         }
 
+        public List<ColorConfig> GetColorConfigs(string scenarioName)
+        {
+            Dictionary<string, List<ColorConfig>> colorConfigs = this.store.GetVertexLabelColorMap();
+
+            if (colorConfigs == null || colorConfigs.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                if (!colorConfigs.ContainsKey(scenarioName))
+                {
+                    return null;
+                }
+                else
+                {
+                    return colorConfigs[scenarioName];
+                }
+            }
+        }
+
         public (List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
         {
             List<Vertex> catchedVertexes = this.store.GetVertexesByScenarios(scenarios);

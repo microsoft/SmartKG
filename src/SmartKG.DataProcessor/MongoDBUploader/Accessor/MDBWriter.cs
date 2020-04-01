@@ -11,6 +11,7 @@ using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
 using CommonSmartKG.Common.Data.LU;
 using SmartKG.Common.Data.LU;
+using SmartKG.Common.Data.Visulization;
 
 namespace MongoDBUploader.DataProcessor.Accessor
 {   
@@ -56,6 +57,17 @@ namespace MongoDBUploader.DataProcessor.Accessor
             if (edges != null && edges.Count > 0)
             {                 
                 eCollection.InsertMany(edges);                
+            }
+        }
+
+        public void CreateVisuliaztionConfigCollections(List<VisulizationConfig> vcList)
+        {
+            IMongoCollection<VisulizationConfig> vcCollection = db.GetCollection<VisulizationConfig>("VisulizationConfigs");
+            vcCollection.DeleteMany(this.allFilter);
+
+            if (vcList != null && vcList.Count > 0)
+            {
+                vcCollection.InsertMany(vcList);
             }
         }
 

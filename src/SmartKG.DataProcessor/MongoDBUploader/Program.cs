@@ -21,26 +21,22 @@ namespace MongoDBUploader.DataProcessor
         public static void Main(string[] args)
         {
             /* default to import all arguments */
-            string usage = "Usage: ./DataProcessor [options] --rootPath=<rootPath>\nThere are three arguments to trigger different data importing jobs.\nThey are '--kg' and '--nlu'. Or you can use '--all' to trigger all data importing jobs.";
+            string usage = "Usage: ./DataProcessor [options] --rootPath=<rootPath>\nThere are three arguments to trigger different data importing jobs.\nThey are '--kg', '--nlu' and '--vc'. Or you can use '--all' to trigger all data importing jobs.";
             
 
             FilePathConfig filePaths = config.GetSection("FileDataPath").Get<FilePathConfig>();
             string kgPath = filePaths.KGFilePath;
             string nluPath = filePaths.NLUFilePath;
-
-            //log.Here().Information("NLUFilePath: " + nluPath);
-
-
+            string vcPath = filePaths.VCFilePath;
+           
             bool kg = false;
-            bool nlu = false;            
-
-            //bool cleanContext = false;
+            bool nlu = false;
+            bool vc = false;
 
             if (args.Length == 0)
             {
                 Console.WriteLine(usage);
                 Environment.Exit(1);
-
             }
             else
             {
@@ -51,27 +47,28 @@ namespace MongoDBUploader.DataProcessor
                     if (arg == "--all")
                     {
                         kg = true;
-                        nlu = true;                        
-
-                        //cleanContext = true;
+                        nlu = true;
+                        vc = true;                       
                         
                     }else if (arg =="--kg")
                     {
                         kg = true;
-                        //cleanContext = true;
+                        
                     }
                     else if (arg == "--nlu")
                     {
                         nlu = true;
-                        //cleanContext = true;
-                    }                    
+                        
+                    } 
+                    else if (arg == "--vc")
+                    {
+                        vc = true;
+                    }
                     else if (arg == "--help")
                     {
                         Console.WriteLine();
                         Environment.Exit(0);
-                    }
-                    
-                                      
+                    }                                     
                 }
             }
 
@@ -83,6 +80,11 @@ namespace MongoDBUploader.DataProcessor
             if (nlu)
             { 
                 ImportNLU(nluPath);
+            }
+
+            if (vc)
+            {
+                ImportVC(vcPath);
             }
 
             Console.WriteLine("Finished!");
@@ -102,6 +104,14 @@ namespace MongoDBUploader.DataProcessor
             writer.CreateKGCollections(importer.ParseKGVertexes(), importer.ParseKGEdges());
             
             Console.WriteLine("Imported KG materials to MongoDB!");
-        }      
+        } 
+        
+        public static void ImportVC(string rootPath)
+        {
+            VisuliaztionImporter importer = new VisuliaztionImporter(rootPath);
+            writer.CreateVisuliaztionConfigCollections(importer.GetVisuliaztionConfigs());
+
+            Console.WriteLine("Imported Visulization Config materials to MongoDB!");
+        }
     }
 }

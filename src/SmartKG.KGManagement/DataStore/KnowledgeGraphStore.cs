@@ -3,6 +3,7 @@
 
 using Serilog;
 using SmartKG.Common.Data.KG;
+using SmartKG.Common.Data.Visulization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace SmartKG.KGManagement.DataStore
         private Dictionary<string, HashSet<string>> nameIdCache { get; set; }
 
         private Dictionary<string, List<Edge>> scenarioEdgesDict {get;set;}
+
+        private Dictionary<string, List<ColorConfig>> vertexLabelColorMap { get; set; }
 
         private List<Vertex> rootVertexes { get; set; }
 
@@ -46,11 +49,21 @@ namespace SmartKG.KGManagement.DataStore
         public void SetRootVertexes(List<Vertex> roots)
         {
             this.rootVertexes = roots;
-        }
+        }        
         
         public List<Vertex> GetRootVertexes()
         {
             return this.rootVertexes;
+        }
+
+        public void SetVertexLabelColorMap(Dictionary<string, List<ColorConfig>> map)
+        {
+            this.vertexLabelColorMap = map;
+        }
+
+        public Dictionary<string, List<ColorConfig>> GetVertexLabelColorMap()
+        {
+            return this.vertexLabelColorMap;
         }
 
         public HashSet<string> GetScenarioNames()
@@ -62,6 +75,8 @@ namespace SmartKG.KGManagement.DataStore
         {
             this.scenarioNames = scenarios;
         }
+
+
 
         public void SetVertexNameCache(Dictionary<string, List<Vertex>> vertexNameCache)
         {

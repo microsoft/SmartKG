@@ -5,6 +5,7 @@ using SmartKG.KGManagement.DataStore;
 using System;
 using System.Collections.Generic;
 using SmartKG.Common.Data.KG;
+using SmartKG.Common.Data.Visulization;
 
 namespace SmartKG.KGManagement.DataPersistance
 {
@@ -15,12 +16,15 @@ namespace SmartKG.KGManagement.DataPersistance
 
         private List<Vertex> vCollection;
         private List<Edge> eColletion;
+        private List<VisulizationConfig> vcList;
 
-        public DataPersistanceKGParser(List<Vertex> vList, List<Edge> eList)
+
+        public DataPersistanceKGParser(List<Vertex> vList, List<Edge> eList, List<VisulizationConfig> vcList)
         {
             
             this.vCollection = vList; 
-            this.eColletion = eList;           
+            this.eColletion = eList;
+            this.vcList = vcList;
         }       
 
         private (Dictionary<string, HashSet<string>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, List<Edge>>) GenerateRelationship(List<Vertex> vertexes, List<Edge> edges)
@@ -205,6 +209,16 @@ namespace SmartKG.KGManagement.DataPersistance
                 vIdCache.Add(vertex.id, vertex);
             }
 
+            Dictionary<string, List<ColorConfig>>  vertexLabelsMap = new Dictionary<string, List<ColorConfig>>();
+
+            foreach (VisulizationConfig vc in this.vcList)
+            {
+                string scenarioName = vc.scenario;
+                List<ColorConfig> cc = vc.labelsOfVertexes;
+
+                vertexLabelsMap.Add(scenarioName, cc);
+            }
+
             KnowledgeGraphStore store = KnowledgeGraphStore.GetInstance();
             
             store.SetRootVertexes(roots);
@@ -215,6 +229,7 @@ namespace SmartKG.KGManagement.DataPersistance
             store.SetNameIdCache(nameIdMap);
             store.SetScenarioEdgesDict(scenarioEdgesMap);
             store.SetScenarioNames(scenarioNames);
+            store.SetVertexLabelColorMap(vertexLabelsMap);
         }
     }
 }

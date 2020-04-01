@@ -7,6 +7,7 @@ using MongoDB.Driver;
 using Serilog;
 using SmartKG.Common.Data.Configuration;
 using SmartKG.Common.Data.KG;
+using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.Importer;
 using SmartKG.Common.Logger;
 using System;
@@ -22,6 +23,7 @@ namespace SmartKG.KGManagement.DataPersistance
 
         private List<Vertex> vList;
         private List<Edge> eList;
+        private List<VisulizationConfig> vcList;
 
         private KGDataAccessor(IConfiguration config)
         {
@@ -43,6 +45,14 @@ namespace SmartKG.KGManagement.DataPersistance
                 this.eList = importer.ParseKGEdges();
 
                 log.Here().Information("KG data has been parsed from Files.");
+
+                string vcPath = filePaths.VCFilePath;
+
+                log.Here().Information("VCFilePath: " + vcPath);
+
+                VisuliaztionImporter vImporter = new VisuliaztionImporter(vcPath);
+
+                this.vcList = vImporter.GetVisuliaztionConfigs();
 
             }
             else 
@@ -69,6 +79,12 @@ namespace SmartKG.KGManagement.DataPersistance
                 this.eList = eCollection.Find(allFilter).ToList();
 
                 log.Here().Information("KG data has been parsed from MongoDB.");
+
+                IMongoCollection<VisulizationConfig> vcCollection = db.GetCollection<VisulizationConfig>("VisulizationConfigs");
+
+                this.vcList = vcCollection.Find(allFilter).ToList();
+
+                log.Here().Information("Visulization Config data has been parsed from MongoDB.");
             }           
         }
 
@@ -89,15 +105,19 @@ namespace SmartKG.KGManagement.DataPersistance
         }
 
         public List<Vertex> GetVertexCollection()
-        {
-            
-            return vList;
+        {           
+            return this.vList;
         }
 
         public List<Edge> GetEdgeCollection()
         {
             
-            return eList;
-        }            
+            return this.eList;
+        }     
+        
+        public List<VisulizationConfig> GetVisulizationConfigs()
+        {
+            return this.vcList;
+        }
     }
 }

@@ -41,4 +41,12 @@ namespace SmartKG.KGManagement.Data.Response
 
         public List<string> scenarioNames { get; set; }
     }
+
+    public class ConfigResult: IResult
+    {
+        public bool success { get; set; }
+        public string responseMessage { get; set; }
+
+        public List<ColorConfig> vertexColorConfigs { get; set; }
+    }
 }

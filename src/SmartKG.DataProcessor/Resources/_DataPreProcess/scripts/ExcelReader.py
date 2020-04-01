@@ -6,11 +6,13 @@ from xlrd import open_workbook
 import os.path
 from os import path
 
+defaultColorMap = {"red": "#E83344","orange": "#F5A100", "green": "#9DE7B7", "blue": "#009DDC","lightred": "#FD9F7F","bluepurple": "#025CEA","lightpurple": "#78A7FF"}
 
 def generateOutputPaths(outputDir, suffix):
     checkDir(outputDir)
     checkDir(outputDir + "\\KG\\")
     checkDir(outputDir + "\\NLU\\")
+    checkDir(outputDir + "\\Visulization\\")
 
     vJsonPath = outputDir + "\\KG\\" + "Vertexes_" + suffix + ".json"
     eJsonPath = outputDir + "\\KG\\" + "Edges_" + suffix + ".json"
@@ -18,7 +20,9 @@ def generateOutputPaths(outputDir, suffix):
     intentPath = outputDir + "\\NLU\\intentrules.tsv"
     entityMapPath = outputDir + "\\NLU\\entitymap.tsv"
 
-    return vJsonPath, eJsonPath, intentPath, entityMapPath
+    colorJsonPath = outputDir + "\\Visulization\\VisulizationConfig.json"
+
+    return vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath
 
 def checkDir(dir):
     if not path.exists(dir):
@@ -56,7 +60,7 @@ def generateSimilarWordMap(sfilePath):
 
     return similarWordMap
 
-def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, cleanNLU):
+def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, cleanNLU, colorJsonPath):
     wb = open_workbook(excelPath)
     sheet_vertexes = wb.sheets()[0]
     sheet_edges = wb.sheets()[1]
@@ -69,6 +73,9 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
 
     headVidSet = set()
     tailVidSet = set()
+
+    scenarioLabelMap = {}
+    scenarioReltionMap = {}
 
     for row in range(1, sheet_edges.nrows):
         data = {}
@@ -83,6 +90,16 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
         rawDstVID = sheet_edges.cell_value(row, 2)
         data["tailVertexId"] = rawDstVID
         tailVidSet.add(data["tailVertexId"])
+
+        for scenario in scenarios:
+            rSet = set()
+            if not (scenario in scenarioReltionMap):
+                scenarioReltionMap[scenario] = rSet
+            else:
+                rSet = scenarioReltionMap[scenario]
+
+            rSet.add(data["relationType"])
+
 
         edges.append(data)
 
@@ -110,6 +127,15 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
                 data["nodeType"] = "LEAF"
             else:
                 data["nodeType"] = "SINGLE"
+
+            for scenario in scenarios:
+                vSet = set()
+                if not (scenario in scenarioLabelMap):
+                    scenarioLabelMap[scenario] = vSet
+                else:
+                    vSet = scenarioLabelMap[scenario]
+
+                vSet.add(data["label"])
 
             properties = []
 
@@ -201,4 +227,49 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
 
     with open(intentPath, type, encoding="utf-8") as rf:
         rf.write(rule_lines)
+
+    colorObjs = []
+
+    for scenario in scenarios:
+        obj = {}
+        obj["scenario"] = scenario
+        scenarioLabels = scenarioLabelMap[scenario]
+        scenarioRelations = scenarioReltionMap[scenario]
+
+        obj["labelsOfVertexes"] = []
+        index = 0
+        for label in scenarioLabels:
+            colors = list(defaultColorMap.values())
+            color = colors[-1]
+            if index < len(colors) - 1:
+                color = colors[index]
+
+            pair = {}
+            pair["itemLabel"] = label
+            pair["color"] = color
+
+            obj["labelsOfVertexes"].append(pair)
+            index += 1
+
+        obj["relationTypesOfEdges"] = []
+        index = 0
+        for relationType in scenarioRelations:
+            colors = list(defaultColorMap.values())
+            color = colors[-1]
+            if index < len(colors) - 1:
+                color = colors[index]
+
+            pair = {}
+            pair["itemLabel"] = relationType
+            pair["color"] = color
+
+            obj["relationTypesOfEdges"].append(pair)
+            index += 1
+
+        colorObjs.append(obj)
+
+    print("Generating Visualization Config file:", colorJsonPath)
+    cfp = open(colorJsonPath, 'w', encoding="utf-8")
+    json.dump(colorObjs, cfp, ensure_ascii=False, sort_keys=True, indent=2, separators=(',', ': '))
+
     return

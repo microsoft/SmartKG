@@ -13,6 +13,8 @@ namespace SmartKG.Common.Data.Configuration
         public string KGFilePath { get; set; }
         public string NLUFilePath { get; set; }
 
+        public string VCFilePath { get; set; }
+
         public string ContextFilePath { get; set; }
     }
 }

@@ -1,0 +1,97 @@
+[
+  {
+    "labelsOfVertexes": [
+      {
+        "color": "#E83344",
+        "itemLabel": "诊断方法"
+      },
+      {
+        "color": "#F5A100",
+        "itemLabel": "措施"
+      },
+      {
+        "color": "#9DE7B7",
+        "itemLabel": "传播途径"
+      },
+      {
+        "color": "#009DDC",
+        "itemLabel": "动物"
+      },
+      {
+        "color": "#FD9F7F",
+        "itemLabel": "状态"
+      },
+      {
+        "color": "#025CEA",
+        "itemLabel": "物资"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "免疫"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "疾病"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "病毒"
+      }
+    ],
+    "relationTypesOfEdges": [
+      {
+        "color": "#E83344",
+        "itemLabel": "成功"
+      },
+      {
+        "color": "#F5A100",
+        "itemLabel": "入侵"
+      },
+      {
+        "color": "#9DE7B7",
+        "itemLabel": "源头"
+      },
+      {
+        "color": "#009DDC",
+        "itemLabel": "措施"
+      },
+      {
+        "color": "#FD9F7F",
+        "itemLabel": "需要"
+      },
+      {
+        "color": "#025CEA",
+        "itemLabel": "作用"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "启示"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "失败"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "分类"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "包含"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "中间宿主"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "导致"
+      },
+      {
+        "color": "#78A7FF",
+        "itemLabel": "传播"
+      }
+    ],
+    "scenario": "COVID19"
+  }
+]
