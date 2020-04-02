@@ -24,7 +24,7 @@ namespace SmartKG.KGManagement.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]")]
+        [Route("api/[controller]/entitycolor")]
         [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IResult>> Get(string scenarioName)
@@ -43,7 +43,13 @@ namespace SmartKG.KGManagement.Controllers
             else
             {
                 result.responseMessage = "There are " + configs.Count + " color config defined.";
-                result.vertexColorConfigs = configs;
+                result.entityColorConfig = new Dictionary<string,string>();
+
+                foreach(ColorConfig config in configs)
+                {
+                    result.entityColorConfig.Add(config.itemLabel, config.color);
+                }
+
             }
 
             log.Information("[Response]: " + JsonConvert.SerializeObject(result));
