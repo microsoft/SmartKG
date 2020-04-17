@@ -125,6 +125,16 @@ namespace SmartKG.KGManagement.GraphSearch
             {
                 return null;
             }
+            else if (string.IsNullOrWhiteSpace(scenarioName))
+            {
+                List<ColorConfig> configs = new List<ColorConfig>();
+                foreach (string scenario in colorConfigs.Keys)
+                {
+                    configs.AddRange(colorConfigs[scenario]);
+                }
+
+                return configs;
+            }
             else
             {
                 if (!colorConfigs.ContainsKey(scenarioName))
