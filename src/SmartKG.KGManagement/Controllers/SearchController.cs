@@ -42,7 +42,7 @@ namespace SmartKG.KGManagement.Controllers
             }
             else
             {
-                keyword = keyword.ToLower();
+                keyword = keyword.Trim();
 
                 searchResult = new SearchResult(true, "根据\"" + keyword + "\"为您搜索到以下节点：");
                 GraphExecutor executor = new GraphExecutor();
