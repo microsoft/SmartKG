@@ -23,11 +23,6 @@ namespace SmartKG.Common.Data.LU
         private HashSet<string> relationTypeSet = null;
         private int option = -1;
 
-        //public NLUResult()
-        //{
-        //    this.type = NLUResultType.UNKNOWN;            
-        //}
-
         public NLUResult(int option)
         {
             this.type = NLUResultType.NUMBER;
