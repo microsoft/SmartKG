@@ -26,17 +26,26 @@ namespace SmartKG.KGBot.NaturalLanguageUnderstanding
             }
             else
             {
-                string intentName = nluStore.DetectIntent(query);
-
-                if (intentName == null)
+                if (query.Trim().ToLower() == "q")
                 {
-                    NLUResult result = new NLUResult();
+                    NLUResult result = new NLUResult(NLUResultType.QUITDIALOG);
                     return result;
+
                 }
                 else
                 { 
-                    NLUResult result = ParseIntentEntity(intentName, query);
-                    return result;
+                    string intentName = nluStore.DetectIntent(query);
+
+                    if (intentName == null)
+                    {
+                        NLUResult result = new NLUResult(NLUResultType.UNKNOWN);
+                        return result;
+                    }
+                    else
+                    { 
+                        NLUResult result = ParseIntentEntity(intentName, query);
+                        return result;
+                    }
                 }
             }
             

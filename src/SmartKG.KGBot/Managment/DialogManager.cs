@@ -11,7 +11,6 @@ using SmartKG.KGBot.StorageAccessor;
 using SmartKG.KGBot.NaturalLanguageUnderstanding;
 using Serilog;
 using SmartKG.KGBot.DataStore;
-using SmartKG.KGBot.Data.Request;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.KG;
@@ -27,7 +26,9 @@ namespace SmartKG.KGBot.Managment
 
         private RUNNINGMODE runningMode;      
 
-        ILogger _log;        
+        ILogger _log;
+
+        private string quitPromptStr = "\n或者输入 q 退出当前对话。\n";
 
         public DialogManager()
         {           
@@ -73,6 +74,10 @@ namespace SmartKG.KGBot.Managment
             {
                 result = GenerateErrorMessage("无法识别意图。", contextMgmt);
             }
+            else if (type == NLUResultType.QUITDIALOG)
+            {
+                result = GenerateQuitMessage(contextMgmt);
+            }
             else
             {              
                 result = ResponseDialog(nlu, contextMgmt);
@@ -92,6 +97,14 @@ namespace SmartKG.KGBot.Managment
             
             return result;
         }       
+
+        private QueryResult GenerateQuitMessage(ContextManager contextMgmt)
+        {
+            QueryResult result = new QueryResult(true, "已退出上轮对话，请提出您的问题。\n", ResponseItemType.Other);
+            contextMgmt.ExitDialog();
+
+            return result;
+        }
 
         private QueryResult GenerateSlotMessage(DialogSlot slot, ContextManager contextMgmt)
         {
@@ -184,7 +197,7 @@ namespace SmartKG.KGBot.Managment
             }
 
             ResponseItemType itemType = ResponseItemType.Option;
-            QueryResult result = new QueryResult(true, resultStr, itemType);
+            QueryResult result = new QueryResult(true, resultStr + quitPromptStr, itemType);
             result.AddResponseItems(items);
 
             contextMgmt.SetCandidates(candidates);

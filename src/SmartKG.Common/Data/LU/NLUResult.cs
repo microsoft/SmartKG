@@ -11,8 +11,9 @@ namespace SmartKG.Common.Data.LU
     public enum NLUResultType
     {
         [Description("Not Completed")]
-        NORMAL, NUMBER, UNKNOWN
+        NORMAL, NUMBER, QUITDIALOG, UNKNOWN
     }
+
     public class NLUResult
     {
         private NLUResultType type;
@@ -22,15 +23,25 @@ namespace SmartKG.Common.Data.LU
         private HashSet<string> relationTypeSet = null;
         private int option = -1;
 
-        public NLUResult()
-        {
-            this.type = NLUResultType.UNKNOWN;            
-        }
+        //public NLUResult()
+        //{
+        //    this.type = NLUResultType.UNKNOWN;            
+        //}
 
         public NLUResult(int option)
         {
             this.type = NLUResultType.NUMBER;
             this.option = option;
+        }
+
+        public NLUResult(NLUResultType type)
+        {
+            this.type = type;
+
+            if (type == NLUResultType.QUITDIALOG)
+            {
+                this.option = 0;
+            }
         }
 
         public NLUResult(string intent)
