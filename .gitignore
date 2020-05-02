@@ -359,3 +359,26 @@ src/DataProcessor/DataProcessor.csproj.user
 src/KGBot/Properties/PublishProfiles
 src/SmartKG.DataProcessor/Resources/_DataPreProcess/scripts/.idea/
 src/SmartKG.DataProcessor/Resources/_DataPreProcess/excel/_OldExcels/
+
+
+.DS_Store
+node_modules
+/dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
