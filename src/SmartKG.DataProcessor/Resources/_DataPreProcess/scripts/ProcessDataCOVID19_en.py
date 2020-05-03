@@ -12,4 +12,4 @@ if __name__ == "__main__":
 
     excelPath = "..\\excel\\COVID19\\SmartKG_KGDesc_COVID19_en.xlsx"
 
-    convertFile(excelPath, [], ["COVID19_en"], [], vJsonPath, eJsonPath, intentPath, entityMapPath, True)
+    convertFile(excelPath, [], ["COVID19_en"], [], vJsonPath, eJsonPath, intentPath, entityMapPath, True, colorJsonPath)

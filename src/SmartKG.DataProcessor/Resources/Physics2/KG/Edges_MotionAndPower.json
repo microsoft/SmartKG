@@ -1,0 +1,178 @@
+[
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian2"
+  },
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian3"
+  },
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian7"
+  },
+  {
+    "headVertexId": "entity_gainian3",
+    "relationType": "测量工具为",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian4"
+  },
+  {
+    "headVertexId": "entity_gainian5",
+    "relationType": "产生",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian3"
+  },
+  {
+    "headVertexId": "entity_gainian3",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian6"
+  },
+  {
+    "headVertexId": "entity_gainian8",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian9"
+  },
+  {
+    "headVertexId": "entity_gainian8",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian13"
+  },
+  {
+    "headVertexId": "entity_gainian9",
+    "relationType": "相关物理量有",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian10"
+  },
+  {
+    "headVertexId": "entity_gainian9",
+    "relationType": "相关物理量有",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian11"
+  },
+  {
+    "headVertexId": "entity_gainian8",
+    "relationType": "判断标准",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian12"
+  },
+  {
+    "headVertexId": "entity_gainian13",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian14"
+  },
+  {
+    "headVertexId": "entity_gainian14",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian15"
+  },
+  {
+    "headVertexId": "entity_gainian14",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian16"
+  },
+  {
+    "headVertexId": "entity_gainian15",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian17"
+  },
+  {
+    "headVertexId": "entity_gainian15",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian18"
+  },
+  {
+    "headVertexId": "entity_gainian1",
+    "relationType": "属于",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian19"
+  },
+  {
+    "headVertexId": "entity_gainian8",
+    "relationType": "属于",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian19"
+  },
+  {
+    "headVertexId": "entity_gainian19",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian20"
+  },
+  {
+    "headVertexId": "entity_gainian20",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian21"
+  },
+  {
+    "headVertexId": "entity_gainian19",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian22"
+  },
+  {
+    "headVertexId": "entity_gainian19",
+    "relationType": "包含",
+    "scenarios": [
+      "MotionAndPower"
+    ],
+    "tailVertexId": "entity_gainian23"
+  }
+]

@@ -7,10 +7,18 @@ import os.path
 from os import path
 import xlsxwriter
 
+def createDirIfNoExists(destPath):
+    tmps = destPath.split("\\")
+    dir = "\\".join(tmps[:-1])
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
 def convertFormat(srcPath, destPath):
 
     if os.path.exists(destPath):
         os.remove(destPath)
+
+    createDirIfNoExists(destPath)
 
     input_wb = open_workbook(srcPath)
     input_sheet = input_wb.sheets()[0]
@@ -49,6 +57,9 @@ if __name__ == "__main__":
     #inputPath = "..\\..\\_Template\\SmartKG_KGDesc_Template.xlsx"
     #outputPath = "..\\..\\_Template\\SmartKG_KGDesc_Template_new.xlsx"
 
-    #convertFormat(inputPath, outputPath)
+    inputPath = "..\\excel\\_OldExcels\\知识图谱导入模板-运动和力.xlsx"
+    outputPath = "..\\excel\\Physics2\\SmartKG_KGDesc_MotionAndPower_zh.xlsx"
+
+    convertFormat(inputPath, outputPath)
 
     print("Finished!")

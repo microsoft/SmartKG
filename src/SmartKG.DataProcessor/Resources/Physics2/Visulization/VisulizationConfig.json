@@ -1,0 +1,49 @@
+[
+  {
+    "labelsOfVertexes": [
+      {
+        "color": "#E83344",
+        "itemLabel": "概念"
+      },
+      {
+        "color": "#F5A100",
+        "itemLabel": "关联"
+      },
+      {
+        "color": "#9DE7B7",
+        "itemLabel": "规律"
+      },
+      {
+        "color": "#009DDC",
+        "itemLabel": "物体"
+      }
+    ],
+    "relationTypesOfEdges": [
+      {
+        "color": "#E83344",
+        "itemLabel": "判断标准"
+      },
+      {
+        "color": "#F5A100",
+        "itemLabel": "测量工具为"
+      },
+      {
+        "color": "#9DE7B7",
+        "itemLabel": "产生"
+      },
+      {
+        "color": "#009DDC",
+        "itemLabel": "属于"
+      },
+      {
+        "color": "#FD9F7F",
+        "itemLabel": "相关物理量有"
+      },
+      {
+        "color": "#025CEA",
+        "itemLabel": "包含"
+      }
+    ],
+    "scenario": "MotionAndPower"
+  }
+]
