@@ -50,7 +50,7 @@
             <input
               class="chart-search-input"
               type="text"
-              placeholder="请输入疾病名称"
+              placeholder="请输入实体名称"
               v-model="keyWord"
               v-on:input="gotochart"
               v-on:keyup.enter="gotochartEnter"
