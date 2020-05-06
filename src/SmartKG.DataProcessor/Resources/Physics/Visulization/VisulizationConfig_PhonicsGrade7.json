@@ -1,0 +1,17 @@
+[
+  {
+    "labelsOfVertexes": [
+      {
+        "color": "#E83344",
+        "itemLabel": ""
+      }
+    ],
+    "relationTypesOfEdges": [
+      {
+        "color": "#E83344",
+        "itemLabel": "包含"
+      }
+    ],
+    "scenario": "PhonicsGrade7"
+  }
+]

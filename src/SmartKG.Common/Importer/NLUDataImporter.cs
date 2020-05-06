@@ -3,6 +3,7 @@
 
 using CommonSmartKG.Common.Data.LU;
 using SmartKG.Common.Data.LU;
+using SmartKG.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,25 +15,28 @@ namespace SmartKG.Common.Importer
     {
         private string rootPath;
         public NLUDataImporter(string rootPath)
-        {
-            this.rootPath = rootPath;
+        {            
+            if (string.IsNullOrWhiteSpace(rootPath))
+            {
+                throw new Exception("Rootpath of NLU files are invalid.");
+            }
+
+            this.rootPath = PathUtility.CompletePath(rootPath);
         }
 
         public List<NLUIntentRule> ParseIntentRules()
         {
-            List<NLUIntentRule> list = new List<NLUIntentRule>();
+            List<NLUIntentRule> list = new List<NLUIntentRule>();           
 
-            string intentRuleFileName = rootPath + "intentrules.tsv";
+            string[] fileNamess = Directory.GetFiles(rootPath, "intentrules*.tsv").Select(Path.GetFileName).ToArray();
 
-            if (!File.Exists(intentRuleFileName))
+            List<string> lines = new List<string>();
+
+            foreach (string fileName in fileNamess)
             {
-                return null;
+                string content = File.ReadAllText(rootPath + fileName);
+                lines.AddRange(content.Split('\n').ToList<string>());
             }
-
-            string content = File.ReadAllText(intentRuleFileName);
-
-
-            string[] lines = content.Split('\n');
 
             int seqNo = 1;
 
@@ -80,18 +84,16 @@ namespace SmartKG.Common.Importer
         public List<EntityData> ParseEntityData()
         {
             List<EntityData> list = new List<EntityData>();
+            
+            string[] fileNamess = Directory.GetFiles(rootPath, "entitymap*.tsv").Select(Path.GetFileName).ToArray();
 
-            string entityFileName = rootPath + "entitymap.tsv";
+            List<string> lines = new List<string>();
 
-            if (!File.Exists(entityFileName))
+            foreach (string fileName in fileNamess)
             {
-                return null;
+                string content = File.ReadAllText(rootPath + fileName);
+                lines.AddRange(content.Split('\n').ToList<string>());
             }
-
-            string content = File.ReadAllText(entityFileName);
-
-
-            string[] lines = content.Split('\n');
 
             int seqNo = 1;
 
@@ -135,16 +137,15 @@ namespace SmartKG.Common.Importer
         {
             List<EntityAttributeData> list = new List<EntityAttributeData>();
 
-            string eaFileName = rootPath + "entityAttributeMap.tsv";
+            string[] fileNamess = Directory.GetFiles(rootPath, "entityAttributeMap*.tsv").Select(Path.GetFileName).ToArray();
 
-            if (!File.Exists(eaFileName))
+            List<string> lines = new List<string>();
+
+            foreach (string fileName in fileNamess)
             {
-                return null;
+                string content = File.ReadAllText(rootPath + fileName);
+                lines.AddRange(content.Split('\n').ToList<string>());
             }
-
-            string content = File.ReadAllText(eaFileName);
-
-            string[] lines = content.Split('\n');
 
             int seqNo = 1;
 

@@ -3,6 +3,7 @@
 
 using Newtonsoft.Json;
 using SmartKG.Common.Data.KG;
+using SmartKG.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,13 @@ namespace SmartKG.Common.Importer
 
         public KGDataImporter(string rootPath)
         {
-            this.rootPath = rootPath;
+           
+            if (string.IsNullOrWhiteSpace(rootPath))
+            {
+                throw new Exception("Rootpath of KG files are invalid.");
+            }
+
+            this.rootPath = PathUtility.CompletePath(rootPath);
 
             string[] files = Directory.GetFiles(rootPath, "*.json").Select(Path.GetFileName).ToArray();
 

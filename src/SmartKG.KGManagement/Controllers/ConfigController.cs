@@ -47,7 +47,10 @@ namespace SmartKG.KGManagement.Controllers
 
                 foreach(ColorConfig config in configs)
                 {
-                    result.entityColorConfig.Add(config.itemLabel, config.color);
+                    if (!result.entityColorConfig.ContainsKey(config.itemLabel))
+                    { 
+                        result.entityColorConfig.Add(config.itemLabel, config.color);
+                    }
                 }
 
             }

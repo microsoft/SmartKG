@@ -1,178 +1,178 @@
 [
   {
-    "headVertexId": "entity_gainian1",
+    "headVertexId": "entity_gainian1_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian2"
+    "tailVertexId": "entity_gainian2_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian1",
+    "headVertexId": "entity_gainian1_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian3"
+    "tailVertexId": "entity_gainian3_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian1",
+    "headVertexId": "entity_gainian1_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian7"
+    "tailVertexId": "entity_gainian7_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian3",
+    "headVertexId": "entity_gainian3_MotionAndPower",
     "relationType": "测量工具为",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian4"
+    "tailVertexId": "entity_gainian4_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian5",
+    "headVertexId": "entity_gainian5_MotionAndPower",
     "relationType": "产生",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian3"
+    "tailVertexId": "entity_gainian3_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian3",
+    "headVertexId": "entity_gainian3_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian6"
+    "tailVertexId": "entity_gainian6_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian8",
+    "headVertexId": "entity_gainian8_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian9"
+    "tailVertexId": "entity_gainian9_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian8",
+    "headVertexId": "entity_gainian8_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian13"
+    "tailVertexId": "entity_gainian13_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian9",
+    "headVertexId": "entity_gainian9_MotionAndPower",
     "relationType": "相关物理量有",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian10"
+    "tailVertexId": "entity_gainian10_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian9",
+    "headVertexId": "entity_gainian9_MotionAndPower",
     "relationType": "相关物理量有",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian11"
+    "tailVertexId": "entity_gainian11_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian8",
+    "headVertexId": "entity_gainian8_MotionAndPower",
     "relationType": "判断标准",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian12"
+    "tailVertexId": "entity_gainian12_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian13",
+    "headVertexId": "entity_gainian13_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian14"
+    "tailVertexId": "entity_gainian14_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian14",
+    "headVertexId": "entity_gainian14_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian15"
+    "tailVertexId": "entity_gainian15_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian14",
+    "headVertexId": "entity_gainian14_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian16"
+    "tailVertexId": "entity_gainian16_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian15",
+    "headVertexId": "entity_gainian15_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian17"
+    "tailVertexId": "entity_gainian17_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian15",
+    "headVertexId": "entity_gainian15_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian18"
+    "tailVertexId": "entity_gainian18_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian1",
+    "headVertexId": "entity_gainian1_MotionAndPower",
     "relationType": "属于",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian19"
+    "tailVertexId": "entity_gainian19_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian8",
+    "headVertexId": "entity_gainian8_MotionAndPower",
     "relationType": "属于",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian19"
+    "tailVertexId": "entity_gainian19_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian19",
+    "headVertexId": "entity_gainian19_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian20"
+    "tailVertexId": "entity_gainian20_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian20",
+    "headVertexId": "entity_gainian20_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian21"
+    "tailVertexId": "entity_gainian21_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian19",
+    "headVertexId": "entity_gainian19_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian22"
+    "tailVertexId": "entity_gainian22_MotionAndPower"
   },
   {
-    "headVertexId": "entity_gainian19",
+    "headVertexId": "entity_gainian19_MotionAndPower",
     "relationType": "包含",
     "scenarios": [
       "MotionAndPower"
     ],
-    "tailVertexId": "entity_gainian23"
+    "tailVertexId": "entity_gainian23_MotionAndPower"
   }
 ]

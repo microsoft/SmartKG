@@ -1,6 +1,6 @@
 [
   {
-    "id": "entity_gainian1",
+    "id": "entity_gainian1_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "力",
@@ -28,7 +28,7 @@
     ]
   },
   {
-    "id": "entity_gainian2",
+    "id": "entity_gainian2_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "重力",
@@ -56,7 +56,7 @@
     ]
   },
   {
-    "id": "entity_gainian3",
+    "id": "entity_gainian3_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "弹力",
@@ -80,7 +80,7 @@
     ]
   },
   {
-    "id": "entity_gainian4",
+    "id": "entity_gainian4_MotionAndPower",
     "label": "物体",
     "leadSentence": "",
     "name": "弹簧测力计",
@@ -104,7 +104,7 @@
     ]
   },
   {
-    "id": "entity_gainian5",
+    "id": "entity_gainian5_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "弹性形变",
@@ -120,7 +120,7 @@
     ]
   },
   {
-    "id": "entity_gainian6",
+    "id": "entity_gainian6_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "弹簧伸长与压缩时的力，压力、支持力、绳子拉力等",
@@ -131,7 +131,7 @@
     ]
   },
   {
-    "id": "entity_gainian7",
+    "id": "entity_gainian7_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "摩擦力",
@@ -167,7 +167,7 @@
     ]
   },
   {
-    "id": "entity_gainian8",
+    "id": "entity_gainian8_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "机械运动",
@@ -183,7 +183,7 @@
     ]
   },
   {
-    "id": "entity_gainian9",
+    "id": "entity_gainian9_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "描述运动位置",
@@ -194,7 +194,7 @@
     ]
   },
   {
-    "id": "entity_gainian10",
+    "id": "entity_gainian10_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "长度",
@@ -218,7 +218,7 @@
     ]
   },
   {
-    "id": "entity_gainian11",
+    "id": "entity_gainian11_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "时间",
@@ -242,7 +242,7 @@
     ]
   },
   {
-    "id": "entity_gainian12",
+    "id": "entity_gainian12_MotionAndPower",
     "label": "物体",
     "leadSentence": "",
     "name": "参照物",
@@ -266,7 +266,7 @@
     ]
   },
   {
-    "id": "entity_gainian13",
+    "id": "entity_gainian13_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "描述运动快慢",
@@ -282,7 +282,7 @@
     ]
   },
   {
-    "id": "entity_gainian14",
+    "id": "entity_gainian14_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "速度",
@@ -310,7 +310,7 @@
     ]
   },
   {
-    "id": "entity_gainian15",
+    "id": "entity_gainian15_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "直线运动",
@@ -321,7 +321,7 @@
     ]
   },
   {
-    "id": "entity_gainian16",
+    "id": "entity_gainian16_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "曲线运动",
@@ -332,7 +332,7 @@
     ]
   },
   {
-    "id": "entity_gainian17",
+    "id": "entity_gainian17_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "匀速直线运动",
@@ -343,7 +343,7 @@
     ]
   },
   {
-    "id": "entity_gainian18",
+    "id": "entity_gainian18_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "变速直线运动",
@@ -354,7 +354,7 @@
     ]
   },
   {
-    "id": "entity_gainian19",
+    "id": "entity_gainian19_MotionAndPower",
     "label": "关联",
     "leadSentence": "",
     "name": "运动和力",
@@ -370,7 +370,7 @@
     ]
   },
   {
-    "id": "entity_gainian20",
+    "id": "entity_gainian20_MotionAndPower",
     "label": "规律",
     "leadSentence": "",
     "name": "牛顿第一定律",
@@ -386,7 +386,7 @@
     ]
   },
   {
-    "id": "entity_gainian21",
+    "id": "entity_gainian21_MotionAndPower",
     "label": "概念",
     "leadSentence": "",
     "name": "惯性",
@@ -402,7 +402,7 @@
     ]
   },
   {
-    "id": "entity_gainian22",
+    "id": "entity_gainian22_MotionAndPower",
     "label": "规律",
     "leadSentence": "",
     "name": "二力平衡",
@@ -422,7 +422,7 @@
     ]
   },
   {
-    "id": "entity_gainian23",
+    "id": "entity_gainian23_MotionAndPower",
     "label": "规律",
     "leadSentence": "",
     "name": "同一直线上二力的合成",

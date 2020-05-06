@@ -5,32 +5,44 @@ import json
 from xlrd import open_workbook
 import os.path
 from os import path
+import shutil
 
 defaultColorMap = {"red": "#E83344","orange": "#F5A100", "green": "#9DE7B7", "blue": "#009DDC","lightred": "#FD9F7F","bluepurple": "#025CEA","lightpurple": "#78A7FF"}
 
-def generateOutputPaths(outputDir, suffix):
-    checkDir(outputDir)
-    checkDir(outputDir + "\\KG\\")
-    checkDir(outputDir + "\\NLU\\")
-    checkDir(outputDir + "\\Visulization\\")
+
+def getId(rawId, sceanrio):
+    newId = rawId + "_" + sceanrio
+    return newId
+
+
+def generateOutputPaths(outputDir, suffix, newlyCreated):
+    checkDir(outputDir, newlyCreated)
+    checkDir(outputDir + "\\KG\\", newlyCreated)
+    checkDir(outputDir + "\\NLU\\", newlyCreated)
+    checkDir(outputDir + "\\Visulization\\", newlyCreated)
 
     vJsonPath = outputDir + "\\KG\\" + "Vertexes_" + suffix + ".json"
     eJsonPath = outputDir + "\\KG\\" + "Edges_" + suffix + ".json"
 
-    intentPath = outputDir + "\\NLU\\intentrules.tsv"
-    entityMapPath = outputDir + "\\NLU\\entitymap.tsv"
+    intentPath = outputDir + "\\NLU\\intentrules_" + suffix + ".tsv"
+    entityMapPath = outputDir + "\\NLU\\entitymap_" + suffix + ".tsv"
 
-    colorJsonPath = outputDir + "\\Visulization\\VisulizationConfig.json"
+    colorJsonPath = outputDir + "\\Visulization\\VisulizationConfig_" + suffix + ".json"
 
     return vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath
 
-def checkDir(dir):
+def checkDir(dir, newlyCreated):
     if not path.exists(dir):
         os.mkdir(dir)
         print(dir + " is created to contain KG and NLU files.")
     else:
         if os.path.isdir(dir):
-            print(dir + " exists, and KG and NLU files will be created in it.")
+            if newlyCreated:
+                print(dir + " exists, clean it to accept newly created files.")
+                shutil.rmtree(dir)
+                os.mkdir(dir)
+            else:
+                print(dir + " exists.")
         else:
             os.mkdir(dir)
             print(dir + " is created to contain KG and NLU files.")
@@ -60,7 +72,7 @@ def generateSimilarWordMap(sfilePath):
 
     return similarWordMap
 
-def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, cleanNLU, colorJsonPath):
+def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath):
     wb = open_workbook(excelPath)
     sheet_vertexes = wb.sheets()[0]
     sheet_edges = wb.sheets()[1]
@@ -77,18 +89,20 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
     scenarioLabelMap = {}
     scenarioReltionMap = {}
 
+    scenario = "_".join(scenarios)
+
     for row in range(1, sheet_edges.nrows):
         data = {}
         data["scenarios"] = scenarios
         data["relationType"] = sheet_edges.cell_value(row, 0)
         relationTypeSet.add(data["relationType"])
 
-        rawSrcVId = sheet_edges.cell_value(row, 1)
-        data["headVertexId"] = rawSrcVId
+        rawSrcVID = sheet_edges.cell_value(row, 1)
+        data["headVertexId"] = getId(rawSrcVID, scenario)
         headVidSet.add(data["headVertexId"])
 
         rawDstVID = sheet_edges.cell_value(row, 2)
-        data["tailVertexId"] = rawDstVID
+        data["tailVertexId"] = getId(rawDstVID, scenario)
         tailVidSet.add(data["tailVertexId"])
 
         for scenario in scenarios:
@@ -110,7 +124,7 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
         if sheet_vertexes.cell_value(row, 1) is not "":
             data = {}
 
-            data["id"] = sheet_vertexes.cell_value(row, 0)
+            data["id"] = getId(sheet_vertexes.cell_value(row, 0),scenario)
             data["name"] = sheet_vertexes.cell_value(row, 1)
             nodeNameSet.add(data["name"])
             data["label"] = sheet_vertexes.cell_value(row, 2)
@@ -199,14 +213,10 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
 
     entity_lines = entity_lines[:-1]
 
-    type = 'a'
-    if cleanNLU:
-        type = 'w'
-    else:
-        entity_lines = "\n" + entity_lines
+
 
     print("Generating entities in", entityMapPath)
-    with open(entityMapPath, type, encoding="utf-8") as ef:
+    with open(entityMapPath, "w", encoding="utf-8") as ef:
         ef.write(entity_lines)
 
     print("Generating intent rules in", intentPath)
@@ -216,16 +226,13 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
     nodeNameRule = nodeNameRule[:-1]
 
     rule_lines = ""
-    if cleanNLU:
-        for rule in default_rules:
-            rule_lines += rule + "\n"
-        for scenario in scenarios:
-            rule_lines += scenario + "\tPOSITIVE\t" + nodeNameRule
-    else:
-        for scenario in scenarios:
-            rule_lines += "\n" + scenario + "\tPOSITIVE\t" + nodeNameRule
 
-    with open(intentPath, type, encoding="utf-8") as rf:
+    for rule in default_rules:
+        rule_lines += rule + "\n"
+    for scenario in scenarios:
+        rule_lines += scenario + "\tPOSITIVE\t" + nodeNameRule
+
+    with open(intentPath, "w", encoding="utf-8") as rf:
         rf.write(rule_lines)
 
     colorObjs = []

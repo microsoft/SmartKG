@@ -1,0 +1,98 @@
+[
+  {
+    "headVertexId": "entity_gainian1_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian2_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian1_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian3_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian1_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian4_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian1_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian8_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian1_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian11_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian4_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian5_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian4_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian6_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian4_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian7_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian8_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian9_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian8_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian10_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian11_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian12_Phonics"
+  },
+  {
+    "headVertexId": "entity_gainian11_Phonics",
+    "relationType": "包含",
+    "scenarios": [
+      "Phonics"
+    ],
+    "tailVertexId": "entity_gainian13_Phonics"
+  }
+]

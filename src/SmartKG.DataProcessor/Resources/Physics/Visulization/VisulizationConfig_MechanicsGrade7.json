@@ -1,0 +1,37 @@
+[
+  {
+    "labelsOfVertexes": [
+      {
+        "color": "#E83344",
+        "itemLabel": ""
+      }
+    ],
+    "relationTypesOfEdges": [
+      {
+        "color": "#E83344",
+        "itemLabel": "产生"
+      },
+      {
+        "color": "#F5A100",
+        "itemLabel": "相关"
+      },
+      {
+        "color": "#9DE7B7",
+        "itemLabel": "相关物理量有"
+      },
+      {
+        "color": "#009DDC",
+        "itemLabel": "包含"
+      },
+      {
+        "color": "#FD9F7F",
+        "itemLabel": "测量工具为"
+      },
+      {
+        "color": "#025CEA",
+        "itemLabel": "判断标准"
+      }
+    ],
+    "scenario": "MechanicsGrade7"
+  }
+]
