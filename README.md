@@ -35,7 +35,8 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 ### 1.3 运行SmartKG后端
 	
 	(1) 用Visual Studio 2019 打开 ${SourceCode_Base_Path}/SmartKG/src/SmartKG.sln
-	(2) 选中SmartKG.KGBot项目，运行“SmartKG.KGBot"。
+	(2) 修改${SourceCode_Base_Path}/SmartKG/src/SmartKG.KGBot/appsettings.json文件，将其中FileDataPath中的KGFilePath，NLUFilePath和VCFilePath的值分别换成${SourceCode_Base_Path}/SmartKG/src/SmartKG.DataProcessor/Resources/Physics2目录下的KG，NLU和Visualization目录。
+	(3) 选中SmartKG.KGBot项目，运行“SmartKG.KGBot"。
 
 ### 1.4 运行SmartKG前端
 
