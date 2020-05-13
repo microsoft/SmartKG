@@ -9,7 +9,7 @@ namespace SmartKG.KGManagement.Data
     {
         public string PythonEnvPath { get; set; }
         public string ConvertScriptPath { get; set; }
-        public string JsonDir { get; set; }
+        public string ExcelDir { get; set; }
         public string TargetDir { get; set; }
     }
 }

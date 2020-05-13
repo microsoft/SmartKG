@@ -17,11 +17,11 @@ def processExcelFiles(srcPaths, scenarios, destPath):
     if len(scenarios) > len(srcPaths):
         print("Warning: useless scenario names. Will be ignored.")
 
-    isFirst = True
+    #isFirst = True
 
     for index in range(0, len(srcPaths)):
-        if index > 0:
-            isFirst = False;
+        #if index > 0:
+        #    isFirst = False;
 
         srcPath = srcPaths[index]
 
@@ -30,7 +30,7 @@ def processExcelFiles(srcPaths, scenarios, destPath):
         else:
             scenario = scenarios[index]
 
-        processOneExcelFile(srcPath, scenario, destPath, isFirst)
+        processOneExcelFile(srcPath, scenario, destPath, False)
 
     return
 

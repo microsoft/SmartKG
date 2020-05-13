@@ -32,7 +32,7 @@ namespace SmartKG.KGManagement.Controllers
         public async Task<ActionResult<UploadResult>> Upload(List<IFormFile> files)
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
-            string jsonDir = uploadConfig.JsonDir;
+            string excelDir = uploadConfig.ExcelDir;
 
             
             var requestForm = HttpContext.Request.Form;
@@ -46,7 +46,7 @@ namespace SmartKG.KGManagement.Controllers
                 {
                     if (formFile.Length > 0)
                     {
-                        var filePath = jsonDir + Path.DirectorySeparatorChar + formFile.FileName;//Path.GetTempFileName();
+                        var filePath = excelDir + Path.DirectorySeparatorChar + formFile.FileName;//Path.GetTempFileName();
 
                         using (var stream = System.IO.File.Create(filePath))
                         {
@@ -76,14 +76,14 @@ namespace SmartKG.KGManagement.Controllers
         public async Task<ActionResult<UploadResult>> ConvertFile([FromBody] DataProcessRequestMessage request)
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
-            string jsonDir = uploadConfig.JsonDir;
+            string excelDir = uploadConfig.ExcelDir;
             string targetDir = uploadConfig.TargetDir;
 
             string pythonArgs = "--srcPaths ";
             
             foreach (var srcFileName in request.srcFileNames)
             {
-                pythonArgs +=  "\"" + jsonDir + Path.DirectorySeparatorChar + srcFileName + "\" ";                    
+                pythonArgs +=  "\"" + excelDir + Path.DirectorySeparatorChar + srcFileName + "\" ";                    
             }
 
             pythonArgs += " --scenarios ";
@@ -93,7 +93,7 @@ namespace SmartKG.KGManagement.Controllers
                 pythonArgs += "\"" + scenario + "\" ";
             }
 
-            pythonArgs += " --targetPath " + targetDir;
+            pythonArgs += " --destPath \"" + targetDir + "\" ";
 
             RunCommand(uploadConfig.PythonEnvPath, uploadConfig.ConvertScriptPath, pythonArgs);
 
