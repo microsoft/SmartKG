@@ -50,4 +50,10 @@ namespace SmartKG.KGManagement.Data.Response
         //public List<ColorConfig> vertexColorConfigs { get; set; }
         public Dictionary<string, string> entityColorConfig { get; set; }
     }
+
+    public class UploadResult: IResult
+    {
+        public bool success { get; set; }
+        public string responseMessage { get; set; }
+    }
 }

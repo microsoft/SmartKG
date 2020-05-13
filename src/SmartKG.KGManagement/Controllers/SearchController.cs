@@ -60,9 +60,6 @@ namespace SmartKG.KGManagement.Controllers
 
             return Ok(searchResult);
         }
-
-       
-
         
         // GET api/search/property
         [HttpGet]
