@@ -15,6 +15,7 @@ using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Importer;
 using SmartKG.Common.Data.Visulization;
+using SmartKG.KGManagement.DataPersistence;
 
 namespace SmartKG.KGManagement
 {
@@ -68,7 +69,7 @@ namespace SmartKG.KGManagement
             try
             {
                 KGDataAccessor.initInstance(Configuration);
-                log.Information("MongoDB is initialized.");
+                log.Information("KGDataAccessor is initialized.");
             }
             catch (Exception e)
             {
@@ -78,6 +79,8 @@ namespace SmartKG.KGManagement
             try
             {
                 KGDataAccessor accessor = KGDataAccessor.GetInstance();
+                accessor.Load(Configuration);
+
                 List<Vertex> vList = accessor.GetVertexCollection();
                 List<Edge> eList =  accessor.GetEdgeCollection();
                 List<VisulizationConfig> vcList = accessor.GetVisulizationConfigs();

@@ -17,6 +17,7 @@ using SmartKG.KGBot.StorageAccessor;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
+using SmartKG.KGManagement.DataPersistence;
 
 namespace SmartKG.KGBot
 {
@@ -82,6 +83,8 @@ namespace SmartKG.KGBot
             try
             {
                 KGDataAccessor accessor = KGDataAccessor.GetInstance();
+                accessor.Load(Configuration);
+
                 List<Vertex> vList = accessor.GetVertexCollection();
                 List<Edge> eList = accessor.GetEdgeCollection();
                 List<VisulizationConfig> vcList = accessor.GetVisulizationConfigs();

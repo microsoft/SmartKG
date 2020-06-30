@@ -1,92 +1,40 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-using Microsoft.Extensions.Configuration;
-using MongoDB.Bson;
+﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using Serilog;
 using SmartKG.Common.Data.Configuration;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
-using SmartKG.Common.Importer;
-using SmartKG.Common.Logger;
+using SmartKG.KGManagement.DataPersistance;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace SmartKG.KGManagement.DataPersistance
+namespace SmartKG.KGManagement.DataPersistence
 {
-    public class KGDataAccessor
+
+    public enum PersistanceType
+    {
+        File, MongoDB
+    }
+    public abstract class KGDataAccessor
     {
         private static KGDataAccessor uniqueInstance;
 
-        private ILogger log;
+        //private static IConfigurationBuilder builder = new ConfigurationBuilder()
+        //  .SetBasePath(Directory.GetCurrentDirectory())
+        //  .AddJsonFile("appsettings.json");
+        //private static IConfiguration config = builder.Build();
 
-        private List<Vertex> vList;
-        private List<Edge> eList;
-        private List<VisulizationConfig> vcList;
+       
+        private ILogger log = Log.Logger.ForContext<KGDataAccessor>();
 
-        private KGDataAccessor(IConfiguration config)
-        {
-            log = Log.Logger.ForContext<KGDataAccessor>();
+        private static PersistanceType persistanceType;
 
-            string persistanceType = config.GetSection("PersistanceType").Value;
-
-            if (persistanceType == "File")
-            {
-                FilePathConfig filePaths = config.GetSection("FileDataPath").Get<FilePathConfig>();
-
-                string kgPath = filePaths.KGFilePath;
-
-                log.Here().Information("KGFilePath: " + kgPath);
-
-                KGDataImporter importer = new KGDataImporter(kgPath);
-
-                this.vList = importer.ParseKGVertexes();
-                this.eList = importer.ParseKGEdges();
-
-                log.Here().Information("KG data has been parsed from Files.");
-
-                string vcPath = filePaths.VCFilePath;
-
-                log.Here().Information("VCFilePath: " + vcPath);
-
-                VisuliaztionImporter vImporter = new VisuliaztionImporter(vcPath);
-
-                this.vcList = vImporter.GetVisuliaztionConfigs();
-
-            }
-            else 
-            {
-                BsonDocument allFilter = new BsonDocument();
-
-                string connectionString = config.GetConnectionString("MongoDbConnection");
-                string dbName = config.GetConnectionString("DatabaseName");
-
-                Console.WriteLine("Database Name: " + dbName);
-
-                MongoClient client = new MongoClient(connectionString);
-
-                IMongoDatabase db = client.GetDatabase(dbName);
-
-                log.Here().Information("connectionString: " + connectionString + ", databaseName: " + dbName);
-
-                IMongoCollection<Vertex> vCollection = db.GetCollection<Vertex>("Vertexes");
-
-                this.vList = vCollection.Find(allFilter).ToList();
-
-                IMongoCollection<Edge> eCollection = db.GetCollection<Edge>("Edges");
-
-                this.eList = eCollection.Find(allFilter).ToList();
-
-                log.Here().Information("KG data has been parsed from MongoDB.");
-
-                IMongoCollection<VisulizationConfig> vcCollection = db.GetCollection<VisulizationConfig>("VisulizationConfigs");
-
-                this.vcList = vcCollection.Find(allFilter).ToList();
-
-                log.Here().Information("Visulization Config data has been parsed from MongoDB.");
-            }           
-        }
+        protected List<Vertex> vList;
+        protected List<Edge> eList;
+        protected List<VisulizationConfig> vcList;
 
         public static KGDataAccessor GetInstance()
         {
@@ -98,23 +46,55 @@ namespace SmartKG.KGManagement.DataPersistance
         {
             if (uniqueInstance == null)
             {
-                uniqueInstance = new KGDataAccessor(config);
+                persistanceType = (PersistanceType)Enum.Parse(typeof(PersistanceType), config.GetSection("PersistanceType").Value, true);
+
+                if (persistanceType == PersistanceType.File)
+                {                    
+                    uniqueInstance = new FileDataAccessor();                                        
+                }
+                else
+                {
+                    string connectionString = config.GetConnectionString("MongoDbConnection");                                        
+                    uniqueInstance = new MongoDataAccessor(connectionString);                    
+                }                                    
             }
 
             return uniqueInstance;
         }
 
+        public PersistanceType GetPersistanceType()
+        {
+            return persistanceType;
+        }
+
+        public void Load(IConfiguration config)
+        {
+            if (persistanceType == PersistanceType.File)
+            {
+                FilePathConfig filePaths = config.GetSection("FileDataPath").Get<FilePathConfig>();
+                uniqueInstance.Load(filePaths.KGFilePath);
+            }
+            else
+            {
+                string dbName = config.GetConnectionString("DatabaseName");
+                uniqueInstance.Load(dbName);
+            }
+        }
+
+        public abstract void Load(string location);
+        
+
         public List<Vertex> GetVertexCollection()
-        {           
+        {
             return this.vList;
         }
 
         public List<Edge> GetEdgeCollection()
         {
-            
+
             return this.eList;
-        }     
-        
+        }
+
         public List<VisulizationConfig> GetVisulizationConfigs()
         {
             return this.vcList;
