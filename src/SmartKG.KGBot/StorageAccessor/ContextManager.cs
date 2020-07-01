@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
+using SmartKG.Common.Data;
 
 namespace SmartKG.KGBot.StorageAccessor
 {

@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using SmartKG.KGManagement.DataPersistance;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -81,7 +79,7 @@ namespace SmartKG.KGManagement
                 DataLoader accessor = DataLoader.GetInstance();
                 accessor.Load(Configuration);
 
-                List<Vertex> vList = accessor.GetVertexCollection();
+                /*List<Vertex> vList = accessor.GetVertexCollection();
                 List<Edge> eList =  accessor.GetEdgeCollection();
                 List<VisulizationConfig> vcList = accessor.GetVisulizationConfigs();
 
@@ -89,7 +87,7 @@ namespace SmartKG.KGManagement
                 kgParser.ParseKG();
 
                 log.Information("Knowledge Graph is parsed.");
-                Console.WriteLine("Knowledge Graph is parsed.");               
+                Console.WriteLine("Knowledge Graph is parsed.");*/               
             }
             catch (Exception e)
             {

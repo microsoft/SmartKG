@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.KGManagement.DataStore;
 using Serilog;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
@@ -9,6 +8,7 @@ using SmartKG.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SmartKG.Common.DataStore;
 
 namespace SmartKG.KGManagement.GraphSearch
 {

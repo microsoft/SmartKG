@@ -4,7 +4,7 @@
 using SmartKG.Common.Data.KG;
 using System.Collections.Generic;
 
-namespace SmartKG.KGBot.Data
+namespace SmartKG.Common.Data
 {
     public enum VertexSortOrderType
     {

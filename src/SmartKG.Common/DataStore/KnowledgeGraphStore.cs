@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmartKG.KGManagement.DataStore
+namespace SmartKG.Common.DataStore
 {
     public sealed class KnowledgeGraphStore
     {

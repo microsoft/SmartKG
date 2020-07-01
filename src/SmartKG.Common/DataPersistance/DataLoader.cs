@@ -1,10 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Serilog;
+using SmartKG.Common.Data;
 using SmartKG.Common.Data.Configuration;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataPersistance;
+using SmartKG.Common.DataStore;
+using SmartKG.Common.Logger;
+using SmartKG.Common.Parser.DataPersistance;
 using System;
 using System.Collections.Generic;
 
@@ -32,6 +36,7 @@ namespace SmartKG.Common.DataPersistence
         private List<EntityAttributeData> eaList;
 
         private IDataAccessor dataAccessor;
+        private List<ScenarioSetting> settings;
 
         public static DataLoader GetInstance()
         {
@@ -68,6 +73,8 @@ namespace SmartKG.Common.DataPersistence
 
         public void Load(IConfiguration config)
         {
+            this.settings = config.GetSection("Scenarios").Get<List<ScenarioSetting>>();
+
             if (persistanceType == PersistanceType.File)
             {
                 FilePathConfig filePaths = config.GetSection("FileDataPath").Get<FilePathConfig>();
@@ -86,7 +93,34 @@ namespace SmartKG.Common.DataPersistence
         public void Load(string location)
         {
            
-            (this.vList, this.eList, this.vcList, this.iList , this.enList, this.eaList ) = this.dataAccessor.Load(location);            
+            (this.vList, this.eList, this.vcList, this.iList , this.enList, this.eaList ) = this.dataAccessor.Load(location);
+
+            if (this.vcList == null || this.vList == null || this.eList == null)
+            {
+                throw new Exception("Cannot load KG data from persistance.");
+            }
+
+            DataPersistanceKGParser kgParser = new DataPersistanceKGParser(this.vList, this.eList, this.vcList);
+            kgParser.ParseKG();
+
+            log.Information("Knowledge Graph is parsed.");
+            Console.WriteLine("Knowledge Graph is parsed.");
+
+            if (this.iList == null || this.enList == null)
+            {
+                log.Here().Warning("No NLU Data loaded from persistence");
+            }
+            else
+            {
+                DataPersistanceNLUParser nluParser = new DataPersistanceNLUParser(this.iList, this.enList, this.eaList);
+                nluParser.Parse();
+
+                List<Vertex> roots = KnowledgeGraphStore.GetInstance().GetAllVertexes();
+                nluParser.ParseScenarioSettings(this.settings, roots);
+
+                log.Information("NLU materials is parsed.");
+                Console.WriteLine("NLU materials is parsed.");
+            }
         }
         
 

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace SmartKG.KGBot.Data
+namespace SmartKG.Common.Data
 {
     public class DialogSlot
     {

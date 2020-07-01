@@ -3,6 +3,7 @@
 
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
+using SmartKG.Common.Data;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
 using System;

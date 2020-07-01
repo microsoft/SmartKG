@@ -14,6 +14,7 @@ using SmartKG.KGBot.DataStore;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.KG;
+using SmartKG.Common.Data;
 
 namespace SmartKG.KGBot.Managment
 {
@@ -163,8 +164,7 @@ namespace SmartKG.KGBot.Managment
             {
                 return GenerateErrorMessage("要返回的项目为空。", contextMgmt);
             }           
-
-            
+           
             string resultStr = headMessage;
             List<Object> items = new List<Object>();
             int index = 1;
@@ -179,7 +179,6 @@ namespace SmartKG.KGBot.Managment
                 foreach (Vertex vertex in vertexs)
                 {
                     candidates.Add(index, vertex);
-
                     
                     OptionItem item = new OptionItem();
                     item.seqNo = index;

@@ -3,7 +3,7 @@
 
 using SmartKG.Common.Data.KG;
 
-namespace SmartKG.KGBot.Data
+namespace SmartKG.Common.Data
 {
     public class OptionItem
     {

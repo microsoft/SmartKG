@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.KGBot.DataStore;
+using SmartKG.Common.DataStore;
 using System.Collections.Generic;
-using SmartKG.KGBot.Data;
+using SmartKG.Common.Data;
 using System;
 using Serilog;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.KG;
 
-namespace SmartKG.KGBot.DataPersistance
+namespace SmartKG.Common.DataPersistance
 {
     public class DataPersistanceNLUParser
     {

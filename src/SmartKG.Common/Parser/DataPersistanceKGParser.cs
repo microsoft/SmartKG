@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.KGManagement.DataStore;
+using SmartKG.Common.DataStore;
 using System;
 using System.Collections.Generic;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
 
-namespace SmartKG.KGManagement.DataPersistance
+namespace SmartKG.Common.Parser.DataPersistance
 {
     public class DataPersistanceKGParser
     {

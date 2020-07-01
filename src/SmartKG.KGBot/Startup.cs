@@ -2,11 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using SmartKG.KGBot.Data;
-using SmartKG.KGBot.DataPersistance;
-using SmartKG.KGManagement.DataStore;
-using SmartKG.KGManagement.DataPersistance;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +10,6 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using SmartKG.KGBot.StorageAccessor;
 using SmartKG.Common.Logger;
-using SmartKG.Common.Data.KG;
-using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataPersistence;
 
 namespace SmartKG.KGBot
@@ -85,7 +78,7 @@ namespace SmartKG.KGBot
                 DataLoader accessor = DataLoader.GetInstance();
                 accessor.Load(Configuration);
 
-                List<Vertex> vList = accessor.GetVertexCollection();
+                /*List<Vertex> vList = accessor.GetVertexCollection();
                 List<Edge> eList = accessor.GetEdgeCollection();
                 List<VisulizationConfig> vcList = accessor.GetVisulizationConfigs();
 
@@ -94,7 +87,7 @@ namespace SmartKG.KGBot
                 kgParser.ParseKG();
 
                 log.Information("Knowledge Graph is parsed.");
-                Console.WriteLine("Knowledge Graph is parsed.");
+                Console.WriteLine("Knowledge Graph is parsed.");*/
             }
             catch (Exception e)
             {
@@ -102,7 +95,7 @@ namespace SmartKG.KGBot
                 Console.WriteLine("[Error]" + e.Message);
             }
 
-            try
+           /* try
             {
                 DataLoader.initInstance(Configuration);
                 log.Information("NLU Data is initialized.");
@@ -132,6 +125,7 @@ namespace SmartKG.KGBot
             {
                 log.Error("Exception in NLU materials parsing.\n" + e.Message);
             }
+            */
 
             try
             {

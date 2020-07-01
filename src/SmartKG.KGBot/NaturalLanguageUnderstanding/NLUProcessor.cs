@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 using SmartKG.Common.Data.LU;
-using SmartKG.KGBot.DataStore;
+using SmartKG.Common.DataStore;
 
 using System.Collections.Generic;
 

@@ -3,14 +3,14 @@
 
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
-using SmartKG.KGBot.Data;
+using SmartKG.Common.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 
-namespace SmartKG.KGBot.DataStore
+namespace SmartKG.Common.DataStore
 {
     public class NLUStore
     {
