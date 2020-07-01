@@ -64,36 +64,11 @@ namespace SmartKG.KGManagement
             loggerFactory.AddSerilog();
 
             Serilog.ILogger log = Log.Logger.ForContext<Startup>().Here();
-            try
-            {
-                DataLoader.initInstance(Configuration);
-                log.Information("KGDataAccessor is initialized.");
-            }
-            catch (Exception e)
-            {
-                log.Error("Exception in MongoDB initializing.\n" + e.Message);
-            }
 
-            try
-            {
-                DataLoader accessor = DataLoader.GetInstance();
-                accessor.Load(Configuration);
+            DataLoader.initInstance(Configuration);
+            DataLoader.GetInstance().Load(Configuration);
+            log.Information("KG Data is initialized and loaded.");
 
-                /*List<Vertex> vList = accessor.GetVertexCollection();
-                List<Edge> eList =  accessor.GetEdgeCollection();
-                List<VisulizationConfig> vcList = accessor.GetVisulizationConfigs();
-
-                DataPersistanceKGParser kgParser = new DataPersistanceKGParser(vList, eList, vcList);
-                kgParser.ParseKG();
-
-                log.Information("Knowledge Graph is parsed.");
-                Console.WriteLine("Knowledge Graph is parsed.");*/               
-            }
-            catch (Exception e)
-            {
-                log.Error("Exception in KnowledgeGraph parsing.\n" + e.Message);
-                Console.WriteLine("[Error]" + e.Message);
-            }
         }
     }
 }
