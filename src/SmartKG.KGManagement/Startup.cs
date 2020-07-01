@@ -15,7 +15,7 @@ using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Importer;
 using SmartKG.Common.Data.Visulization;
-using SmartKG.KGManagement.DataPersistence;
+using SmartKG.Common.DataPersistence;
 
 namespace SmartKG.KGManagement
 {
@@ -68,7 +68,7 @@ namespace SmartKG.KGManagement
             Serilog.ILogger log = Log.Logger.ForContext<Startup>().Here();
             try
             {
-                KGDataAccessor.initInstance(Configuration);
+                DataLoader.initInstance(Configuration);
                 log.Information("KGDataAccessor is initialized.");
             }
             catch (Exception e)
@@ -78,7 +78,7 @@ namespace SmartKG.KGManagement
 
             try
             {
-                KGDataAccessor accessor = KGDataAccessor.GetInstance();
+                DataLoader accessor = DataLoader.GetInstance();
                 accessor.Load(Configuration);
 
                 List<Vertex> vList = accessor.GetVertexCollection();

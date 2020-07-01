@@ -17,7 +17,7 @@ using SmartKG.KGBot.StorageAccessor;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
-using SmartKG.KGManagement.DataPersistence;
+using SmartKG.Common.DataPersistence;
 
 namespace SmartKG.KGBot
 {
@@ -72,7 +72,7 @@ namespace SmartKG.KGBot
 
             try
             {
-                KGDataAccessor.initInstance(Configuration);
+                DataLoader.initInstance(Configuration);
                 log.Information("KG Data is initialized.");
             }
             catch (Exception e)
@@ -82,7 +82,7 @@ namespace SmartKG.KGBot
 
             try
             {
-                KGDataAccessor accessor = KGDataAccessor.GetInstance();
+                DataLoader accessor = DataLoader.GetInstance();
                 accessor.Load(Configuration);
 
                 List<Vertex> vList = accessor.GetVertexCollection();
@@ -104,7 +104,7 @@ namespace SmartKG.KGBot
 
             try
             {
-                NLUDataAccessor.initInstance(Configuration);
+                DataLoader.initInstance(Configuration);
                 log.Information("NLU Data is initialized.");
             }
             catch (Exception e)
@@ -116,9 +116,10 @@ namespace SmartKG.KGBot
             {
                 List<ScenarioSetting> settings = Configuration.GetSection("Scenarios").Get<List<ScenarioSetting>>();
 
-                NLUDataAccessor accessor = NLUDataAccessor.GetInstance();                
+                DataLoader loader = DataLoader.GetInstance();
+                loader.Load(Configuration);
 
-                DataPersistanceNLUParser nluParser = new DataPersistanceNLUParser(accessor.GetIntentCollection(), accessor.GetEntityCollection(),accessor.GetEntityAttributeCollection());
+                DataPersistanceNLUParser nluParser = new DataPersistanceNLUParser(loader.GetIntentCollection(), loader.GetEntityCollection(), loader.GetEntityAttributeCollection());
                 nluParser.Parse();
 
                 List<Vertex> roots = KnowledgeGraphStore.GetInstance().GetAllVertexes();

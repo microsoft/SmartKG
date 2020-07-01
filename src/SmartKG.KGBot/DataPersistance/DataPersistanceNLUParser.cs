@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using SmartKG.KGBot.Data;
 using System;
 using Serilog;
-using CommonSmartKG.Common.Data.LU;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.KG;
 

@@ -10,10 +10,11 @@ namespace SmartKG.Common.Data.Configuration
 {
     public class FilePathConfig
     {
-        public string KGFilePath { get; set; }
-        public string NLUFilePath { get; set; }
+        //public string KGFilePath { get; set; }
+        //public string NLUFilePath { get; set; }
 
-        public string VCFilePath { get; set; }
+        //public string VCFilePath { get; set; }
+        public string LocalRootPath { get; set; }
 
         public string ContextFilePath { get; set; }
     }

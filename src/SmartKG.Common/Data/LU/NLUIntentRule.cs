@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CommonSmartKG.Common.Data.LU
+namespace SmartKG.Common.Data.LU
 {
     public enum IntentRuleType
     {
