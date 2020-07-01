@@ -13,12 +13,7 @@ using System;
 using System.Collections.Generic;
 
 namespace SmartKG.Common.DataPersistence
-{
-
-    public enum PersistanceType
-    {
-        File, MongoDB
-    }
+{    
     public class DataLoader
     {
         private static DataLoader uniqueInstance;

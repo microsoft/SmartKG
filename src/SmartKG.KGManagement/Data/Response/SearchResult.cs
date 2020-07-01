@@ -56,4 +56,10 @@ namespace SmartKG.KGManagement.Data.Response
         public bool success { get; set; }
         public string responseMessage { get; set; }
     }
+
+    public class ReloadResult : IResult
+    {
+        public bool success { get; set; }
+        public string responseMessage { get; set; }
+    }
 }

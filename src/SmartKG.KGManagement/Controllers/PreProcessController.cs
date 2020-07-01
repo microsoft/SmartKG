@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using SmartKG.Common.Data;
+using SmartKG.Common.DataPersistence;
 using SmartKG.KGManagement.Data;
 using SmartKG.KGManagement.Data.Request;
 using SmartKG.KGManagement.Data.Response;
@@ -64,6 +66,25 @@ namespace SmartKG.KGManagement.Controllers
             msg.success = true;
             msg.responseMessage = count + " file(s) have been received.\n" + string.Join(",", savedFilePaths.ToArray());
            
+            return Ok(msg);
+        }
+
+        // POST api/reload
+        [HttpPost]
+        [Route("api/[controller]/reload")]
+        [ProducesResponseType(typeof(UploadResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<UploadResult>> ReloadData([FromBody] ReloadRequestMessage request)
+        {
+            PersistanceType type = request.persistenceType;
+            string location = request.location;
+
+            DataLoader.GetInstance().Load(location);
+
+            ReloadResult msg = new ReloadResult();
+            msg.success = true;
+            msg.responseMessage = "Data has been reloaded.\n";
+
             return Ok(msg);
         }
 
