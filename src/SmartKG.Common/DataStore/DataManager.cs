@@ -9,10 +9,9 @@ using System.Linq;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
-using SmartKG.Common.DataStore;
 using SmartKG.Common.Data;
 
-namespace SmartKG.KGBot.DataStore
+namespace SmartKG.Common.DataStore
 {
     public class DataManager : KGBotLogHandler
     {

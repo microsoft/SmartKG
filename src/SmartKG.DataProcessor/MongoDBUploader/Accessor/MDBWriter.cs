@@ -9,7 +9,6 @@ using Serilog;
 using Microsoft.Extensions.Configuration;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
-using CommonSmartKG.Common.Data.LU;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.Visulization;
 

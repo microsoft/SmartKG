@@ -1,24 +1,24 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.KGBot.Data;
+using SmartKG.Common.Data;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.Configuration;
 
-namespace SmartKG.KGBot.StorageAccessor
+namespace SmartKG.Common.ContextStore
 {
-    public class ContextAccessController
+    public class ContextAccessor
     {
-        private static ContextAccessController uniqueInstance;
+        private static ContextAccessor uniqueInstance;
         private IContextAccessor accessor;
 
         private ILogger log;
 
-        private ContextAccessController(IConfiguration config)
+        private ContextAccessor(IConfiguration config)
         {
-            log = Log.Logger.ForContext<ContextAccessController>();
+            log = Log.Logger.ForContext<ContextAccessor>();
 
             string persistanceType = config.GetSection("PersistanceType").Value;
 
@@ -44,17 +44,17 @@ namespace SmartKG.KGBot.StorageAccessor
             }
         }
 
-        public static ContextAccessController GetInstance()
+        public static ContextAccessor GetInstance()
         {
             return uniqueInstance;
         }
 
 
-        public static ContextAccessController initInstance(IConfiguration config)
+        public static ContextAccessor initInstance(IConfiguration config)
         {
             if (uniqueInstance == null)
             {
-                uniqueInstance = new ContextAccessController(config);
+                uniqueInstance = new ContextAccessor(config);
             }
 
             return uniqueInstance;
@@ -69,6 +69,11 @@ namespace SmartKG.KGBot.StorageAccessor
         public void UpdateContext(string userId, string sessionId, DialogContext context)
         {
             this.accessor.UpdateContext(userId, sessionId, context);
+        }
+
+        public void CleanContext()
+        {
+            this.accessor.CleanContext();
         }
     }
 }

@@ -25,10 +25,11 @@ namespace MongoDBUploader.DataProcessor
             
 
             FilePathConfig filePaths = config.GetSection("FileDataPath").Get<FilePathConfig>();
-            string kgPath = filePaths.KGFilePath;
-            string nluPath = filePaths.NLUFilePath;
-            string vcPath = filePaths.VCFilePath;
-           
+            string rootPath = filePaths.LocalRootPath;
+            string kgPath = rootPath + "\\KG\\";
+            string nluPath = rootPath + "\\NLU\\";
+            string vcPath = rootPath + "\\Visulization\\";
+
             bool kg = false;
             bool nlu = false;
             bool vc = false;
@@ -39,8 +40,7 @@ namespace MongoDBUploader.DataProcessor
                 Environment.Exit(1);
             }
             else
-            {
-                
+            {                
                 foreach(string arg in args)                
                 {
                     

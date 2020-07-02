@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.KGBot.Data;
+using SmartKG.Common.Data;
 using MongoDB.Driver;
 using Serilog;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using SmartKG.Common.Logger;
 using MongoDB.Bson;
 
-namespace SmartKG.KGBot.StorageAccessor
+namespace SmartKG.Common.ContextStore
 {
     public class ContextDBAccessor : IContextAccessor
     {

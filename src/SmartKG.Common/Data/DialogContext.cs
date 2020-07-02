@@ -9,7 +9,7 @@ using SmartKG.Common.Data.LU;
 using System;
 using System.Collections.Generic;
 
-namespace SmartKG.KGBot.Data
+namespace SmartKG.Common.Data
 {
     public enum RUNNINGMODE
     {

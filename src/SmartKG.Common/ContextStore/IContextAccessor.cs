@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.KGBot.Data;
+using SmartKG.Common.Data;
 
-namespace SmartKG.KGBot.StorageAccessor
+namespace SmartKG.Common.ContextStore
 {
     public interface IContextAccessor
     {

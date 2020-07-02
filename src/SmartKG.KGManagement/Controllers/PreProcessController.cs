@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
 using SmartKG.Common.DataPersistence;
 using SmartKG.KGManagement.Data;
@@ -80,6 +81,8 @@ namespace SmartKG.KGManagement.Controllers
             string location = request.location;
 
             DataLoader.GetInstance().Load(location);
+
+            ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
 
             ReloadResult msg = new ReloadResult();
             msg.success = true;

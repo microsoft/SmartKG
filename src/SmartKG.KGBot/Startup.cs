@@ -8,9 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using SmartKG.KGBot.StorageAccessor;
 using SmartKG.Common.Logger;
 using SmartKG.Common.DataPersistence;
+using SmartKG.Common.ContextStore;
 
 namespace SmartKG.KGBot
 {
@@ -66,7 +66,7 @@ namespace SmartKG.KGBot
             DataLoader.GetInstance().Load(Configuration);
             log.Information("KG and NLU Data is initialized and loaded.");
             
-            ContextAccessController.initInstance(Configuration);
+            ContextAccessor.initInstance(Configuration);
             log.Information("Context Data is initialized.");            
         }
     }

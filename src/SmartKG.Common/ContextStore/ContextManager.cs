@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.KGBot.Data;
+using SmartKG.Common.Data;
 using MongoDB.Driver;
 using Serilog;
 using System;
@@ -11,9 +11,8 @@ using Newtonsoft.Json;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
-using SmartKG.Common.Data;
 
-namespace SmartKG.KGBot.StorageAccessor
+namespace SmartKG.Common.ContextStore
 {
     public class ContextManager : KGBotLogHandler
     {
@@ -24,7 +23,7 @@ namespace SmartKG.KGBot.StorageAccessor
         private string userId;
         private string sessionId;
 
-        private ContextAccessController accController = ContextAccessController.GetInstance(); 
+        private ContextAccessor accController = ContextAccessor.GetInstance(); 
 
         private ILogger log;
         public ContextManager(string userId, string sessionId)
@@ -229,8 +228,6 @@ namespace SmartKG.KGBot.StorageAccessor
             this.context.intent = null;
             this.context.startVertexName = null;
             this.context.scenarioName = null;
-        }
-
-        
+        }        
     }
 }

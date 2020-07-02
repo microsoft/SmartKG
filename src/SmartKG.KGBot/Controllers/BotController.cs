@@ -9,9 +9,9 @@ using SmartKG.KGBot.Data.Request;
 using Newtonsoft.Json;
 using Serilog;
 using Microsoft.Extensions.Configuration;
-using SmartKG.KGBot.Data;
 using SmartKG.KGBot.Data.Response;
 using SmartKG.Common.Logger;
+using SmartKG.Common.Data;
 
 namespace SmartKG.KGBot.Controllers
 {

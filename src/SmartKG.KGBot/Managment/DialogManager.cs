@@ -6,15 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartKG.KGBot.Data.Response;
-using SmartKG.KGBot.Data;
-using SmartKG.KGBot.StorageAccessor;
 using SmartKG.KGBot.NaturalLanguageUnderstanding;
 using Serilog;
-using SmartKG.KGBot.DataStore;
+using SmartKG.Common.DataStore;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data;
+using SmartKG.Common.ContextStore;
 
 namespace SmartKG.KGBot.Managment
 {
