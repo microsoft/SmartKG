@@ -32,20 +32,19 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]/upload")]
         [ProducesResponseType(typeof(UploadResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UploadResult>> Upload(List<IFormFile> files)
+        public async Task<ActionResult<UploadResult>> Upload(List<IFormFile> file, [FromForm]List<string> scenario, [FromForm] string datastoreName)
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
-
-            
-            var requestForm = HttpContext.Request.Form;
+      
+            //var requestForm = HttpContext.Request.Form;
             int count = 0;
 
             List<string> savedFilePaths = new List<string>();
 
-            if (requestForm.Files.Count != null && requestForm.Files.Count > 0)
+            if (file != null && file.Count > 0)
             {
-                foreach(var formFile in requestForm.Files)
+                foreach(var formFile in file)
                 {
                     if (formFile.Length > 0)
                     {
@@ -62,7 +61,9 @@ namespace SmartKG.KGManagement.Controllers
                     }
                 }
             }
-           
+
+            ConvertFiles(savedFilePaths, scenario, datastoreName);
+
             UploadResult msg = new UploadResult();
             msg.success = true;
             msg.responseMessage = count + " file(s) have been received.\n" + string.Join(",", savedFilePaths.ToArray());
@@ -70,49 +71,25 @@ namespace SmartKG.KGManagement.Controllers
             return Ok(msg);
         }
 
-        // POST api/reload
-        [HttpPost]
-        [Route("api/[controller]/reload")]
-        [ProducesResponseType(typeof(UploadResult), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UploadResult>> ReloadData([FromBody] ReloadRequestMessage request)
-        {
-            PersistanceType type = request.persistenceType;
-            string location = request.location;
-
-            DataLoader.GetInstance().Load(location);
-
-            ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
-
-            ReloadResult msg = new ReloadResult();
-            msg.success = true;
-            msg.responseMessage = "Data has been reloaded.\n";
-
-            return Ok(msg);
-        }
-
-
-        // POST api/preprocess
-        [HttpPost]
-        [Route("api/[controller]/convert")]
-        [ProducesResponseType(typeof(UploadResult), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UploadResult>> ConvertFile([FromBody] DataProcessRequestMessage request)
+        private void ConvertFiles(List<string> savedFileNames, List<string> scenarios, string datastoreName)
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
-            string targetDir = uploadConfig.TargetDir;
+            string targetDir = uploadConfig.LocalRootPath + Path.DirectorySeparatorChar + datastoreName;
+           
+            if (!Directory.Exists(targetDir))
+                Directory.CreateDirectory(targetDir);
 
             string pythonArgs = "--srcPaths ";
-            
-            foreach (var srcFileName in request.srcFileNames)
+
+            foreach (var srcFileName in savedFileNames)
             {
-                pythonArgs +=  "\"" + excelDir + Path.DirectorySeparatorChar + srcFileName + "\" ";                    
+                pythonArgs += "\"" + excelDir + Path.DirectorySeparatorChar + srcFileName + "\" ";
             }
 
             pythonArgs += " --scenarios ";
 
-            foreach(string scenario in request.scenarios)
+            foreach (string scenario in scenarios)
             {
                 pythonArgs += "\"" + scenario + "\" ";
             }
@@ -121,14 +98,8 @@ namespace SmartKG.KGManagement.Controllers
 
             RunCommand(uploadConfig.PythonEnvPath, uploadConfig.ConvertScriptPath, pythonArgs);
 
-            UploadResult msg = new UploadResult();
-            msg.success = true;
-            msg.responseMessage =   "Files have been converted.\n";
-
-            return Ok(msg);
-        }
-
-        
+            return;
+        }    
 
         private void RunCommand(string envPath, string cmd, string args)
         {
@@ -147,6 +118,27 @@ namespace SmartKG.KGManagement.Controllers
                     Console.Write(result);
                 }
             }
+        }
+
+        // POST api/reload
+        [HttpPost]
+        [Route("api/[controller]/reload")]
+        [ProducesResponseType(typeof(UploadResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<UploadResult>> ReloadData([FromBody] ReloadRequestMessage request)
+        {
+            PersistanceType type = request.persistenceType;
+            string location = request.datastoreName;
+
+            DataLoader.GetInstance().Load(location);
+
+            ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
+
+            ReloadResult msg = new ReloadResult();
+            msg.success = true;
+            msg.responseMessage = "Data has been reloaded.\n";
+
+            return Ok(msg);
         }
     }
 }

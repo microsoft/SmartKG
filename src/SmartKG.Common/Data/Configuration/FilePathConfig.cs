@@ -10,8 +10,8 @@ namespace SmartKG.Common.Data.Configuration
 {
     public class FilePathConfig
     {
-        public string LocalRootPath { get; set; }
-
+        public string RootPath { get; set; }
+        public string DefaultDataStore { get; set; }
         public string ContextFilePath { get; set; }
     }
 }

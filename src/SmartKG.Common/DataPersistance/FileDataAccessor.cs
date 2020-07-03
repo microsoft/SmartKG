@@ -18,14 +18,17 @@ namespace SmartKG.Common.DataPersistance
     {
         private ILogger log;
 
-        public FileDataAccessor()
+        private string rootPath;
+
+        public FileDataAccessor(string rootPath)
         {
+            this.rootPath = rootPath;
             this.log = Log.Logger.ForContext<MongoDataAccessor>();
         }  
         
-        public (List<Vertex>, List<Edge>) LoadKG(string location)
+        public (List<Vertex>, List<Edge>) LoadKG(string dsName)
         {
-            string kgPath = location;
+            string kgPath = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar + "KG" + Path.DirectorySeparatorChar;
 
             if (string.IsNullOrWhiteSpace(kgPath) || !Directory.Exists(kgPath))
             {
@@ -47,9 +50,9 @@ namespace SmartKG.Common.DataPersistance
             
         }
 
-        public List<VisulizationConfig> LoadConfig(string location)
+        public List<VisulizationConfig> LoadConfig(string dsName)
         {
-            string vcPath = location;
+            string vcPath = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar + "Visulization" + Path.DirectorySeparatorChar;
 
             if (string.IsNullOrWhiteSpace(vcPath) || !Directory.Exists(vcPath))
             {
@@ -66,9 +69,9 @@ namespace SmartKG.Common.DataPersistance
             return vcList;
         }
 
-        public  ( List<NLUIntentRule>, List<EntityData>, List<EntityAttributeData> ) LoadNLU(string location)
+        public  ( List<NLUIntentRule>, List<EntityData>, List<EntityAttributeData> ) LoadNLU(string dsName)
         {
-            string nluPath = location;
+            string nluPath = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar + "NLU" + Path.DirectorySeparatorChar;
 
             if (string.IsNullOrWhiteSpace(nluPath) || !Directory.Exists(nluPath))
             {
@@ -87,17 +90,13 @@ namespace SmartKG.Common.DataPersistance
             return (iList, eList, eaList);
         }
 
-        public  (List<Vertex>, List<Edge>, List<VisulizationConfig>, List<NLUIntentRule>, List<EntityData>, List<EntityAttributeData>) Load(string location)
+        public  (List<Vertex>, List<Edge>, List<VisulizationConfig>, List<NLUIntentRule>, List<EntityData>, List<EntityAttributeData>) Load(string dsName)
         {
-            string kgPath = location + "\\KG\\";
-            string vcPath = location + "\\Visulization\\";
-            string nluPath = location + "\\NLU\\";
+            (var vList, var eList) = LoadKG(dsName);
 
-            (var vList, var eList) = LoadKG(kgPath);
+            var vcList = this.LoadConfig(dsName);
 
-            var vcList = this.LoadConfig(vcPath);
-
-            (var iList, var enList, var eaList) = this.LoadNLU(nluPath);
+            (var iList, var enList, var eaList) = this.LoadNLU(dsName);
 
             return (vList, eList, vcList, iList, enList, eaList);
         }

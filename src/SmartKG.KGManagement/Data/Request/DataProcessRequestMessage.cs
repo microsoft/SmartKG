@@ -10,12 +10,14 @@ namespace SmartKG.KGManagement.Data.Request
     {
         public List<string> srcFileNames { get; set; }
         public List<string> scenarios { get; set; }
+
+        public string datastoerName { get; set; }
     }
 
     public class ReloadRequestMessage
     {
         public PersistanceType persistenceType { get; set; }
-        public string location { get; set; }
+        public string datastoreName { get; set; }
 
     }
 }

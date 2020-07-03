@@ -21,6 +21,9 @@ namespace SmartKG.Common.DataPersistence
         private ILogger log = Log.Logger.ForContext<DataLoader>();
 
         private static PersistanceType persistanceType;
+        private static FilePathConfig filePathConfig;
+        private static string connectionString;
+        private static string defaultDBName;
 
         private List<Vertex> vList;
         private List<Edge> eList;
@@ -33,6 +36,8 @@ namespace SmartKG.Common.DataPersistence
         private IDataAccessor dataAccessor;
         private List<ScenarioSetting> settings;
 
+
+
         public static DataLoader GetInstance()
         {
             return uniqueInstance;
@@ -43,17 +48,22 @@ namespace SmartKG.Common.DataPersistence
         {
             if (uniqueInstance == null)
             {
+                
+
                 uniqueInstance = new DataLoader();
 
                 persistanceType = (PersistanceType)Enum.Parse(typeof(PersistanceType), config.GetSection("PersistanceType").Value, true);
 
                 if (persistanceType == PersistanceType.File)
                 {
-                    uniqueInstance.dataAccessor = new FileDataAccessor();
+                    filePathConfig = config.GetSection("FileDataPath").Get<FilePathConfig>();                    
+                    uniqueInstance.dataAccessor = new FileDataAccessor(filePathConfig.RootPath);
                 }
                 else
                 {
-                    string connectionString = config.GetConnectionString("MongoDbConnection");
+                    connectionString = config.GetConnectionString("MongoDbConnection");
+                    defaultDBName = config.GetConnectionString("DatabaseName");
+
                     uniqueInstance.dataAccessor = new MongoDataAccessor(connectionString);
                 }                                    
             }
@@ -71,24 +81,19 @@ namespace SmartKG.Common.DataPersistence
             this.settings = config.GetSection("Scenarios").Get<List<ScenarioSetting>>();
 
             if (persistanceType == PersistanceType.File)
-            {
-                FilePathConfig filePaths = config.GetSection("FileDataPath").Get<FilePathConfig>();
-
-                uniqueInstance.Load(filePaths.LocalRootPath);
-                                
+            {              
+                uniqueInstance.Load(filePathConfig.DefaultDataStore);                                
             }
             else
-            {
-                string dbName = config.GetConnectionString("DatabaseName");
-                uniqueInstance.Load(dbName);
-                
+            {                 
+                uniqueInstance.Load(defaultDBName);                
             }
         }
 
-        public void Load(string location)
+        public void Load(string dsName)
         {
            
-            (this.vList, this.eList, this.vcList, this.iList , this.enList, this.eaList ) = this.dataAccessor.Load(location);
+            (this.vList, this.eList, this.vcList, this.iList , this.enList, this.eaList ) = this.dataAccessor.Load(dsName);
 
             if (this.vcList == null || this.vList == null || this.eList == null)
             {

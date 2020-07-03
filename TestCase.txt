@@ -1,0 +1,4 @@
+【1】 Test https://localhost:5001/api/preprocess/upload
+
+----------------------------------
+curl -i -X POST -F "file=@C:\Users\jull\Documents\SmartKG\SmartKG_KGDesc_MotionAndPower_zh.xlsx"  -F "file=@C:\Users\jull\Documents\SmartKG_KGDesc_COVID19_zh.xlsx" -F "scenario=MotionAndPower" -F "scenario=COVID19" -F "datastoreName=juliatest" https://localhost:5001/api/preprocess/upload
