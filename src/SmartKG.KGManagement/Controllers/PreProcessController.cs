@@ -30,13 +30,13 @@ namespace SmartKG.KGManagement.Controllers
         // POST api/preprocess/upload
         [HttpPost]
         [Route("api/[controller]/upload")]
-        [ProducesResponseType(typeof(UploadResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UploadResult>> Upload(List<IFormFile> file, [FromForm]List<string> scenario, [FromForm] string datastoreName)
+        public async Task<ActionResult<ResponseResult>> Upload(List<IFormFile> file, [FromForm]List<string> scenario, [FromForm] string datastoreName)
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
-      
+            
             //var requestForm = HttpContext.Request.Form;
             int count = 0;
 
@@ -64,21 +64,20 @@ namespace SmartKG.KGManagement.Controllers
 
             ConvertFiles(savedFilePaths, scenario, datastoreName);
 
-            UploadResult msg = new UploadResult();
+            ResponseResult msg = new ResponseResult();
             msg.success = true;
             msg.responseMessage = count + " file(s) have been received.\n" + string.Join(",", savedFilePaths.ToArray());
            
             return Ok(msg);
         }
 
+        
+
         private void ConvertFiles(List<string> savedFileNames, List<string> scenarios, string datastoreName)
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
             string targetDir = uploadConfig.LocalRootPath + Path.DirectorySeparatorChar + datastoreName;
-           
-            if (!Directory.Exists(targetDir))
-                Directory.CreateDirectory(targetDir);
 
             string pythonArgs = "--srcPaths ";
 
@@ -123,9 +122,9 @@ namespace SmartKG.KGManagement.Controllers
         // POST api/reload
         [HttpPost]
         [Route("api/[controller]/reload")]
-        [ProducesResponseType(typeof(UploadResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UploadResult>> ReloadData([FromBody] ReloadRequestMessage request)
+        public async Task<ActionResult<ResponseResult>> ReloadData([FromBody] ReloadRequestMessage request)
         {
             PersistanceType type = request.persistenceType;
             string location = request.datastoreName;
@@ -134,7 +133,7 @@ namespace SmartKG.KGManagement.Controllers
 
             ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
 
-            ReloadResult msg = new ReloadResult();
+            ResponseResult msg = new ResponseResult();
             msg.success = true;
             msg.responseMessage = "Data has been reloaded.\n";
 

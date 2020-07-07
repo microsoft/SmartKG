@@ -18,4 +18,9 @@ namespace SmartKG.KGManagement.Data.Request
     {
         public string vertexId { get; set; }
     }
+
+    public class DatastoreRequestMessage
+    {
+        public string datastoreName { get; set; }
+    }
 }

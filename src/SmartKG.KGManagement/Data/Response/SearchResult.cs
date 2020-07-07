@@ -42,6 +42,14 @@ namespace SmartKG.KGManagement.Data.Response
         public List<string> scenarioNames { get; set; }
     }
 
+    public class DatastoreResult : IResult
+    {
+        public bool success { get; set; }
+        public string responseMessage { get; set; }
+
+        public List<string> datastoreNames { get; set; }
+    }
+
     public class ConfigResult: IResult
     {
         public bool success { get; set; }
@@ -51,13 +59,7 @@ namespace SmartKG.KGManagement.Data.Response
         public Dictionary<string, string> entityColorConfig { get; set; }
     }
 
-    public class UploadResult: IResult
-    {
-        public bool success { get; set; }
-        public string responseMessage { get; set; }
-    }
-
-    public class ReloadResult : IResult
+    public class ResponseResult : IResult
     {
         public bool success { get; set; }
         public string responseMessage { get; set; }
