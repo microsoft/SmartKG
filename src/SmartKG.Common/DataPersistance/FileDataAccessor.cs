@@ -8,9 +8,9 @@ using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataPersistence;
 using SmartKG.Common.Importer;
 using SmartKG.Common.Logger;
-using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SmartKG.Common.DataPersistance
 {
@@ -101,6 +101,42 @@ namespace SmartKG.Common.DataPersistance
             return (vList, eList, vcList, iList, enList, eaList);
         }
 
-        
+        public List<string> GetDataStoreList()
+        {
+            List<string> list = new List<string>();
+            string[] directories = Directory.GetDirectories(rootPath);
+
+            list = directories.ToList<string>();
+            return list;
+        }
+
+        public bool AddDataStore(string datastoreName)
+        {            
+            string targetDir = this.rootPath + Path.DirectorySeparatorChar + datastoreName;
+
+            if (Directory.Exists(targetDir))
+            {
+                return false;
+            }
+            else
+            {
+                Directory.CreateDirectory(targetDir);
+                return true;
+            }
+        }
+
+        public bool DeleteDataStore(string datastoreName)
+        {
+            string targetDir = this.rootPath + Path.DirectorySeparatorChar + datastoreName;
+            if (!Directory.Exists(targetDir))
+            {
+                return false;
+            }
+            else
+            {
+                Directory.Delete(targetDir);
+                return true;
+            }
+        }
     }
 }

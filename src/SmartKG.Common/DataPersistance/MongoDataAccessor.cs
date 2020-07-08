@@ -4,6 +4,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Serilog;
+using SmartKG.Common.Data;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.Visulization;
@@ -22,12 +23,15 @@ namespace SmartKG.Common.DataPersistance
 
         private MongoClient client;
 
-        public MongoDataAccessor(string connectionString)
+        private string mgmtDatabaseName;
+
+        public MongoDataAccessor(string connectionString, string mgmtDatabaseName)
         {
             this.log = Log.Logger.ForContext<MongoDataAccessor>();
 
             this.client = new MongoClient(new MongoUrl(connectionString));
 
+            this.mgmtDatabaseName = mgmtDatabaseName;
         }
 
         public (List<Vertex>, List<Edge>) LoadKG(string dbName)
@@ -121,5 +125,68 @@ namespace SmartKG.Common.DataPersistance
             return (vList, eList, vcList, iList, enList, eaList);
         }
 
+        public List<string> GetDataStoreList()
+        {
+            BsonDocument allFilter = new BsonDocument();
+            IMongoDatabase db = client.GetDatabase(this.mgmtDatabaseName);
+
+            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
+            List<DatastoreItem> list = collection.Find(allFilter).ToList();
+
+            List<string> result = new List<string>();
+
+            foreach(DatastoreItem item in list)
+            {
+                result.Add(item.name);
+            }
+
+            return result;
+        }
+
+        private bool IsDataStoreExist(string datastoreName)
+        {
+            IMongoDatabase db = client.GetDatabase(this.mgmtDatabaseName);
+            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
+
+            var searchFilter = Builders<DatastoreItem>.Filter.Eq("name", datastoreName);
+
+            var results = collection.Find(searchFilter).ToList();
+
+            if (results.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool AddDataStore(string datastoreName)
+        {
+            if (IsDataStoreExist(datastoreName))
+                return false;
+
+            DatastoreItem item = new DatastoreItem();
+            item.name = datastoreName;
+
+            IMongoDatabase db = client.GetDatabase(this.mgmtDatabaseName);
+            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
+
+            collection.InsertOne(item);
+
+            return true;
+        }
+
+        public bool DeleteDataStore(string datastoreName)
+        {
+            if (!IsDataStoreExist(datastoreName))
+                return false;
+
+            IMongoDatabase db = client.GetDatabase(this.mgmtDatabaseName);
+            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
+
+            var deleteFilter = Builders<DatastoreItem>.Filter.Eq("name", datastoreName);
+
+            collection.DeleteOne(deleteFilter);
+
+            return true;
+        }
     }       
 }

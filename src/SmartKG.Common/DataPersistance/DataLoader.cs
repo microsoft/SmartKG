@@ -22,8 +22,8 @@ namespace SmartKG.Common.DataPersistence
 
         private static PersistanceType persistanceType;
         private static FilePathConfig filePathConfig;
-        private static string connectionString;
-        private static string defaultDBName;
+        //private static string connectionString;
+        //private static string defaultDBName;
 
         private List<Vertex> vList;
         private List<Edge> eList;
@@ -61,10 +61,10 @@ namespace SmartKG.Common.DataPersistence
                 }
                 else
                 {
-                    connectionString = config.GetConnectionString("MongoDbConnection");
-                    defaultDBName = config.GetConnectionString("DatabaseName");
+                    string connectionString = config.GetConnectionString("MongoDbConnection");                    
+                    string mgmtDBName = config.GetConnectionString("DataStoreMgmtDatabaseName");                   
 
-                    uniqueInstance.dataAccessor = new MongoDataAccessor(connectionString);
+                    uniqueInstance.dataAccessor = new MongoDataAccessor(connectionString, mgmtDBName);
                 }                                    
             }
 
@@ -86,7 +86,7 @@ namespace SmartKG.Common.DataPersistence
             }
             else
             {                 
-                uniqueInstance.Load(defaultDBName);                
+                uniqueInstance.Load(config.GetConnectionString("DefaultDataStore"));                
             }
         }
 
@@ -153,6 +153,21 @@ namespace SmartKG.Common.DataPersistence
         public List<EntityAttributeData> GetEntityAttributeCollection()
         {
             return eaList;
+        }
+
+        public List<string> GetDataStoreList()
+        {
+           return this.dataAccessor.GetDataStoreList();
+        }
+
+        public bool AddDataStore(string datastoreName)
+        {
+            return this.dataAccessor.AddDataStore(datastoreName);
+        }
+
+        public bool DeleteDataStore(string datastoreName)
+        {
+            return this.dataAccessor.DeleteDataStore(datastoreName);
         }
     }
 }

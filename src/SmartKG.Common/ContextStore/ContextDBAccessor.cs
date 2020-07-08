@@ -28,7 +28,7 @@ namespace SmartKG.Common.ContextStore
                 IMongoDatabase db = client.GetDatabase(dbName);
                 this.collection = db.GetCollection<DialogContext>("Contexts");
 
-            log.Here().Information("Context in MongoDB. connectionString: " + connectionString + ", databaseName: " + dbName);                
+            log.Here().Information("Context in MongoDB. connectionString: " + connectionString + ", ContextDatabaseName: " + dbName);                
         }
 
         public DialogContext GetContext(string userId, string sessionId)

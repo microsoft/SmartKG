@@ -11,6 +11,7 @@ using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.Visulization;
+using SmartKG.Common.Data;
 
 namespace MongoDBUploader.DataProcessor.Accessor
 {   
@@ -19,7 +20,8 @@ namespace MongoDBUploader.DataProcessor.Accessor
         private BsonDocument allFilter;
         
         private ILogger log;
-        private IMongoDatabase db;
+        private MongoClient client;
+        private string mgmtDBName;
 
         public MDBWriter(IConfiguration config) 
         {
@@ -28,19 +30,38 @@ namespace MongoDBUploader.DataProcessor.Accessor
             this.allFilter = new BsonDocument();
 
             string connectionString = config.GetConnectionString("MongoDbConnection");
-            string dbName = config.GetConnectionString("DatabaseName");
-
-            Console.WriteLine("Database Name: " + dbName);
-
-            MongoClient client = new MongoClient(connectionString);
-            this.db = client.GetDatabase(dbName);
-
-            log.Here().Information("connectionString: " + connectionString + ", databaseName: " + dbName);
-        
+            this.mgmtDBName = config.GetConnectionString("DataStoreMgmtDatabaseName");
+            this.client = new MongoClient(connectionString);
+            
+            log.Here().Information("connectionString: " + connectionString );        
         }
 
-        public void CreateKGCollections(List<Vertex> vertexes, List<Edge> edges)
+        /*public void AddDataStore(string datastoreName)
         {
+            DatastoreItem item = new DatastoreItem();
+            item.name = datastoreName;
+
+            IMongoDatabase db = client.GetDatabase(this.mgmtDBName);
+            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
+
+            collection.InsertOne(item);
+        }
+
+        public void RemoveDataStore(string datastoreName)
+        {
+            IMongoDatabase db = client.GetDatabase(this.mgmtDBName);
+            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
+
+            var deleteFilter = Builders<DatastoreItem>.Filter.Eq("name", datastoreName);
+           
+            collection.DeleteOne(deleteFilter);
+        }*/
+
+        public void CreateKGCollections(string dbName, List<Vertex> vertexes, List<Edge> edges)
+        {
+            log.Here().Information("DatabaseName: " + dbName);
+            IMongoDatabase db = client.GetDatabase(dbName);
+
             IMongoCollection<Vertex> vCollection = db.GetCollection<Vertex>("Vertexes");
             vCollection.DeleteMany(this.allFilter);
 
@@ -59,8 +80,11 @@ namespace MongoDBUploader.DataProcessor.Accessor
             }
         }
 
-        public void CreateVisuliaztionConfigCollections(List<VisulizationConfig> vcList)
+        public void CreateVisuliaztionConfigCollections(string dbName, List<VisulizationConfig> vcList)
         {
+            log.Here().Information("DatabaseName: " + dbName);
+            IMongoDatabase db = client.GetDatabase(dbName);
+
             IMongoCollection<VisulizationConfig> vcCollection = db.GetCollection<VisulizationConfig>("VisulizationConfigs");
             vcCollection.DeleteMany(this.allFilter);
 
@@ -70,8 +94,11 @@ namespace MongoDBUploader.DataProcessor.Accessor
             }
         }
 
-        public void CreateNLUCollections(List<NLUIntentRule> intentRules, List<EntityData> entities, List<EntityAttributeData> entityAttributes)
+        public void CreateNLUCollections(string dbName, List<NLUIntentRule> intentRules, List<EntityData> entities, List<EntityAttributeData> entityAttributes)
         {
+            log.Here().Information("DatabaseName: " + dbName);
+            IMongoDatabase db = client.GetDatabase(dbName);
+
             IMongoCollection<NLUIntentRule> iCollection = db.GetCollection<NLUIntentRule>("IntentRules");
             
             iCollection.DeleteMany(this.allFilter);

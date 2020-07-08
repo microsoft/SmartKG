@@ -11,8 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using SmartKG.DataUploader.Executor;
 
 namespace SmartKG.KGManagement.Controllers
 {
@@ -26,6 +26,7 @@ namespace SmartKG.KGManagement.Controllers
             .SetBasePath(Directory.GetCurrentDirectory()) // requires Microsoft.Extensions.Configuration.Json
             .AddJsonFile("appsettings.json"); // requires Microsoft.Extensions.Configuration.Json                    
         static IConfiguration config = builder.Build();
+        static PersistanceType persistanceType = (PersistanceType) Enum.Parse(typeof(PersistanceType), config.GetSection("PersistanceType").Value, true);
 
         // POST api/preprocess/upload
         [HttpPost]
@@ -36,8 +37,7 @@ namespace SmartKG.KGManagement.Controllers
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
-            
-            //var requestForm = HttpContext.Request.Form;
+                   
             int count = 0;
 
             List<string> savedFilePaths = new List<string>();
@@ -77,8 +77,8 @@ namespace SmartKG.KGManagement.Controllers
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
-            string targetDir = uploadConfig.LocalRootPath + Path.DirectorySeparatorChar + datastoreName;
 
+            
             string pythonArgs = "--srcPaths ";
 
             foreach (var srcFileName in savedFileNames)
@@ -92,11 +92,27 @@ namespace SmartKG.KGManagement.Controllers
             {
                 pythonArgs += "\"" + scenario + "\" ";
             }
+            string targetDir = null;
+
+            if (persistanceType == PersistanceType.File)
+            {
+                targetDir = uploadConfig.LocalRootPath + Path.DirectorySeparatorChar + datastoreName;
+            }
+            else
+            {
+                targetDir = excelDir + Path.DirectorySeparatorChar + DateTime.Now.ToString("MMddyyyyHHmmss");                
+            }
 
             pythonArgs += " --destPath \"" + targetDir + "\" ";
 
             RunCommand(uploadConfig.PythonEnvPath, uploadConfig.ConvertScriptPath, pythonArgs);
 
+            if (persistanceType == PersistanceType.MongoDB)
+            {
+                SmartKG.DataUploader.Executor.DataUploader uploader = new SmartKG.DataUploader.Executor.DataUploader();
+                uploader.UploadDataFile(targetDir, datastoreName);
+            }
+            
             return;
         }    
 
@@ -125,11 +141,10 @@ namespace SmartKG.KGManagement.Controllers
         [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseResult>> ReloadData([FromBody] ReloadRequestMessage request)
-        {
-            PersistanceType type = request.persistenceType;
-            string location = request.datastoreName;
+        {            
+            string dsName = request.datastoreName;
 
-            DataLoader.GetInstance().Load(location);
+            DataLoader.GetInstance().Load(dsName);
 
             ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
 

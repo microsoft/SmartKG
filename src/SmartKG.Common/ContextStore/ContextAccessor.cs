@@ -36,7 +36,7 @@ namespace SmartKG.Common.ContextStore
             else
             {
                 string connectionString = config.GetConnectionString("MongoDbConnection");
-                string dbName = config.GetConnectionString("DatabaseName");
+                string dbName = config.GetConnectionString("ContextDatabaseName");
 
                 this.accessor = new ContextDBAccessor(connectionString, dbName);
 

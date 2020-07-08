@@ -16,7 +16,6 @@ namespace SmartKG.KGManagement.Data.Request
 
     public class ReloadRequestMessage
     {
-        public PersistanceType persistenceType { get; set; }
         public string datastoreName { get; set; }
 
     }
