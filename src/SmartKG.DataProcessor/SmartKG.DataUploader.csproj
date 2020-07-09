@@ -22,12 +22,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
 </ItemGroup>
 
-<ItemGroup>
-  <Folder Include="Resources\COVID19\KG\" />
-  <Folder Include="Resources\Physics\KG\" />
-  <Folder Include="Resources\_DataPreProcess\scripts\" />
-  <Folder Include="Resources\_Template\" />
-</ItemGroup>
+
 
 <ItemGroup>
   <ProjectReference Include="..\SmartKG.Common\SmartKG.Common.csproj" />

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartKG.DataUploader", "Sma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartKG.KGManagement", "SmartKG.KGManagement\SmartKG.KGManagement.csproj", "{AA9DCA69-0684-40A9-A9FF-1B1BC542D509}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartKG.Common", "SmartKG.Common\SmartKG.Common.csproj", "{B7EFD939-D7AD-4589-90E4-FC9BCE7B2DF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartKG.Common", "SmartKG.Common\SmartKG.Common.csproj", "{B7EFD939-D7AD-4589-90E4-FC9BCE7B2DF6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{F4E67D74-3DC9-48AE-8E9B-D5E74E7FC414}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
