@@ -37,7 +37,9 @@ namespace SmartKG.KGManagement.Controllers
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
-                   
+
+            Directory.CreateDirectory(excelDir);
+
             int count = 0;
 
             List<string> savedFileNames = new List<string>();
