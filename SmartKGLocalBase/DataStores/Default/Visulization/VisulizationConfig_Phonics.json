@@ -1,0 +1,25 @@
+[
+  {
+    "labelsOfVertexes": [
+      {
+        "color": "#E83344",
+        "itemLabel": "行为"
+      },
+      {
+        "color": "#F5A100",
+        "itemLabel": "概念"
+      },
+      {
+        "color": "#9DE7B7",
+        "itemLabel": "属性"
+      }
+    ],
+    "relationTypesOfEdges": [
+      {
+        "color": "#E83344",
+        "itemLabel": "包含"
+      }
+    ],
+    "scenario": "Phonics"
+  }
+]

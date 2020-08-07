@@ -1,0 +1,444 @@
+[
+  {
+    "id": "entity_gainian1_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "力",
+    "nodeType": "ROOT",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "物体对物体的作用"
+      },
+      {
+        "name": "作用效果",
+        "value": "改变物体运动状态；改变物体形状"
+      },
+      {
+        "name": "三要素",
+        "value": "大小、方向、作用点"
+      },
+      {
+        "name": "特点",
+        "value": "力的作用是相互的"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian2_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "重力",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "由于地球的吸引而使物体受到的力"
+      },
+      {
+        "name": "公式",
+        "value": "G=mg"
+      },
+      {
+        "name": "方向",
+        "value": "竖直向下"
+      },
+      {
+        "name": "作用点",
+        "value": "重心（悬挂法）"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian3_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "弹力",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "物体由于发生弹性形变而产生的力"
+      },
+      {
+        "name": "产生条件",
+        "value": "1.物体相互接触；2.物体具有弹性，且发生弹性形变"
+      },
+      {
+        "name": "包括",
+        "value": "弹簧伸长与压缩时的力，压力、支持力、绳子拉力等"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian4_MotionAndPower",
+    "label": "物体",
+    "leadSentence": "",
+    "name": "弹簧测力计",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "原理",
+        "value": "在弹性限度内，弹簧的伸长量与受到的拉力成正比"
+      },
+      {
+        "name": "构造",
+        "value": "弹簧、刻度盘、指针、挂钩、吊环"
+      },
+      {
+        "name": "使用",
+        "value": "量程、分度值"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian5_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "弹性形变",
+    "nodeType": "ROOT",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "对弹性物体来说，形变后能自动恢复原状的最大限度叫弹性限度；物体在弹性限度内发生的形变叫做弹性形变"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian6_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "弹簧伸长与压缩时的力，压力、支持力、绳子拉力等",
+    "nodeType": "LEAF",
+    "properties": [],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian7_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "摩擦力",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "两个相互接触的物体，当它们相对滑动或有相对运动趋势时，在接触面上会产生一种阻碍相对运动或相对运动趋势的力，这种力叫做滑动摩擦力"
+      },
+      {
+        "name": "产生条件",
+        "value": "1.接触面粗糙 2.想物体相互接触并相互挤压 3.两物体间发生相对运动或有相对运动趋势"
+      },
+      {
+        "name": "分类",
+        "value": "静摩擦力、滑动摩擦力"
+      },
+      {
+        "name": "影响滑动摩擦力因素",
+        "value": "压力大小、接触面的粗糙程度"
+      },
+      {
+        "name": "作用效果",
+        "value": "阻碍物体的相对运动或相对运动趋势"
+      },
+      {
+        "name": "作用点",
+        "value": "在接触面上"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian8_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "机械运动",
+    "nodeType": "ROOT",
+    "properties": [
+      {
+        "name": "含义",
+        "value": " 一个物体相对于另一个物体的位置，或者一个物体的某些部分相对于其他部分的位置，随着时间而变化的过程叫做机械运动"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian9_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "描述运动位置",
+    "nodeType": "MIDDLE",
+    "properties": [],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian10_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "长度",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "单位",
+        "value": "国际单位米m"
+      },
+      {
+        "name": "测量工具",
+        "value": "刻度尺，估读到准确值的下一位"
+      },
+      {
+        "name": "估测",
+        "value": "选取标准进行对比"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian11_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "时间",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "单位",
+        "value": "国际单位s"
+      },
+      {
+        "name": "测量工具",
+        "value": "停表"
+      },
+      {
+        "name": "估测",
+        "value": "选取标准进行对比"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian12_MotionAndPower",
+    "label": "物体",
+    "leadSentence": "",
+    "name": "参照物",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "判断物体运动还是静止时，作为标准的物体"
+      },
+      {
+        "name": "选择原则",
+        "value": "不以研究对象本身为参照物"
+      },
+      {
+        "name": "相对性",
+        "value": "运动和静止的相对性"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian13_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "描述运动快慢",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "三种比较方法",
+        "value": "1.时间相同比路程  2路程相同比时间  3.时间路程均不相同比较路程与时间的比值"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian14_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "速度",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "路程与时间的比值"
+      },
+      {
+        "name": "公式",
+        "value": "v=s/t"
+      },
+      {
+        "name": "单位",
+        "value": "m/s"
+      },
+      {
+        "name": "物理意义",
+        "value": "描述物体运动快慢的物理量"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian15_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "直线运动",
+    "nodeType": "MIDDLE",
+    "properties": [],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian16_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "曲线运动",
+    "nodeType": "LEAF",
+    "properties": [],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian17_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "匀速直线运动",
+    "nodeType": "LEAF",
+    "properties": [],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian18_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "变速直线运动",
+    "nodeType": "LEAF",
+    "properties": [],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian19_MotionAndPower",
+    "label": "关联",
+    "leadSentence": "",
+    "name": "运动和力",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "关系",
+        "value": "静止或匀速直线运动时不受力或者二力平衡；变速运动时，受非平衡力"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian20_MotionAndPower",
+    "label": "规律",
+    "leadSentence": "",
+    "name": "牛顿第一定律",
+    "nodeType": "MIDDLE",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "一切物体在没受到力的作用时，总保持静止状态或匀速直线运动状态"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian21_MotionAndPower",
+    "label": "概念",
+    "leadSentence": "",
+    "name": "惯性",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "一切物体都有保持原来运动状态不变的性质，这种性质叫做惯性"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian22_MotionAndPower",
+    "label": "规律",
+    "leadSentence": "",
+    "name": "二力平衡",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "含义",
+        "value": "物体受到几个力的作用时，如果保持静止或者匀速直线运动状态，则这几个力相互平衡。"
+      },
+      {
+        "name": "条件",
+        "value": "同体、等大、反向、共线"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  },
+  {
+    "id": "entity_gainian23_MotionAndPower",
+    "label": "规律",
+    "leadSentence": "",
+    "name": "同一直线上二力的合成",
+    "nodeType": "LEAF",
+    "properties": [
+      {
+        "name": "大小",
+        "value": "二力同向，合力为两个力的和；二力反向，合力为两个力的差的绝对值"
+      },
+      {
+        "name": "方向",
+        "value": "二力同向，方向不变；二力反向，方向与较大力的方向一致"
+      }
+    ],
+    "scenarios": [
+      "MotionAndPower"
+    ]
+  }
+]

@@ -40,7 +40,7 @@ namespace SmartKG.KGManagement.Controllers
                    
             int count = 0;
 
-            List<string> savedFilePaths = new List<string>();
+            List<string> savedFileNames = new List<string>();
 
             if (file != null && file.Count > 0)
             {
@@ -48,30 +48,54 @@ namespace SmartKG.KGManagement.Controllers
                 {
                     if (formFile.Length > 0)
                     {
-                        var filePath = excelDir + Path.DirectorySeparatorChar + formFile.FileName;//Path.GetTempFileName();
+                        string newFileName = GenerateTempFileName(formFile.FileName);
+
+                        var filePath = excelDir + Path.DirectorySeparatorChar + newFileName;
 
                         using (var stream = System.IO.File.Create(filePath))
                         {
                             await formFile.CopyToAsync(stream);
                         }
 
-                        savedFilePaths.Add(formFile.FileName);
+                        savedFileNames.Add(newFileName);
 
                         count += 1;
                     }
                 }
             }
 
-            ConvertFiles(savedFilePaths, scenario, datastoreName);
+            ConvertFiles(savedFileNames, scenario, datastoreName);
 
             ResponseResult msg = new ResponseResult();
             msg.success = true;
-            msg.responseMessage = count + " file(s) have been received.\n" + string.Join(",", savedFilePaths.ToArray());
+            msg.responseMessage = count + " file(s) have been received.\n" + string.Join(",", savedFileNames.ToArray());
            
             return Ok(msg);
         }
 
-        
+        private string GenerateTempFileName(string fileName)
+        {            
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return null;
+            }
+
+            string[] fileNameSecs = fileName.Split(Path.DirectorySeparatorChar);
+
+            fileName = fileNameSecs[fileNameSecs.Length - 1];
+
+            string[] secs = fileName.Split(".");
+
+            string suffix = secs[secs.Length - 1];
+
+            string tmpStr = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+            string newSuffix = "_" + tmpStr + "." + suffix;
+
+            string newFileName = fileName.Replace("." + suffix, newSuffix);
+
+            return newFileName;
+        }
 
         private void ConvertFiles(List<string> savedFileNames, List<string> scenarios, string datastoreName)
         {

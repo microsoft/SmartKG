@@ -11,6 +11,7 @@ using Serilog;
 using SmartKG.Common.Logger;
 using SmartKG.Common.DataPersistence;
 using SmartKG.Common.ContextStore;
+using Microsoft.OpenApi.Models;
 
 namespace SmartKG.KGBot
 {
@@ -30,7 +31,13 @@ namespace SmartKG.KGBot
         {            
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
-            services.AddSingleton<IConfiguration>(Configuration);            
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            //注册Swagger生成器，定义一个和多个Swagger 文档
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("smartkg", new OpenApiInfo { Title = "SmartKG", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +74,16 @@ namespace SmartKG.KGBot
             log.Information("KG and NLU Data is initialized and loaded.");
             
             ContextAccessor.initInstance(Configuration);
-            log.Information("Context Data is initialized.");            
+            log.Information("Context Data is initialized.");
+
+            //启用中间件服务生成Swagger作为JSON终结点
+            app.UseSwagger();
+            //启用中间件服务对swagger-ui，指定Swagger JSON终结点
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/smartkg/swagger.json", "SmartKG V1");
+            });
+
         }
     }
 }

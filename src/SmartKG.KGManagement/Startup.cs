@@ -67,8 +67,7 @@ namespace SmartKG.KGManagement
 
             DataLoader.initInstance(Configuration);
             DataLoader.GetInstance().Load(Configuration);
-            log.Information("KG Data is initialized and loaded.");
-
+            log.Information("KG Data is initialized and loaded.");            
         }
     }
 }
