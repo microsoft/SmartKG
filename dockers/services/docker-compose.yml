@@ -10,6 +10,6 @@ services:
   aspnetcore:
     image: aspnetcore
     build: ./aspnetcore/
- smartkg:
+  smartkg:
     image: smartkg
-    build: ./smarkg/
+    build: ./smartkg/

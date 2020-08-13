@@ -3,14 +3,14 @@ FROM aspnetcore
 COPY SmartKGLocalBase.zip /tmp/
 RUN unzip /tmp/SmartKGLocalBase.zip -d /app
 
-COPY smartkg_backend.zip /tmp/
-RUN unzip /tmp/smartkg_backend.zip -d /app
+COPY smartkg.zip /tmp/
+RUN unzip /tmp/smartkg.zip -d /app
 
-COPY appsettings.json /app/smartkg_backend/AppSettings/
+COPY appsettings.json /app/smartkg/
 
-ENV LD_LIBRARY_PATH=/app/smartkg_backend/lib64:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/app/smartkg/lib64:$LD_LIBRARY_PATH
 
 EXPOSE 5305
 
-CMD cd /app/smartkg_backend && \
+CMD cd /app/smartkg && \
     dotnet SmartKG.KGBot.dll
