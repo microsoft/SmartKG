@@ -70,3 +70,19 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 	修改${SourceCode_Base_Path}/SmartKG/src/SmartKG.KGBot/appsettings.json文件，将其中FileDataPath中的KGFilePath，NLUFilePath和VCFilePath的值分别换成2.2中生成的KG，NLU和VC目录的路径。
 
 ### 2.4 重新运行SmartKG后端
+
+-----------------
+
+# Development Branch Only
+
+## 3. docker images
+
+### 3.1 Download or clone the directory of SmartKG/dockers/smartkg_services/ to a machine on which docker and docker-compose were installed.
+
+### 3.2 enter SmartKG/dockers/smartkg_services/ 
+
+### 3.3 run following command to start smartkg backend  
+	1) sudo docker-compose build
+	2) sudo docker-compose up
+
+### 3.4 access http://{ip}:8082/swagger/index.html to view all API of smartkg backend
