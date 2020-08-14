@@ -8,14 +8,32 @@ using SmartKG.KGManagement.Data.Response;
 
 namespace SmartKG.KGManagement.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
     public class DataStoreMgmtController : ControllerBase
     {
         static DataLoader dataLoader = DataLoader.GetInstance();
 
+
+        [HttpGet]
+        [Route("api/[controller]/current")]
+        [ProducesResponseType(typeof(CurrentDatastoreResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<CurrentDatastoreResult>> GetCurrent()
+        {
+            CurrentDatastoreResult msg = new CurrentDatastoreResult();
+            msg.success = true;
+
+            string cdsName = dataLoader.GetCurrentDataStoreName();
+
+            msg.currentDatastoreName = cdsName;
+
+            return Ok(msg);
+        }
+
         // Get api/datastoremgmt
         [HttpGet]
+        [Route("api/[controller]")]
         [ProducesResponseType(typeof(DatastoreResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<DatastoreResult>> Get()
@@ -43,6 +61,7 @@ namespace SmartKG.KGManagement.Controllers
 
         // POST api/datastoremgmt
         [HttpPost]
+        [Route("api/[controller]")]
         [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseResult>> Post([FromBody] DatastoreRequestMessage request)
@@ -69,6 +88,7 @@ namespace SmartKG.KGManagement.Controllers
 
         // Delete api/datastoremgmt
         [HttpDelete]
+        [Route("api/[controller]")]
         [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseResult>> Delete([FromBody] DatastoreRequestMessage request)

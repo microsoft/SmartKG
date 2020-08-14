@@ -22,8 +22,8 @@ namespace SmartKG.Common.DataPersistence
 
         private static PersistanceType persistanceType;
         private static FilePathConfig filePathConfig;
-        //private static string connectionString;
-        //private static string defaultDBName;
+
+        private string currentDataStoreName; 
 
         private List<Vertex> vList;
         private List<Edge> eList;
@@ -71,6 +71,11 @@ namespace SmartKG.Common.DataPersistence
             return uniqueInstance;
         }
 
+        public string GetCurrentDataStoreName()
+        {
+            return this.currentDataStoreName;
+        }
+
         public PersistanceType GetPersistanceType()
         {
             return persistanceType;
@@ -81,18 +86,21 @@ namespace SmartKG.Common.DataPersistence
             this.settings = config.GetSection("Scenarios").Get<List<ScenarioSetting>>();
 
             if (persistanceType == PersistanceType.File)
-            {              
-                uniqueInstance.Load(filePathConfig.DefaultDataStore);                                
+            {
+                this.currentDataStoreName = filePathConfig.DefaultDataStore;                                           
             }
             else
-            {                 
-                uniqueInstance.Load(config.GetConnectionString("DefaultDataStore"));                
+            {
+                this.currentDataStoreName = config.GetConnectionString("DefaultDataStore");                               
             }
+            uniqueInstance.Load(this.currentDataStoreName);
         }
 
         public void Load(string dsName)
         {
-           
+
+            this.currentDataStoreName = dsName;
+
             (this.vList, this.eList, this.vcList, this.iList , this.enList, this.eaList ) = this.dataAccessor.Load(dsName);
 
             if (this.vcList == null || this.vList == null || this.eList == null)

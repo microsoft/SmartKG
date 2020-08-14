@@ -50,6 +50,14 @@ namespace SmartKG.KGManagement.Data.Response
         public List<string> datastoreNames { get; set; }
     }
 
+    public class CurrentDatastoreResult: IResult
+    {
+        public bool success { get; set; }
+        public string responseMessage { get; set; }
+
+        public string currentDatastoreName { get; set; }
+    }
+
     public class ConfigResult: IResult
     {
         public bool success { get; set; }

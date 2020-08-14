@@ -19,6 +19,7 @@ namespace SmartKG.Common.DataPersistance
         private ILogger log;
 
         private string rootPath;
+        
 
         public FileDataAccessor(string rootPath)
         {
@@ -105,8 +106,15 @@ namespace SmartKG.Common.DataPersistance
         {
             List<string> list = new List<string>();
             string[] directories = Directory.GetDirectories(rootPath);
+            
+            foreach(string dir in directories)
+            {
+                string subDir = dir.Replace(rootPath, "");
+                subDir = subDir.Replace(Path.DirectorySeparatorChar.ToString(), "");
 
-            list = directories.ToList<string>();
+                list.Add(subDir);
+            }
+            
             return list;
         }
 
