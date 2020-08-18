@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using SmartKG.DataUploader.Executor;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartKG.KGManagement.Controllers
 {
@@ -33,44 +34,41 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]/upload")]
         [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponseResult>> Upload(List<IFormFile> file, [FromForm]List<string> scenario, [FromForm] string datastoreName)
+        public async Task<ActionResult<ResponseResult>> Upload([FromForm] FileForm form)
         {
+            string scenario = form.Scenario;
+            string datastoreName = form.DatastoreName;
+            var file = form.UploadFile;
+
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
 
-            Directory.CreateDirectory(excelDir);
+            Directory.CreateDirectory(excelDir);            
 
-            int count = 0;
-
-            List<string> savedFileNames = new List<string>();
-
-            if (file != null && file.Count > 0)
+            string savedFileName = null;            
+            if (file != null)
             {
-                foreach(var formFile in file)
-                {
-                    if (formFile.Length > 0)
+                    if (file.Length > 0)
                     {
-                        string newFileName = GenerateTempFileName(formFile.FileName);
+                        string newFileName = GenerateTempFileName(file.FileName);
 
                         var filePath = excelDir + Path.DirectorySeparatorChar + newFileName;
 
                         using (var stream = System.IO.File.Create(filePath))
                         {
-                            await formFile.CopyToAsync(stream);
+                            await file.CopyToAsync(stream);
                         }
 
-                        savedFileNames.Add(newFileName);
-
-                        count += 1;
+                        savedFileName = newFileName;                
                     }
-                }
+                
             }
 
-            ConvertFiles(savedFileNames, scenario, datastoreName);
+            ConvertFiles(savedFileName, scenario, datastoreName);
 
             ResponseResult msg = new ResponseResult();
             msg.success = true;
-            msg.responseMessage = count + " file(s) have been received.\n" + string.Join(",", savedFileNames.ToArray());
+            msg.responseMessage = "File: " + savedFileName + " has been received.\n" ;
            
             return Ok(msg);
         }
@@ -99,25 +97,22 @@ namespace SmartKG.KGManagement.Controllers
             return newFileName;
         }
 
-        private void ConvertFiles(List<string> savedFileNames, List<string> scenarios, string datastoreName)
+        private void ConvertFiles(string savedFileName, string scenario, string datastoreName)
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
-
             
             string pythonArgs = "--srcPaths ";
 
-            foreach (var srcFileName in savedFileNames)
-            {
-                pythonArgs += "\"" + excelDir + Path.DirectorySeparatorChar + srcFileName + "\" ";
-            }
+            
+            pythonArgs += "\"" + excelDir + Path.DirectorySeparatorChar + savedFileName + "\" ";
+            
 
             pythonArgs += " --scenarios ";
 
-            foreach (string scenario in scenarios)
-            {
-                pythonArgs += "\"" + scenario + "\" ";
-            }
+            
+            pythonArgs += "\"" + scenario + "\" ";
+            
             string targetDir = null;
 
             if (persistanceType == PersistanceType.File)
@@ -180,5 +175,12 @@ namespace SmartKG.KGManagement.Controllers
 
             return Ok(msg);
         }
+    }
+
+    public class FileForm
+    {
+        [Required] public string DatastoreName { get; set; }
+        [Required] public string Scenario { get; set; }
+        [Required] public IFormFile UploadFile { get; set; }
     }
 }
