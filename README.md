@@ -77,6 +77,12 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 
 ## 3. docker images
 
+### 3.0 compile of smartkg image with Visual Studio
+
+配置：Release
+目标框架：netcoreapp2.1.16
+目标运行时：可移植的
+
 ### 3.1 Download or clone the directory of SmartKG/dockers/smartkg_services/ to a machine on which docker and docker-compose were installed.
 
 ### 3.2 enter SmartKG/dockers/smartkg_services/ 
@@ -86,3 +92,5 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 	2) sudo docker-compose up
 
 ### 3.4 access http://{ip}:8082/swagger/index.html to view all API of smartkg backend
+
+
