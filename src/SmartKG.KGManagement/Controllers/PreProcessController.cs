@@ -161,9 +161,9 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]/reload")]
         [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponseResult>> ReloadData([FromBody] ReloadRequestMessage request)
+        public async Task<ActionResult<ResponseResult>> ReloadData([FromForm] ReloadForm form)
         {            
-            string dsName = request.datastoreName;
+            string dsName = form.DatastoreName;
 
             DataLoader.GetInstance().Load(dsName);
 
@@ -182,5 +182,10 @@ namespace SmartKG.KGManagement.Controllers
         [Required] public string DatastoreName { get; set; }
         [Required] public string Scenario { get; set; }
         [Required] public IFormFile UploadFile { get; set; }
+    }
+
+    public class ReloadForm
+    {
+        [Required] public string DatastoreName { get; set; }
     }
 }

@@ -359,7 +359,9 @@ src/DataProcessor/DataProcessor.csproj.user
 src/KGBot/Properties/PublishProfiles
 src/SmartKG.DataProcessor/Resources/_DataPreProcess/scripts/.idea/
 src/SmartKG.DataProcessor/Resources/_DataPreProcess/excel/_OldExcels/
-
+SmartKGLocalBase/kgbot_context.json
+SmartKGLocalBase/DataStores
+SmartKGLocalBase/temp
 
 .DS_Store
 node_modules
