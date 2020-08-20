@@ -15,8 +15,8 @@ services:
     build: ./smartkg/
     ports:
       - 8082:8080
-  smartkgUI:
-    image: smartkgUI
-    build: ./smartkgUI/
+  smartkgui:
+    image: smartkgui
+    build: ./smartkgui/
     ports:
       - 8083:8080
