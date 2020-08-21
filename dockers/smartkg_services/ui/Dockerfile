@@ -1,4 +1,4 @@
-FROM node:7.7.2-alpine
+FROM node
 
 COPY smartkgui.zip /tmp/
 RUN unzip /tmp/smartkgui.zip -d /app
