@@ -12,9 +12,9 @@ services:
     build: ./smartkg/
     ports:
       - 8082:8080
-#  ui:
-#    image: ui
-#    build: ./ui/
-#    ports:
-#      - 8083:8080
+  ui:
+    image: ui
+    build: ./ui/
+    ports:
+      - 8083:8080
 

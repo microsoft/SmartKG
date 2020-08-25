@@ -17,17 +17,17 @@ def getId(rawId, sceanrio):
 
 def generateOutputPaths(outputDir, suffix, newlyCreated):
     checkDir(outputDir, newlyCreated)
-    checkDir(outputDir + "\\KG\\", newlyCreated)
-    checkDir(outputDir + "\\NLU\\", newlyCreated)
-    checkDir(outputDir + "\\Visulization\\", newlyCreated)
+    checkDir(outputDir + os.path.sep + "KG", newlyCreated)
+    checkDir(outputDir + os.path.sep + "NLU", newlyCreated)
+    checkDir(outputDir + os.path.sep + "Visulization", newlyCreated)
 
-    vJsonPath = outputDir + "\\KG\\" + "Vertexes_" + suffix + ".json"
-    eJsonPath = outputDir + "\\KG\\" + "Edges_" + suffix + ".json"
+    vJsonPath = outputDir + os.path.sep +  "KG" + os.path.sep +  "Vertexes_" + suffix + ".json"
+    eJsonPath = outputDir + os.path.sep + "KG" + os.path.sep + "Edges_" + suffix + ".json"
 
-    intentPath = outputDir + "\\NLU\\intentrules_" + suffix + ".tsv"
-    entityMapPath = outputDir + "\\NLU\\entitymap_" + suffix + ".tsv"
+    intentPath = outputDir + os.path.sep + "NLU"  + os.path.sep + "intentrules_" + suffix + ".tsv"
+    entityMapPath = outputDir + os.path.sep + "NLU" + os.path.sep + "entitymap_" + suffix + ".tsv"
 
-    colorJsonPath = outputDir + "\\Visulization\\VisulizationConfig_" + suffix + ".json"
+    colorJsonPath = outputDir + os.path.sep + "Visulization" + os.path.sep + "VisulizationConfig_" + suffix + ".json"
 
     return vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath
 
