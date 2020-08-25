@@ -91,6 +91,10 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 	1) sudo docker-compose build
 	2) sudo docker-compose up
 
-### 3.4 access http://{ip}:8082/swagger/index.html to view all API of smartkg backend
+### 3.4 access backend：http://{ip}:8082/swagger/index.html to view all API of smartkg 
+
+             access UI：http://{ip}:8083 for visulization and chatbot
+                               http://{ip}:8083/upload for datastore management and data upload
+
 
 
