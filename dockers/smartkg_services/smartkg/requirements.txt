@@ -1,0 +1,4 @@
+xlrd
+xlsxwriter
+argparse
+

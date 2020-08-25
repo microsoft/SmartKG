@@ -1,4 +1,4 @@
-FROM rhel7_unzip
+FROM python36
 
 COPY aspnetcore-runtime-2.1.16-linux-x64.tar.gz /data/
 
@@ -12,3 +12,4 @@ ENV PATH=/dotnet:$PATH \
 EXPOSE 8080
 
 CMD ["/bin/bash"]
+

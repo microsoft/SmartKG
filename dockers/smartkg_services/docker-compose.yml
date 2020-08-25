@@ -4,9 +4,6 @@ services:
   python36:
     image: python36
     build: ./python36/
-  rhel7_unzip:
-    image: rhel7_unzip
-    build: ./rhel7_unzip/
   aspnetcore:
     image: aspnetcore
     build: ./aspnetcore/
@@ -15,8 +12,8 @@ services:
     build: ./smartkg/
     ports:
       - 8082:8080
-  smartkgui:
-    image: smartkgui
-    build: ./smartkgui/
-    ports:
-      - 8083:8080
+#  ui:
+#    image: ui
+#    build: ./ui/
+#    ports:
+#      - 8083:8080
