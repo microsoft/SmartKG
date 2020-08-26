@@ -95,6 +95,15 @@ namespace SmartKG.KGManagement.Controllers
         {
             string datastoreName = request.datastoreName;
 
+            if (datastoreName == dataLoader.GetCurrentDataStoreName())
+            {
+                ResponseResult msg = new ResponseResult();
+                msg.success = false;
+                msg.responseMessage = "Datastore " + datastoreName + " is the default datastore now. To delete it, you need to set other datastore as default one first.\n";
+
+                return Ok(msg);
+            }
+
             if (!dataLoader.DeleteDataStore(datastoreName))
             {
                 ResponseResult msg = new ResponseResult();
