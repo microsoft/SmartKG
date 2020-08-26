@@ -186,6 +186,8 @@ namespace SmartKG.Common.DataPersistance
 
             collection.DeleteOne(deleteFilter);
 
+            client.DropDatabase(datastoreName);
+
             return true;
         }
     }       

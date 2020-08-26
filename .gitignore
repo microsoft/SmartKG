@@ -362,6 +362,7 @@ src/SmartKG.DataProcessor/Resources/_DataPreProcess/excel/_OldExcels/
 SmartKGLocalBase/kgbot_context.json
 SmartKGLocalBase/DataStores
 SmartKGLocalBase/temp
+dockers/smartkg_services.zip
 
 .DS_Store
 node_modules

@@ -2,7 +2,7 @@
   "profiles": {
     "DataProcessor": {
       "commandName": "Project",
-      "commandLineArgs": "--all "
+      "commandLineArgs": "--rootPath=C:\\\\Users\\\\jull\\\\Documents\\\\source\\\\repos\\\\SmartKG\\\\SmartKGLocalBase\\\\DataStores\\\\Default   --dbName=Default"
     }
   }
 }
