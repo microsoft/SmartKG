@@ -8,6 +8,7 @@ using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataPersistence;
 using SmartKG.Common.Importer;
 using SmartKG.Common.Logger;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -142,9 +143,34 @@ namespace SmartKG.Common.DataPersistance
             }
             else
             {
-                Directory.Delete(targetDir);
-                return true;
+                return DeleteDir(targetDir);                
             }
+        }
+
+        private bool DeleteDir(string targetDir)
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(targetDir);
+
+            try
+            { 
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    dir.Delete(true);
+                }
+            }
+            catch(Exception e)
+            {
+                log.Error(e.Message);
+                return false;
+            }
+
+            Directory.Delete(targetDir);
+
+            return true;
         }
     }
 }
