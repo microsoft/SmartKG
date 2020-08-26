@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  python36:
+    image: python36
+    build: ./python36/
+  aspnetcore:
+    image: aspnetcore
+    build: ./aspnetcore/
+  smartkg:
+    image: smartkg
+    build: ./smartkg/
+    ports:
+      - 8082:8080
+  ui:
+    image: ui
+    build: ./ui/
+    ports:
+      - 8083:8080
