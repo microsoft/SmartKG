@@ -17,4 +17,14 @@ services:
     build: ./ui/
     ports:
       - 8083:8080
-
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: dialogdatabase
+      MONGO_INITDB_ROOT_PASSWORD: erN9XzDa785DSKrB
+    volumes:
+      # Persist data
+      - ./MongoData:/data/db
+    ports:
+      - 27000:27017
