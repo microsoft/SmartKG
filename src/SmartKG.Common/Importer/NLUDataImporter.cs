@@ -69,7 +69,7 @@ namespace SmartKG.Common.Importer
 
                     rule.ruleSecs = ruleSecs;
 
-                    rule.id = seqNo.ToString();
+                    rule.id = rule.intentName + "-" + seqNo.ToString();
 
                     seqNo += 1;
 
@@ -117,7 +117,7 @@ namespace SmartKG.Common.Importer
 
                     EntityData entity = new EntityData();
 
-                    entity.id = seqNo.ToString();
+                    entity.id = intentName + "-" + seqNo.ToString();
                     entity.intentName = intentName;
                     entity.similarWord = similarWord;
                     entity.entityValue = entityValue;
@@ -172,7 +172,7 @@ namespace SmartKG.Common.Importer
                     string attributeValue = tmps[4];
 
                     EntityAttributeData ea = new EntityAttributeData();
-                    ea.id = seqNo.ToString();
+                    ea.id = intentName + "-" + entityValue + "-" + seqNo.ToString();
                     ea.intentName = intentName;
                     ea.entityValue = entityValue;
                     ea.entityType = entityType;

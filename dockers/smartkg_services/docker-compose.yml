@@ -7,16 +7,6 @@ services:
   aspnetcore:
     image: aspnetcore
     build: ./aspnetcore/
-  smartkg:
-    image: smartkg
-    build: ./smartkg/
-    ports:
-      - 8082:8080
-  ui:
-    image: ui
-    build: ./ui/
-    ports:
-      - 8083:8080
   mongo:
     image: mongo
     restart: always
@@ -28,3 +18,13 @@ services:
       - ./MongoData:/data/db
     ports:
       - 27000:27017
+  smartkg:
+    image: smartkg
+    build: ./smartkg/
+    ports:
+      - 8082:8080
+  ui:
+    image: ui
+    build: ./ui/
+    ports:
+      - 8083:8080

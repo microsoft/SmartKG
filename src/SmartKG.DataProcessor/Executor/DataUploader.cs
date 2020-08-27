@@ -42,14 +42,14 @@ namespace SmartKG.DataUploader.Executor
         {
             NLUDataImporter importer = new NLUDataImporter(nluPath);
 
-            writer.CreateNLUCollections(dbName, importer.ParseIntentRules(), importer.ParseEntityData(), importer.ParseEntityAttributeData());
+            writer.CreateNLUCollections(dbName, importer.ParseIntentRules(), importer.ParseEntityData(), importer.ParseEntityAttributeData(), false);
             Console.WriteLine("Imported NLU materials to MongoDB!");
         }
 
         private void ImportKG(string kgPath, string dbName)
         {
             KGDataImporter importer = new KGDataImporter(kgPath);
-            writer.CreateKGCollections(dbName, importer.ParseKGVertexes(), importer.ParseKGEdges());
+            writer.CreateKGCollections(dbName, importer.ParseKGVertexes(), importer.ParseKGEdges(), false);
 
             Console.WriteLine("Imported KG materials to MongoDB!");
         }
@@ -57,7 +57,7 @@ namespace SmartKG.DataUploader.Executor
         private void ImportVC(string vcPath, string dbName)
         {
             VisuliaztionImporter importer = new VisuliaztionImporter(vcPath);
-            writer.CreateVisuliaztionConfigCollections(dbName, importer.GetVisuliaztionConfigs());
+            writer.CreateVisuliaztionConfigCollections(dbName, importer.GetVisuliaztionConfigs(), false);
 
             Console.WriteLine("Imported Visulization Config materials to MongoDB!");
         }

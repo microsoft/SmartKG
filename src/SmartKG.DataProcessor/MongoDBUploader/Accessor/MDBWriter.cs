@@ -36,34 +36,17 @@ namespace MongoDBUploader.DataProcessor.Accessor
             log.Here().Information("connectionString: " + connectionString );        
         }
 
-        /*public void AddDataStore(string datastoreName)
-        {
-            DatastoreItem item = new DatastoreItem();
-            item.name = datastoreName;
-
-            IMongoDatabase db = client.GetDatabase(this.mgmtDBName);
-            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
-
-            collection.InsertOne(item);
-        }
-
-        public void RemoveDataStore(string datastoreName)
-        {
-            IMongoDatabase db = client.GetDatabase(this.mgmtDBName);
-            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
-
-            var deleteFilter = Builders<DatastoreItem>.Filter.Eq("name", datastoreName);
-           
-            collection.DeleteOne(deleteFilter);
-        }*/
-
-        public void CreateKGCollections(string dbName, List<Vertex> vertexes, List<Edge> edges)
+        public void CreateKGCollections(string dbName, List<Vertex> vertexes, List<Edge> edges, bool cleanCollection)
         {
             log.Here().Information("DatabaseName: " + dbName);
             IMongoDatabase db = client.GetDatabase(dbName);
 
             IMongoCollection<Vertex> vCollection = db.GetCollection<Vertex>("Vertexes");
-            vCollection.DeleteMany(this.allFilter);
+
+            if (cleanCollection)
+            {
+                vCollection.DeleteMany(this.allFilter);
+            }
 
             if (vertexes != null && vertexes.Count > 0)
             {                 
@@ -71,8 +54,10 @@ namespace MongoDBUploader.DataProcessor.Accessor
             }
 
             IMongoCollection<Edge> eCollection = db.GetCollection<Edge>("Edges");
-            eCollection.DeleteMany(this.allFilter);
-
+            if (cleanCollection)
+            {
+                eCollection.DeleteMany(this.allFilter);
+            }
             
             if (edges != null && edges.Count > 0)
             {                 
@@ -80,13 +65,17 @@ namespace MongoDBUploader.DataProcessor.Accessor
             }
         }
 
-        public void CreateVisuliaztionConfigCollections(string dbName, List<VisulizationConfig> vcList)
+        public void CreateVisuliaztionConfigCollections(string dbName, List<VisulizationConfig> vcList, bool cleanCollection)
         {
             log.Here().Information("DatabaseName: " + dbName);
             IMongoDatabase db = client.GetDatabase(dbName);
 
             IMongoCollection<VisulizationConfig> vcCollection = db.GetCollection<VisulizationConfig>("VisulizationConfigs");
-            vcCollection.DeleteMany(this.allFilter);
+
+            if (cleanCollection)
+            { 
+                vcCollection.DeleteMany(this.allFilter);
+            }
 
             if (vcList != null && vcList.Count > 0)
             {
@@ -94,14 +83,18 @@ namespace MongoDBUploader.DataProcessor.Accessor
             }
         }
 
-        public void CreateNLUCollections(string dbName, List<NLUIntentRule> intentRules, List<EntityData> entities, List<EntityAttributeData> entityAttributes)
+        public void CreateNLUCollections(string dbName, List<NLUIntentRule> intentRules, List<EntityData> entities, List<EntityAttributeData> entityAttributes, bool cleanCollection)
         {
             log.Here().Information("DatabaseName: " + dbName);
             IMongoDatabase db = client.GetDatabase(dbName);
 
             IMongoCollection<NLUIntentRule> iCollection = db.GetCollection<NLUIntentRule>("IntentRules");
             
-            iCollection.DeleteMany(this.allFilter);
+            if (cleanCollection)
+            { 
+                iCollection.DeleteMany(this.allFilter);
+            }
+
             if (intentRules != null && intentRules.Count > 0)
             {
                 iCollection.InsertMany(intentRules);
@@ -109,7 +102,11 @@ namespace MongoDBUploader.DataProcessor.Accessor
 
             IMongoCollection<EntityData> eCollection = db.GetCollection<EntityData>("Entities");
 
-            eCollection.DeleteMany(this.allFilter);
+            if (cleanCollection)
+            {
+                eCollection.DeleteMany(this.allFilter);
+            }
+
             if (entities != null && entities.Count > 0)
             {
                 eCollection.InsertMany(entities);
@@ -117,7 +114,11 @@ namespace MongoDBUploader.DataProcessor.Accessor
 
             IMongoCollection<EntityAttributeData> eaCollection = db.GetCollection<EntityAttributeData>("EntityAttributes");
 
-            eaCollection.DeleteMany(this.allFilter);
+            if (cleanCollection)
+            {
+                eaCollection.DeleteMany(this.allFilter);
+            }
+
             if (entityAttributes != null && entityAttributes.Count > 0)
             { 
                 eaCollection.InsertMany(entityAttributes);
