@@ -34,6 +34,7 @@ namespace SmartKG.Common.DataStore
             this.entityMap = new Dictionary<string, Dictionary<string, Dictionary<string, NLUEntity>>>();            
             this.intentPositiveDetermineRules = new List<NLUIntentRule>();
             this.intentNegativeDeterminRules = new Dictionary<string, List<NLUIntentRule>>();
+            this.sceanrioCache = new Dictionary<string, ScenarioSetting>();
         }
 
         public static NLUStore GetInstance()
@@ -43,6 +44,17 @@ namespace SmartKG.Common.DataStore
                 uniqueInstance = new NLUStore();
             }
             return uniqueInstance;
+        }
+
+        public void Clean()
+        {
+            this.standValueMap = new Dictionary<string, Dictionary<string, List<NLUEntity>>>();
+            this.attributeMap = new Dictionary<string, Dictionary<string, List<AttributePair>>>();
+
+            this.entityMap = new Dictionary<string, Dictionary<string, Dictionary<string, NLUEntity>>>();
+            this.intentPositiveDetermineRules = new List<NLUIntentRule>();
+            this.intentNegativeDeterminRules = new Dictionary<string, List<NLUIntentRule>>();
+            this.sceanrioCache = new Dictionary<string, ScenarioSetting>();
         }
 
         public NLUEntity AddEntity(string intentName, string entityValue, string entityType)
@@ -299,7 +311,7 @@ namespace SmartKG.Common.DataStore
 
                 if (temp == null)
                 { 
-                    return null;
+                    index += 1;
                 }
                 else
                 {
@@ -312,6 +324,7 @@ namespace SmartKG.Common.DataStore
                         return temp.intentName;
                     }
                 }
+
             }
 
             return null;

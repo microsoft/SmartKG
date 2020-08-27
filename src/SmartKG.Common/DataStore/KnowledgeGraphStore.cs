@@ -46,6 +46,27 @@ namespace SmartKG.Common.DataStore
             return uniqueInstance;
         }
 
+        public void Clean()
+        {
+            this.vertexNameCache = new Dictionary<string, List<Vertex>>();
+
+            this.vertexIdCache = new Dictionary<string, Vertex>();
+
+            this.outRelationDict = new Dictionary<string, Dictionary<RelationLink, List<string>>>();
+
+            this.inRelationDict = new Dictionary<string, Dictionary<RelationLink, List<string>>>();
+
+            this.nameIdCache = new Dictionary<string, HashSet<string>>();
+
+            this.scenarioEdgesDict = new Dictionary<string, List<Edge>>();
+
+            this.vertexLabelColorMap = new Dictionary<string, List<ColorConfig>>();
+
+            this.rootVertexes = new  List<Vertex>();
+
+            this.scenarioNames = new HashSet<string>();
+    }
+
         public void SetRootVertexes(List<Vertex> roots)
         {
             this.rootVertexes = roots;

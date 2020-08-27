@@ -98,6 +98,8 @@ namespace SmartKG.Common.DataPersistence
 
         public void Load(string dsName)
         {
+            KnowledgeGraphStore.GetInstance().Clean();
+            NLUStore.GetInstance().Clean();
 
             this.currentDataStoreName = dsName;
 

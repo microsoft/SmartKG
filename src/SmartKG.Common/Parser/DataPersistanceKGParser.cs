@@ -219,8 +219,8 @@ namespace SmartKG.Common.Parser.DataPersistance
                 vertexLabelsMap.Add(scenarioName, cc);
             }
 
-            KnowledgeGraphStore store = KnowledgeGraphStore.GetInstance();
-            
+            KnowledgeGraphStore store = KnowledgeGraphStore.GetInstance();            
+
             store.SetRootVertexes(roots);
             store.SetVertexIdCache(vIdCache);
             store.SetVertexNameCache(vNameCache);
