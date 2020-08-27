@@ -11,7 +11,7 @@ defaultColorMap = {"red": "#E83344","orange": "#F5A100", "green": "#9DE7B7", "bl
 
 
 def getId(rawId, sceanrio):
-    newId = rawId + "_" + sceanrio
+    newId = str(rawId) + "_" + sceanrio
     return newId
 
 
