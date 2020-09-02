@@ -1,14 +1,17 @@
 FROM aspnetcore
 
+ARG DOCKER_HOST
+
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
-
 
 COPY SmartKGLocalBase.zip /tmp/
 RUN unzip /tmp/SmartKGLocalBase.zip -d /app
 
 COPY smartkg.zip /tmp/
 RUN unzip /tmp/smartkg.zip -d /app
+
+RUN -i 's/localhost/${DOCKER_HOST}/g'  appsettings.json
 
 COPY appsettings.json /app/smartkg/
 
