@@ -17,6 +17,7 @@
         <el-button type="primary" @click="dialogCreateVisible = true">新建数据仓库</el-button>
         <el-button type="primary" @click="setDefault()">设为默认仓库</el-button>
         <el-button type="primary" @click="dialogDelVisible = true">删除仓库</el-button>
+        <el-button type="primary" @click="download()">下载模板</el-button>
         <el-dialog title="新建数据库" :visible.sync="dialogCreateVisible" width="30%">
           <p>请输入数据仓库的名称</p>
           <p>
@@ -103,6 +104,10 @@ export default {
           this.getList();
           this.dialogCreateVisible = false;
         });
+    },
+
+    download(){
+      window.location.href = `./SmartKG_KGDesc_Template.xlsx`;
     },
 
     setDefault() {
