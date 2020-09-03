@@ -101,10 +101,11 @@ namespace SmartKG.KGManagement.Controllers
         {
             FileUploadConfig uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             string excelDir = uploadConfig.ExcelDir;
-            
-            string pythonArgs = "--srcPaths ";
 
-            
+            string pythonArgs = "--configPath \"" + uploadConfig.ColorConfigPath + "\" ";
+
+            pythonArgs += " --srcPaths ";
+                        
             pythonArgs += "\"" + excelDir + Path.DirectorySeparatorChar + savedFileName + "\" ";
             
 

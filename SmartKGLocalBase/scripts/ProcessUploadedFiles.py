@@ -3,13 +3,14 @@ from ExcelReader import convertFile
 from ExcelReader import generateOutputPaths
 
 
-def processOneExcelFile(srcPath, scenario, destPath, isFirst):
+def processOneExcelFile(configPath, srcPath, scenario, destPath, isFirst):
     vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath = generateOutputPaths(destPath, scenario, isFirst)
-    convertFile(srcPath, [], [scenario], [], vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath)
+    convertFile(configPath, srcPath, [], [scenario], [], vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath)
 
     return
 
-def processExcelFiles(srcPaths, scenarios, destPath):
+
+def processExcelFiles(configPath,srcPaths, scenarios, destPath):
     if len(srcPaths) == 0:
         print("Error: Invalid srcPath. There is at least a srcPath.")
         return
@@ -30,13 +31,15 @@ def processExcelFiles(srcPaths, scenarios, destPath):
         else:
             scenario = scenarios[index]
 
-        processOneExcelFile(srcPath, scenario, destPath, False)
+        processOneExcelFile(configPath, srcPath, scenario, destPath, False)
 
     return
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process excel files for KG.')
+    parser.add_argument('--configPath', metavar='C', type=str,
+                    help='path of config dir')
     parser.add_argument('--srcPaths', metavar='S', type=str, nargs='+',
                     help='path of source excel file(s)')
     parser.add_argument('--destPath', metavar='D', type=str,
@@ -46,4 +49,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    processExcelFiles(args.srcPaths, args.scenarios, args.destPath)
+    processExcelFiles(args.configPath, args.srcPaths, args.scenarios, args.destPath)

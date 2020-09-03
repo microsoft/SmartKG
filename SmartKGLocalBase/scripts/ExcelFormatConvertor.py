@@ -42,20 +42,6 @@ def convertFormat(srcPath, destPath):
     output_wb.close()
 
 if __name__ == "__main__":
-    #inputPath = "..\\excel\\COVID19\\SmartKG_KGDesc_virsus.xlsx"
-    #outputPath = "..\\excel\\COVID19\\SmartKG_KGDesc_COVID19_zh.xlsx"
-
-    #inputPath = "..\\excel\\COVID19\\smartKG_virus_en.xlsx"
-    #outputPath = "..\\excel\\COVID19\\SmartKG_KGDesc_COVID19_en.xlsx"
-
-    #inputPath = "..\\excel\\Physics\\知识图谱导入模板-初二物理上声学.xlsx"
-    #outputPath = "..\\excel\\Physics\\SmartKG_KGDesc_PhonicsGrade7_zh.xlsx"
-
-    #inputPath = "..\\excel\\Physics\\知识图谱导入模板-初二物理第一+七+八章.xlsx"
-    #outputPath = "..\\excel\\Physics\\SmartKG_KGDesc_MechanicsGrade7_zh.xlsx"
-
-    #inputPath = "..\\..\\_Template\\SmartKG_KGDesc_Template.xlsx"
-    #outputPath = "..\\..\\_Template\\SmartKG_KGDesc_Template_new.xlsx"
 
     inputPath = "..\\excel\\_OldExcels\\知识图谱导入模板-运动和力.xlsx"
     outputPath = "..\\excel\\Physics2\\SmartKG_KGDesc_MotionAndPower_zh.xlsx"

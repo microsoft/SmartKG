@@ -7,9 +7,6 @@ import os.path
 from os import path
 import shutil
 
-defaultColorMap = {"red": "#E83344","orange": "#F5A100", "green": "#9DE7B7", "blue": "#009DDC","lightred": "#FD9F7F","bluepurple": "#025CEA","lightpurple": "#78A7FF"}
-
-
 def getId(rawId, sceanrio):
     newId = str(rawId) + "_" + sceanrio
     return newId
@@ -72,7 +69,39 @@ def generateSimilarWordMap(sfilePath):
 
     return similarWordMap
 
-def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath):
+def GetColor(type, predefinedVertexColor, colors, usedColor, defaultColorValue, index):               
+    colorValue = defaultColorValue
+    if type in predefinedVertexColor.keys():
+        colorKey = predefinedVertexColor[type]
+        colorValue = colors[colorKey]
+        usedColor.append(colorKey) 
+    else:	
+        if index < len(colors) - 1:
+            colorKey = list(colors.keys())[index]
+            if colorKey in usedColor:
+                index += 1
+            else:
+                colorValue = list(colors.values())[index]
+                usedColor.append(colorKey)
+
+    return colorValue, usedColor, index
+
+def GetColorConfig(configPath):
+    predefinedVertexColor = {}
+
+    with open(configPath + os.path.sep + "PreDefinedVertexColor.tsv", "r", encoding="utf-8") as pvf:
+        for line in pvf:
+            (key, val) = line.strip().split("\t")
+            predefinedVertexColor[key] = val
+
+    colors = {}
+    with open(configPath + os.path.sep + "HexColorCodeDict.tsv", "r", encoding="utf-8") as hcf:
+        for line in hcf:
+            (key, val) = line.strip().split("\t")
+            colors[key] = val
+    return predefinedVertexColor, colors
+
+def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath):
     wb = open_workbook(excelPath)
     sheet_vertexes = wb.sheets()[0]
     sheet_edges = wb.sheets()[1]
@@ -213,8 +242,6 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
 
     entity_lines = entity_lines[:-1]
 
-
-
     print("Generating entities in", entityMapPath)
     with open(entityMapPath, "w", encoding="utf-8") as ef:
         ef.write(entity_lines)
@@ -235,6 +262,8 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
     with open(intentPath, "w", encoding="utf-8") as rf:
         rf.write(rule_lines)
 
+    predefinedVertexColor, colors = GetColorConfig(configPath)
+
     colorObjs = []
 
     for scenario in scenarios:
@@ -244,36 +273,40 @@ def convertFile(excelPath, default_rules, scenarios, similarWordMap, vJsonPath, 
         scenarioRelations = scenarioReltionMap[scenario]
 
         obj["labelsOfVertexes"] = []
+
+        usedColor = []
+        defaultColorValue = colors["lightgrey"]
+
         index = 0
         for label in scenarioLabels:
-            colors = list(defaultColorMap.values())
-            color = colors[-1]
-            if index < len(colors) - 1:
-                color = colors[index]
+            colorValue, usedColor, index = GetColor(label, predefinedVertexColor, colors, usedColor, defaultColorValue, index)
 
             pair = {}
             pair["itemLabel"] = label
-            pair["color"] = color
+            pair["color"] = colorValue
 
             obj["labelsOfVertexes"].append(pair)
             index += 1
 
         obj["relationTypesOfEdges"] = []
+
+        usedColor = []
+        defaultColorValue = colors["lightblack"]
+	
         index = 0
         for relationType in scenarioRelations:
-            colors = list(defaultColorMap.values())
-            color = colors[-1]
-            if index < len(colors) - 1:
-                color = colors[index]
+            colorValue, usedColor, index = GetColor(relationType, predefinedVertexColor, colors, usedColor, defaultColorValue, index)
 
             pair = {}
             pair["itemLabel"] = relationType
-            pair["color"] = color
+            pair["color"] = colorValue
 
             obj["relationTypesOfEdges"].append(pair)
             index += 1
 
         colorObjs.append(obj)
+
+    
 
     print("Generating Visualization Config file:", colorJsonPath)
     cfp = open(colorJsonPath, 'w', encoding="utf-8")
