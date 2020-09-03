@@ -2,10 +2,10 @@ red	#E83344
 lightred	#FD9F7F
 pink	#FF4C94
 orange	#F5A100
-yellow	#FDF64F
+yellow	#E5E516
 lightyellow	#FFFF70
-green	#9DE7B7
-lightgreen	#00D86C
+green	#00D86C
+lightgreen	#9DE7B7
 icegreen	#7FFFBF
 blue	#009DDC
 iceblue	#7BCDFF
@@ -15,3 +15,4 @@ lightpurple	#78A7FF
 icepurple	#D89ADA
 lightgrey	#EAEAEA
 lightblack	#333333
+grey	#808080

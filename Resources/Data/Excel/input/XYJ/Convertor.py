@@ -45,8 +45,19 @@ def convertFile(excelPath):
     for row in range(1, sheet_edges.nrows):
         rType = sheet_edges.cell_value(row, 0)
         sName = sheet_edges.cell_value(row, 1)
+
+        if not sName in nameIdMap:
+            continue
+
         sId = nameIdMap[sName]
+
+
+
         tName = sheet_edges.cell_value(row, 2)
+
+        if not tName in nameIdMap:
+            continue
+
         tId = nameIdMap[tName]
 
         relation = {}
@@ -102,5 +113,8 @@ def genNewDoc(newPath, nodes, relations):
 
     workbook.close()
 
-nodes, relations = convertFile("Xiyouji.xlsx")
-genNewDoc("SmartKG_Xiyouji.xlsx", nodes, relations)
+nodes, relations = convertFile("Xiyouji_relations.xlsx")
+genNewDoc("SmartKG_Xiyouji_relations.xlsx", nodes, relations)
+
+nodes, relations = convertFile("Xiyouji_org.xlsx")
+genNewDoc("SmartKG_Xiyouji_org.xlsx", nodes, relations)
