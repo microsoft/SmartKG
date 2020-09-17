@@ -7,6 +7,7 @@ import os.path
 from os import path
 import shutil
 
+
 def getId(rawId, sceanrio):
     newId = str(rawId) + "_" + sceanrio
     return newId
@@ -18,15 +19,16 @@ def generateOutputPaths(outputDir, suffix, newlyCreated):
     checkDir(outputDir + os.path.sep + "NLU", newlyCreated)
     checkDir(outputDir + os.path.sep + "Visulization", newlyCreated)
 
-    vJsonPath = outputDir + os.path.sep +  "KG" + os.path.sep +  "Vertexes_" + suffix + ".json"
+    vJsonPath = outputDir + os.path.sep + "KG" + os.path.sep +  "Vertexes_" + suffix + ".json"
     eJsonPath = outputDir + os.path.sep + "KG" + os.path.sep + "Edges_" + suffix + ".json"
 
-    intentPath = outputDir + os.path.sep + "NLU"  + os.path.sep + "intentrules_" + suffix + ".tsv"
+    intentPath = outputDir + os.path.sep + "NLU" + os.path.sep + "intentrules_" + suffix + ".tsv"
     entityMapPath = outputDir + os.path.sep + "NLU" + os.path.sep + "entitymap_" + suffix + ".tsv"
 
     colorJsonPath = outputDir + os.path.sep + "Visulization" + os.path.sep + "VisulizationConfig_" + suffix + ".json"
 
     return vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath
+
 
 def checkDir(dir, newlyCreated):
     if not path.exists(dir):
@@ -44,6 +46,7 @@ def checkDir(dir, newlyCreated):
             os.mkdir(dir)
             print(dir + " is created to contain KG and NLU files.")
     return
+
 
 def generateSimilarWordMap(sfilePath):
     similarWordMap = {}
@@ -69,6 +72,7 @@ def generateSimilarWordMap(sfilePath):
 
     return similarWordMap
 
+
 def GetColor(type, predefinedVertexColor, colors, usedColor, defaultColorValue, index):               
     colorValue = defaultColorValue
     if type in predefinedVertexColor.keys():
@@ -86,6 +90,7 @@ def GetColor(type, predefinedVertexColor, colors, usedColor, defaultColorValue, 
 
     return colorValue, usedColor, index
 
+
 def GetColorConfig(configPath):
     predefinedVertexColor = {}
 
@@ -101,6 +106,7 @@ def GetColorConfig(configPath):
             colors[key] = val
     return predefinedVertexColor, colors
 
+
 def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap, vJsonPath, eJsonPath, intentPath, entityMapPath, colorJsonPath):
     wb = open_workbook(excelPath)
     sheet_vertexes = wb.sheets()[0]
@@ -111,6 +117,7 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
     nodeNameSet = set()
     propertyNameSet = set()
     relationTypeSet = set()
+    nodeTypeSet = set()
 
     headVidSet = set()
     tailVidSet = set()
@@ -157,6 +164,7 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
             data["name"] = sheet_vertexes.cell_value(row, 1)
             nodeNameSet.add(data["name"])
             data["label"] = sheet_vertexes.cell_value(row, 2)
+            nodeTypeSet.add(data["label"].split("_")[0])
             data["scenarios"] = scenarios
             data["leadSentence"] = sheet_vertexes.cell_value(row, 3)
 
@@ -194,6 +202,8 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
 
             vertexes.append(data)
 
+    #print("NodeTypes: ", nodeTypeSet)
+
     print("Generating vertex file:", vJsonPath)
     vfp = open(vJsonPath, 'w', encoding="utf-8")
     json.dump(vertexes, vfp, ensure_ascii=False, sort_keys=True, indent=2, separators=(',', ': '))
@@ -226,7 +236,7 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
 
             if len(similarWordMap) > 0:
                 for sw in similarWords:
-                    entity_lines += scenario + "\t" + sw + "\t" + pn + "\t" + "NodeName" + "\n"
+                    entity_lines += scenario + "\t" + sw + "\t" + pn + "\t" + "PropertyName" + "\n"
 
     for rt in relationTypeSet:
         if rt in similarWordMap:
@@ -238,7 +248,20 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
 
             if len(similarWordMap) > 0:
                 for sw in similarWords:
-                    entity_lines += scenario + "\t" + sw + "\t" + rt + "\t" + "NodeName" + "\n"
+                    entity_lines += scenario + "\t" + sw + "\t" + rt + "\t" + "RelationType" + "\n"
+
+    for et in nodeTypeSet:
+        if et in similarWordMap:
+            similarWords = similarWordMap[et]
+        else:
+            similarWords = []
+
+        for scenario in scenarios:
+            entity_lines += scenario + "\t" + et + "\t" + et + "\t" + "NodeType" + "\n"
+
+            if len(similarWordMap) > 0:
+                for sw in similarWords:
+                    entity_lines += scenario + "\t" + sw + "\t" + et + "\t" + "NodeType" + "\n"
 
     entity_lines = entity_lines[:-1]
 
@@ -305,8 +328,6 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
             index += 1
 
         colorObjs.append(obj)
-
-    
 
     print("Generating Visualization Config file:", colorJsonPath)
     cfp = open(colorJsonPath, 'w', encoding="utf-8")

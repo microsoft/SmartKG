@@ -43,8 +43,8 @@ def convertFormat(srcPath, destPath):
 
 if __name__ == "__main__":
 
-    inputPath = "..\\excel\\_OldExcels\\知识图谱导入模板-运动和力.xlsx"
-    outputPath = "..\\excel\\Physics2\\SmartKG_KGDesc_MotionAndPower_zh.xlsx"
+    inputPath = "..\\..\\Resources\\Data\\Excel\\input\\XYJ\\SmartKG_Xiyouji_relations.xlsx"
+    outputPath = "..\\temp\\test"
 
     convertFormat(inputPath, outputPath)
 

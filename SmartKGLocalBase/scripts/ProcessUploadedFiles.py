@@ -18,12 +18,7 @@ def processExcelFiles(configPath,srcPaths, scenarios, destPath):
     if len(scenarios) > len(srcPaths):
         print("Warning: useless scenario names. Will be ignored.")
 
-    #isFirst = True
-
     for index in range(0, len(srcPaths)):
-        #if index > 0:
-        #    isFirst = False;
-
         srcPath = srcPaths[index]
 
         if index >= len(scenarios):
