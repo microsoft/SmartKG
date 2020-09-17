@@ -71,10 +71,6 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 
 ### 2.4 重新运行SmartKG后端
 
------------------
-
-# Development Branch Only
-
 ## 3. docker images
 
 ### 3.0 compile of smartkg image with Visual Studio
