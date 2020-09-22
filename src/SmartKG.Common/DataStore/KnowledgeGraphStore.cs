@@ -13,8 +13,6 @@ namespace SmartKG.Common.DataStore
     public sealed class KnowledgeGraphStore
     {
         private static KnowledgeGraphStore uniqueInstance;
-
-
         private Dictionary<string, List<Vertex>> vertexNameCache { get; set; }
         private Dictionary<string, Vertex> vertexIdCache { get; set; }
         private Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict { get; set; }

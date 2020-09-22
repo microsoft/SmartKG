@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SmartKG.Common.ContextStore;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.KG;
-using SmartKG.Common.DataStore;
 using SmartKG.KGBot.Data.Response;
 
 namespace SmartKG.KGBot.Managment
 {
     public class MessageGenerator
-    {
-        private string quitPromptStr = "\n或者输入 q 退出当前对话。\n";
-
+    {        
         private RUNNINGMODE runningMode;
         public MessageGenerator(RUNNINGMODE runningMode)
         {
@@ -22,17 +17,13 @@ namespace SmartKG.KGBot.Managment
 
         public QueryResult GenerateErrorMessage(string message)
         {
-            QueryResult result = new QueryResult(false, message, ResponseItemType.Other);
-
-            //contextMgmt.ExitDialog();
-
+            QueryResult result = new QueryResult(false, message, ResponseItemType.Other);           
             return result;
         }
 
         public QueryResult GenerateQuitMessage()
         {
-            QueryResult result = new QueryResult(true, "已退出上轮对话，请提出您的问题。\n", ResponseItemType.Other);
-            //contextMgmt.ExitDialog();
+            QueryResult result = new QueryResult(true, "已退出上轮对话，请提出您的问题。\n", ResponseItemType.Other);            
 
             return result;
         }
@@ -89,13 +80,8 @@ namespace SmartKG.KGBot.Managment
             string resultStr = GetInformationOfVertex(vertex);
 
             QueryResult result = new QueryResult(true, resultStr, ResponseItemType.Other);
-
-            //contextMgmt.ExitDialog();
-
+            
             return result;
-        }
-
-        
-
+        }        
     }
 }

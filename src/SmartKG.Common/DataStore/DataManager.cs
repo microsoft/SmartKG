@@ -90,38 +90,6 @@ namespace SmartKG.Common.DataStore
 
             List<Vertex> vertexes = kgStore.GetVertexByName(startVertexName);
 
-            /*
-
-            if (vertexes != null)
-            {
-                List<Vertex> results = new List<Vertex>();
-                foreach (Vertex vertex in vertexes)
-                {
-                    if (!string.IsNullOrWhiteSpace(scenarioName) && (vertex.scenarios != null && !vertex.scenarios.Contains(scenarioName)))
-                    {
-                        continue;
-                    }
-
-
-                    if (IsSelected(vertex, attributes))
-                    {
-                        results.Add(vertex);
-                    }
-                }
-
-                if (results.Count > 0)
-                {
-                    return results[0];
-                }
-                else { return null; }
-            }
-            else
-            {
-                LogInformation(log.Here(), startVertexName, "doesn't filtered with attributes: " + JsonConvert.SerializeObject(attributes));
-                return null;
-            }
-            */
-
             List<Vertex> results = Filter(vertexes, scenarioName, attributes);
 
             if (results != null && results.Count > 0)
@@ -264,9 +232,7 @@ namespace SmartKG.Common.DataStore
                 }
                 index += 1;
             }
-
             return results;
-
         }
 
         private bool IsSelected(Vertex vertex, List<AttributePair> attributes)

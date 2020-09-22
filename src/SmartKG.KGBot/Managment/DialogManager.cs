@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using SmartKG.KGBot.Data.Response;
 using SmartKG.KGBot.NaturalLanguageUnderstanding;
 using Serilog;
-using SmartKG.Common.DataStore;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.KG;
@@ -98,14 +97,11 @@ namespace SmartKG.KGBot.Managment
                 
         private QueryResult ResponseDialog(NLUResult nlu, ContextManager contextMgmt)
         {            
-            string intent = nlu.GetIntent();
-            //string scenarioName = intent;
-
+            string intent = nlu.GetIntent();            
 
             if (string.IsNullOrWhiteSpace(intent))
             {
-                intent = contextMgmt.GetIntent();
-                //scenarioName = contextMgmt.GetSecnarioName();
+                intent = contextMgmt.GetIntent();                
             }
             else
             {
@@ -114,9 +110,7 @@ namespace SmartKG.KGBot.Managment
             }
 
             try
-            {
-                
-               
+            {                               
                 if (nlu.GetAttributes() != null && nlu.GetAttributes().Count() > 0)
                 {
                     foreach(AttributePair attribute in nlu.GetAttributes())
@@ -133,54 +127,12 @@ namespace SmartKG.KGBot.Managment
                 if (contextMgmt.GetStatus() == DialogStatus.PENDING)
                 {                    
                     if (nlu.GetType() == NLUResultType.NORMAL)
-                    {
-                        /*
-                        List<Vertex> vertexes = dQuerier.SearchVertexes(contextMgmt, nlu.GetEntities());
-                        QueryResult responseContent = new QueryResult(false, "Failed", ResponseItemType.Other);
-                        
-                        if (vertexes == null)
-                        {
-                            responseContent = this.msgGenerator.GenerateErrorMessage("无法查找到对应节点，请确定输入的限定条件正确");
-                            contextMgmt.ExitDialog();
-                        }
-                        else if (vertexes.Count == 1)
-                        {
-                            Vertex vertex = vertexes[0];
-
-                            if (vertex.isLeaf())
-                            {
-                                responseContent = this.msgGenerator.GenerateEndVertexMessage(vertex);
-                                contextMgmt.ExitDialog();
-                            }
-                            else
-                            {
-                                List<DialogSlot> validSlots = dQuerier.GetValidSlots(contextMgmt);                            
-
-                                if (validSlots.Count() == 0)
-                                {
-                                    contextMgmt.StartDialog();
-                                    responseContent = dQuerier.GetChildren(contextMgmt, vertex, nlu.GetRelationTypeSet());                                
-                                }
-                                else
-                                {
-                                    contextMgmt.SetSlots(validSlots);
-                                    contextMgmt.EnterSlotFilling();
-                                
-                                    responseContent = this.msgGenerator.GenerateSlotMessage(validSlots[0]);
-                                }                        
-                            }
-                        }
-                        else
-                        {
-                            responseContent = dQuerier.GetMessageForVertexes(contextMgmt, vertexes);
-                        }
-                        */
+                    {                        
                         QueryResult responseContent = dQuerier.SearchVertexes(contextMgmt, nlu.GetEntities());
 
                         if (responseContent.success)
                         {
-                            contextMgmt.SetIntent(intent);
-                            //contextMgmt.SetScenarioName(scenarioName);
+                            contextMgmt.SetIntent(intent);                            
                             contextMgmt.SaveQuestion(responseContent.responseMessage);
                             contextMgmt.RefreshDurationTime();
                         }

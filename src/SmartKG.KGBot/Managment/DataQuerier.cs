@@ -1,4 +1,7 @@
-﻿using SmartKG.Common.ContextStore;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;

@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using MongoDB.Bson;
-using System;
 using MongoDB.Driver;
 using Serilog;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +10,7 @@ using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.Visulization;
-using SmartKG.Common.Data;
+
 
 namespace MongoDBUploader.DataProcessor.Accessor
 {   
