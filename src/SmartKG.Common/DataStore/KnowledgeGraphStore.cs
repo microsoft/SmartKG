@@ -124,9 +124,9 @@ namespace SmartKG.Common.DataStore
             this.nameIdCache = nameIdMap;
         }
 
-        public List<Vertex> GetVertexByNodeType(string nodeType)
+        public List<Vertex> GetVertexByLabel(string label)
         {
-            if (string.IsNullOrWhiteSpace(nodeType))
+            if (string.IsNullOrWhiteSpace(label))
             {
                 return null;
             }
@@ -136,7 +136,7 @@ namespace SmartKG.Common.DataStore
             {
                 foreach(Vertex vertex in vertexes)
                 {
-                    if (vertex.nodeType == nodeType)
+                    if (vertex.label.Contains(label))
                     {
                         results.Add(vertex);
                     }

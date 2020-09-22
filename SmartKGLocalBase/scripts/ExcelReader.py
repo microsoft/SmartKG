@@ -117,7 +117,7 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
     nodeNameSet = set()
     propertyNameSet = set()
     relationTypeSet = set()
-    nodeTypeSet = set()
+    labelSet = set()
 
     headVidSet = set()
     tailVidSet = set()
@@ -164,7 +164,7 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
             data["name"] = sheet_vertexes.cell_value(row, 1)
             nodeNameSet.add(data["name"])
             data["label"] = sheet_vertexes.cell_value(row, 2)
-            nodeTypeSet.add(data["label"].split("_")[0])
+            labelSet.add(data["label"].split("_")[0])
             data["scenarios"] = scenarios
             data["leadSentence"] = sheet_vertexes.cell_value(row, 3)
 
@@ -250,18 +250,18 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
                 for sw in similarWords:
                     entity_lines += scenario + "\t" + sw + "\t" + rt + "\t" + "RelationType" + "\n"
 
-    for et in nodeTypeSet:
+    for et in labelSet:
         if et in similarWordMap:
             similarWords = similarWordMap[et]
         else:
             similarWords = []
 
         for scenario in scenarios:
-            entity_lines += scenario + "\t" + et + "\t" + et + "\t" + "NodeType" + "\n"
+            entity_lines += scenario + "\t" + et + "\t" + et + "\t" + "Label" + "\n"
 
             if len(similarWordMap) > 0:
                 for sw in similarWords:
-                    entity_lines += scenario + "\t" + sw + "\t" + et + "\t" + "NodeType" + "\n"
+                    entity_lines += scenario + "\t" + sw + "\t" + et + "\t" + "Label" + "\n"
 
     entity_lines = entity_lines[:-1]
 
@@ -271,16 +271,28 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
 
     print("Generating intent rules in", intentPath)
     nodeNameRule = ""
+
     for nodeName in nodeNameSet:
         nodeNameRule += nodeName + "|"
+
     nodeNameRule = nodeNameRule[:-1]
+
+    labelRule = ""
+    for typeName in labelSet:
+        labelRule += typeName + "|"
+    if labelRule != "":
+        labelRule = labelRule[:-1]
+
 
     rule_lines = ""
 
     for rule in default_rules:
         rule_lines += rule + "\n"
+
     for scenario in scenarios:
         rule_lines += scenario + "\tPOSITIVE\t" + nodeNameRule
+        if labelRule != "":
+            rule_lines += "\n" + scenario + "\tPOSITIVE\t" + labelRule
 
     with open(intentPath, "w", encoding="utf-8") as rf:
         rf.write(rule_lines)

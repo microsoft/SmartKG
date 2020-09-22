@@ -44,9 +44,9 @@ namespace SmartKG.KGBot.Managment
 
                     results.Add(vertex);
                 }
-                else if (firstEntity.GetEntityType() == "NodeType")
+                else if (firstEntity.GetEntityType() == "Label")
                 {
-                    results = kgMgmt.SearchGraphByNodeType(firstEntity.GetEntityValue(), contextMgmt.GetSecnarioName(), contextMgmt.GetSavedAttributes());
+                    results = kgMgmt.SearchGraphByLabel(firstEntity.GetEntityValue(), contextMgmt.GetSecnarioName(), contextMgmt.GetSavedAttributes());
                 }
                 
 
@@ -68,17 +68,17 @@ namespace SmartKG.KGBot.Managment
                             NLUEntity entity = entities[i];
 
                             if (entity.GetEntityType() == "RelationType")
-                            { 
+                            {
                                 HashSet<string> relationTypeSet = new HashSet<string>();
                                 relationTypeSet.Add(entity.GetEntityValue());
 
                                 List<Vertex> children = new List<Vertex>();
 
-                                foreach(Vertex vertex in results)
+                                foreach (Vertex vertex in results)
                                 {
                                     Dictionary<string, List<Vertex>> childrenDict = kgMgmt.GetChildren(vertex, relationTypeSet, contextMgmt.GetSavedAttributes(), contextMgmt.GetSecnarioName());
                                     if (childrenDict != null)
-                                    { 
+                                    {
                                         List<Vertex> currentChildren = childrenDict[entity.GetEntityValue()];
                                         children.AddRange(currentChildren);
                                     }
@@ -89,6 +89,23 @@ namespace SmartKG.KGBot.Managment
                                     headMessage += "的" + entity.GetEntityValue();
 
                                     results = children;
+                                }
+                            }
+                            else if (entity.GetEntityType() == "Label")
+                            {
+                                List<Vertex> newResults = new List<Vertex>();
+                                foreach (Vertex vertex in results)
+                                {
+                                    if (vertex.label == entity.GetEntityValue())
+                                    {
+                                        newResults.Add(vertex);
+                                    }
+                                }
+
+                                if (newResults.Count > 0)
+                                {
+                                    headMessage += "的" + entity.GetEntityValue();
+                                    results = newResults;
                                 }
                             }
 

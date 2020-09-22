@@ -56,15 +56,15 @@ namespace SmartKG.Common.DataStore
                 return null;
         }
 
-        public List<Vertex> SearchGraphByNodeType(string nodeType, string scenarioName, List<AttributePair> attributes)
+        public List<Vertex> SearchGraphByLabel(string label, string scenarioName, List<AttributePair> attributes)
         {
-            if (string.IsNullOrWhiteSpace(nodeType))
+            if (string.IsNullOrWhiteSpace(label))
             {
                 return null;
             }
             else
             {
-                List<Vertex> vertexes = kgStore.GetVertexByNodeType(nodeType);
+                List<Vertex> vertexes = kgStore.GetVertexByLabel(label);
                 return Filter(vertexes, scenarioName, attributes);
             }
         }
