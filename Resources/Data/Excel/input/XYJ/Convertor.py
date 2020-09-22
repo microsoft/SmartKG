@@ -3,10 +3,29 @@
 
 from xlrd import open_workbook
 import uuid
+import csv
 
 import xlsxwriter
 
-def convertFile(excelPath):
+
+def readBiDictionRelations():
+    path = "bidirection_relations.tsv"
+    bdRelationDict = {}
+    index = 0
+    with open(path, newline='', encoding='utf-8') as f:
+        reader = csv.reader(f, delimiter='\t')
+        for row in reader:
+            if index > 0:
+                bdRelation = {}
+                bdRelation["orig"] = row[0]
+                bdRelation["forward"] = row[1]
+                bdRelation["backward"] = row[2]
+                bdRelationDict[bdRelation["orig"]] = bdRelation
+
+            index += 1
+    return bdRelationDict
+
+def convertFile(excelPath, withBiDirection):
     wb = open_workbook(excelPath)
     sheet_entities = wb.sheets()[0]
     nameIdMap = {}
@@ -39,6 +58,7 @@ def convertFile(excelPath):
 
         nodes.append(node)
 
+    bdRelationDict = readBiDictionRelations()
 
     sheet_edges = wb.sheets()[1]
     relations = []
@@ -51,8 +71,6 @@ def convertFile(excelPath):
 
         sId = nameIdMap[sName]
 
-
-
         tName = sheet_edges.cell_value(row, 2)
 
         if not tName in nameIdMap:
@@ -60,14 +78,40 @@ def convertFile(excelPath):
 
         tId = nameIdMap[tName]
 
-        relation = {}
-        relation["type"] = rType
-        relation["source_id"] = sId
-        relation["target_id"] = tId
+        if not withBiDirection:
+            relation = {}
+            relation["type"] = rType
+            relation["source_id"] = sId
+            relation["target_id"] = tId
 
-        relations.append(relation)
+            relations.append(relation)
+        else:
+            if not rType in bdRelationDict.keys():
+                relation = {}
+                relation["type"] = rType
+                relation["source_id"] = sId
+                relation["target_id"] = tId
+
+                relations.append(relation)
+            else:
+                bdRelation = bdRelationDict[rType]
+
+                fr = {}
+                fr["type"] = bdRelation["forward"]
+                fr["source_id"] = sId
+                fr["target_id"] = tId
+
+                relations.append(fr)
+
+                br = {}
+                br["type"] = bdRelation["backward"]
+                br["source_id"] = tId
+                br["target_id"] = sId
+
+                relations.append(br)
 
     return nodes, relations
+
 
 def genNewDoc(newPath, nodes, relations):
     workbook = xlsxwriter.Workbook(newPath)
@@ -110,11 +154,14 @@ def genNewDoc(newPath, nodes, relations):
 
         row += 1
 
-
     workbook.close()
 
-nodes, relations = convertFile("Xiyouji_relations.xlsx")
-genNewDoc("SmartKG_Xiyouji_relations.xlsx", nodes, relations)
+readBiDictionRelations()
 
-nodes, relations = convertFile("Xiyouji_org.xlsx")
-genNewDoc("SmartKG_Xiyouji_org.xlsx", nodes, relations)
+nodes, relations = convertFile("Xiyouji_relations.xlsx", True)
+genNewDoc("SmartKG_Xiyouji_relations_new.xlsx", nodes, relations)
+
+#nodes, relations = convertFile("Xiyouji_org.xlsx")
+#genNewDoc("SmartKG_Xiyouji_org.xlsx", nodes, relations)
+
+print("Finished!")

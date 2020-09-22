@@ -42,9 +42,7 @@ namespace SmartKG.KGManagement.GraphSearch
             else
                 return ConvertVertex(vertex);
         }
-
         
-
         public List<VisulizedVertex> SearchVertexesByName(string keyword)
         {
             List<Vertex> searchedVertexes =  this.store.GetVertexByKeyword(keyword);

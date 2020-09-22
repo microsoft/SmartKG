@@ -50,7 +50,23 @@ namespace SmartKG.Common.DataStore
 
         public List<DialogSlot> GetConfiguredSlots(string scenarioName)
         {
-            return this.nluStore.GetSetting(scenarioName).slots;
+            if (this.nluStore.GetSetting(scenarioName) != null)
+                return this.nluStore.GetSetting(scenarioName).slots;
+            else
+                return null;
+        }
+
+        public List<Vertex> SearchGraphByNodeType(string nodeType, string scenarioName, List<AttributePair> attributes)
+        {
+            if (string.IsNullOrWhiteSpace(nodeType))
+            {
+                return null;
+            }
+            else
+            {
+                List<Vertex> vertexes = kgStore.GetVertexByNodeType(nodeType);
+                return Filter(vertexes, scenarioName, attributes);
+            }
         }
 
         public Vertex SearchGraph(string startVertexName, string scenarioName, List<AttributePair> attributes)
@@ -74,6 +90,7 @@ namespace SmartKG.Common.DataStore
 
             List<Vertex> vertexes = kgStore.GetVertexByName(startVertexName);
 
+            /*
 
             if (vertexes != null)
             {
@@ -103,8 +120,56 @@ namespace SmartKG.Common.DataStore
                 LogInformation(log.Here(), startVertexName, "doesn't filtered with attributes: " + JsonConvert.SerializeObject(attributes));
                 return null;
             }
+            */
+
+            List<Vertex> results = Filter(vertexes, scenarioName, attributes);
+
+            if (results != null && results.Count > 0)
+            {
+                return results[0];
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        private List<Vertex> Filter(List<Vertex> vertexes, string scenarioName, List<AttributePair> attributes)
+        {
+            
+            if (vertexes != null)
+            {
+                List<Vertex> results = new List<Vertex>();
+                foreach (Vertex vertex in vertexes)
+                {
+                    if (!string.IsNullOrWhiteSpace(scenarioName) && (vertex.scenarios != null && !vertex.scenarios.Contains(scenarioName)))
+                    {
+                        continue;
+                    }
+
+
+                    if (IsSelected(vertex, attributes))
+                    {
+                        results.Add(vertex);
+                    }
+                }
+
+                if (results.Count > 0)
+                {
+                    return results;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                LogInformation(log.Here(), "Vertexes", "doesn't filtered with attributes: " + JsonConvert.SerializeObject(attributes));
+                return null;
+            }
+
+        }
 
         public Dictionary<string, List<Vertex>> FilterGraph(string startVertexName, string scenarioName, HashSet<string> relationTypeSet, List<AttributePair> attributes)
         {
@@ -233,7 +298,6 @@ namespace SmartKG.Common.DataStore
 
             return isSelected;
         }
-
 
         public Dictionary<string, List<Vertex>> GetChildren(Vertex vertex, HashSet<string> relationTypeSet, List<AttributePair> attributes, string scenarioName)
         {

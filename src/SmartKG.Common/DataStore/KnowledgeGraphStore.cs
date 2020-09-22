@@ -124,6 +124,28 @@ namespace SmartKG.Common.DataStore
             this.nameIdCache = nameIdMap;
         }
 
+        public List<Vertex> GetVertexByNodeType(string nodeType)
+        {
+            if (string.IsNullOrWhiteSpace(nodeType))
+            {
+                return null;
+            }
+            List<Vertex> results = new List<Vertex>();
+
+            foreach (List<Vertex> vertexes in this.vertexNameCache.Values)
+            {
+                foreach(Vertex vertex in vertexes)
+                {
+                    if (vertex.nodeType == nodeType)
+                    {
+                        results.Add(vertex);
+                    }
+                }
+            }
+
+            return results;
+        }
+
         public List<Vertex> GetVertexByName(string vertexName)
         {
             if (string.IsNullOrWhiteSpace(vertexName))

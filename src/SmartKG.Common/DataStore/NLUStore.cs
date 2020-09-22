@@ -156,23 +156,24 @@ namespace SmartKG.Common.DataStore
                     
                     if (query.Contains(lowerWord))
                     {
+                        int pos = query.IndexOf(lowerWord);
+
                         List<NLUEntity> entities = wordToEntity[word];
 
-                        int key = word.Length;
+                        //int key = word.Length;
 
-                        if (results.ContainsKey(key))
+                        if (results.ContainsKey(pos))
                         {
-                            results[key].AddRange(entities.Select(item => item.Clone()).ToList());
+                            results[pos].AddRange(entities.Select(item => item.Clone()).ToList());
                         }
                         else
                         {
-                            results.Add(key, entities.Select(item => item.Clone()).ToList());
-                        }
-                        
+                            results.Add(pos, entities.Select(item => item.Clone()).ToList());
+                        }                        
                     }
                 }
 
-                foreach (var pair in results.Reverse())
+                foreach (var pair in results)//.Reverse())
                 {
                     resultList.AddRange(pair.Value);
                 }
@@ -340,7 +341,8 @@ namespace SmartKG.Common.DataStore
             if (!this.sceanrioCache.Keys.Contains(scenarioName))
             {
                 /*this.sceanrioCache.Add(scenarioName, new ScenarioSetting());*/
-                throw new Exception("The scenario " + scenarioName + " doesn't exist.");
+                //throw new Exception("The scenario " + scenarioName + " doesn't exist.");
+                return null;
             }
             return this.sceanrioCache[scenarioName];
         }
