@@ -10,7 +10,7 @@ using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.Visulization;
-
+using SmartKG.Common.Data;
 
 namespace MongoDBUploader.DataProcessor.Accessor
 {   
@@ -33,6 +33,18 @@ namespace MongoDBUploader.DataProcessor.Accessor
             this.client = new MongoClient(connectionString);
             
             log.Here().Information("connectionString: " + connectionString );        
+        }
+
+        public void CreateDataStoreMgmtDB(List<DatastoreItem> items)
+        {
+            string dbName = "DataStoreMgmt";
+            log.Here().Information("DatabaseName: " + dbName);
+            IMongoDatabase db = client.GetDatabase(dbName);
+
+            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
+            collection.DeleteMany(this.allFilter);
+
+            collection.InsertMany(items);
         }
 
         public void CreateKGCollections(string dbName, List<Vertex> vertexes, List<Edge> edges, bool cleanCollection)

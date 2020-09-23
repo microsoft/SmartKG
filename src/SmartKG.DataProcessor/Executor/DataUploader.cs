@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDBUploader.DataProcessor.Accessor;
+using SmartKG.Common.Data;
 using SmartKG.Common.Importer;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 
@@ -32,10 +34,21 @@ namespace SmartKG.DataUploader.Executor
             {
                 dbName = defaultDBName;
             }
-
+            
             ImportKG(kgPath, dbName);            
             ImportNLU(nluPath, dbName);            
             ImportVC(vcPath, dbName);            
+        }
+
+        public void ImportMgmtInfo(string dbName)
+        {
+            List<DatastoreItem> items = new List<DatastoreItem>();
+            DatastoreItem item = new DatastoreItem();
+            item.name = dbName;
+            items.Add(item);
+
+            writer.CreateDataStoreMgmtDB(items);
+            Console.WriteLine("Imported Datastore management info to MongoDB!");
         }
 
         private void ImportNLU(string nluPath, string dbName)

@@ -1,13 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MongoDBUploader.DataProcessor.Accessor;
-using Microsoft.Extensions.Configuration;
 using System;
-using System.IO;
-using SmartKG.Common.Data.Configuration;
-using SmartKG.Common.Importer;
-using System.Data.Common;
 using SmartKG.DataUploader.Executor;
 
 namespace MongoDBUploader.DataProcessor
@@ -19,10 +13,12 @@ namespace MongoDBUploader.DataProcessor
         public static void Main(string[] args)
         {
             /* default to import all arguments */
-            string usage = "Usage: ./DataProcessor  --rootPath=<rootPath> --dbName=<dbName>";
+            string usage = "Usage: ./DataProcessor  --rootPath=<rootPath> --dbName=<dbName>  [--init]";
             
             string rootPath = null;
-            string dbName = null;           
+            string dbName = null;
+
+            bool importMgmtInfo = false;
 
             if (args.Length == 0)
             {
@@ -46,12 +42,20 @@ namespace MongoDBUploader.DataProcessor
                     {
                         Console.WriteLine();
                         Environment.Exit(0);
-                    }                                     
+                    }else if (arg == "--init")
+                    {
+                        importMgmtInfo = true;
+                    }
                 }
             }
 
             DataUploader uploader = new DataUploader();
             uploader.UploadDataFile(rootPath, dbName);
+
+            if (importMgmtInfo)
+            {
+                uploader.ImportMgmtInfo(dbName);
+            }
 
             Console.WriteLine("Finished!");
         }       
