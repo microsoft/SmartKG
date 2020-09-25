@@ -160,13 +160,13 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
         if sheet_vertexes.cell_value(row, 1) is not "":
             data = {}
 
-            data["id"] = getId(sheet_vertexes.cell_value(row, 0),scenario)
-            data["name"] = sheet_vertexes.cell_value(row, 1)
+            data["id"] = str(getId(sheet_vertexes.cell_value(row, 0),scenario))
+            data["name"] = str(sheet_vertexes.cell_value(row, 1))
             nodeNameSet.add(data["name"])
-            data["label"] = sheet_vertexes.cell_value(row, 2)
+            data["label"] = str(sheet_vertexes.cell_value(row, 2))
             labelSet.add(data["label"].split("_")[0])
             data["scenarios"] = scenarios
-            data["leadSentence"] = sheet_vertexes.cell_value(row, 3)
+            data["leadSentence"] = str(sheet_vertexes.cell_value(row, 3))
 
             vid = data["id"]
 
@@ -193,10 +193,15 @@ def convertFile(configPath, excelPath, default_rules, scenarios, similarWordMap,
             for col in range(4, sheet_vertexes.ncols - 1, 2):
                 property = {}
                 if sheet_vertexes.cell_value(row, col) is not "":
-                    property["name"] = sheet_vertexes.cell_value(row, col)
-                    propertyNameSet.add(property["name"])
-                    property["value"] = sheet_vertexes.cell_value(row , col + 1)
-                    properties.append(property)
+                    pName = sheet_vertexes.cell_value(row, col)
+                    pValue = sheet_vertexes.cell_value(row , col + 1)
+                    if (not pName or not pValue):
+                        continue
+                    else:
+                        property["name"] = pName
+                        propertyNameSet.add(property["name"])
+                        property["value"] = pValue
+                        properties.append(property)
 
             data["properties"] = properties
 

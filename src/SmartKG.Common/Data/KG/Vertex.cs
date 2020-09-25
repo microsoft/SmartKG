@@ -36,7 +36,7 @@ namespace SmartKG.Common.Data.KG
 
         public string GetContent()
         {
-            string result = "";
+            string result = this.name + "\n";
             
             foreach(VertexProperty p in this.properties)
             {
