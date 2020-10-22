@@ -7,6 +7,8 @@ namespace SmartKG.KGBot.Data.Request
     {
         public string userId { get; set; }
         public string sessionId { get; set; }        
+
+        public string datastoreName { get; set; }
         public string query { get; set; }
     }
 }

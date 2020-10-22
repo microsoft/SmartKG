@@ -30,9 +30,9 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]")]
         [ProducesResponseType(typeof(RelationResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IResult>> Get()
+        public async Task<ActionResult<IResult>> Get(string datastoreName)
         {
-            GraphExecutor executor = new GraphExecutor();
+            GraphExecutor executor = new GraphExecutor(datastoreName);
 
             List<string> scenarioNames = executor.GetScenarioNames();
 

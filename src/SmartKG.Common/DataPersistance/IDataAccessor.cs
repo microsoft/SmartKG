@@ -16,9 +16,9 @@ namespace SmartKG.Common.DataPersistence
 
         List<string> GetDataStoreList();
 
-        bool AddDataStore(string dsName);
+        bool AddDataStore(string user, string dsName);
 
-        bool DeleteDataStore(string dsName);
+        bool DeleteDataStore(string user, string dsName);
 
     }
 }

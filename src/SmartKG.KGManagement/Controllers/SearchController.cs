@@ -32,7 +32,7 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]")]
         [ProducesResponseType(typeof(SearchResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IResult>> Search(string keyword)
+        public async Task<ActionResult<IResult>> Search(string datastoreName, string keyword)
         {
             SearchResult searchResult;
 
@@ -45,7 +45,7 @@ namespace SmartKG.KGManagement.Controllers
                 keyword = keyword.Trim();
 
                 searchResult = new SearchResult(true, "根据\"" + keyword + "\"为您搜索到以下节点：");
-                GraphExecutor executor = new GraphExecutor();
+                GraphExecutor executor = new GraphExecutor(datastoreName);
                 List<VisulizedVertex> vvs = executor.SearchVertexesByName(keyword);
 
                 searchResult.nodes = vvs; 
@@ -66,7 +66,7 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]/property")]
         [ProducesResponseType(typeof(RelationResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IResult>> Filter(string name, string value)
+        public async Task<ActionResult<IResult>> Filter(string datastoreName, string name, string value)
         {
             RelationResult filterResult;
 
@@ -79,7 +79,7 @@ namespace SmartKG.KGManagement.Controllers
                 name = name.ToLower();
                 value = value.ToLower();
 
-                GraphExecutor executor = new GraphExecutor();
+                GraphExecutor executor = new GraphExecutor(datastoreName);
                 List<VisulizedVertex> vvs = executor.FilterVertexesByProperty(name, value);
 
                 if (vvs == null || vvs.Count == 0)
@@ -122,7 +122,7 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]/{id}")]
         [ProducesResponseType(typeof(RelationResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IResult>> GetRelations(string id)
+        public async Task<ActionResult<IResult>> GetRelations(string datastoreName, string id)
         {
             RelationResult relationResult;
 
@@ -132,7 +132,7 @@ namespace SmartKG.KGManagement.Controllers
             }
             else
             {               
-                GraphExecutor executor = new GraphExecutor();               
+                GraphExecutor executor = new GraphExecutor(datastoreName);               
                 VisulizedVertex theVVertex = executor.GetVertexById(id);
               
                 if (theVVertex == null)

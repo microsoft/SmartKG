@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.Configuration;
@@ -6,7 +9,7 @@ using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataPersistance;
-using SmartKG.Common.DataStore;
+using SmartKG.Common.DataStoreMgmt;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Parser.DataPersistance;
 using System;
@@ -16,168 +19,102 @@ namespace SmartKG.Common.DataPersistence
 {    
     public class DataLoader
     {
-        private static DataLoader uniqueInstance;
-    
         private ILogger log = Log.Logger.ForContext<DataLoader>();
 
-        private static PersistanceType persistanceType;
-        private static FilePathConfig filePathConfig;
-
-        private string currentDataStoreName; 
-
-        private List<Vertex> vList;
-        private List<Edge> eList;
-        private List<VisulizationConfig> vcList;
-
-        private List<NLUIntentRule> iList;
-        private List<EntityData> enList;
-        private List<EntityAttributeData> eaList;
-
         private IDataAccessor dataAccessor;
-        private List<ScenarioSetting> settings;
-
-
-
-        public static DataLoader GetInstance()
+        
+        public DataLoader(IConfiguration config)
         {
-            return uniqueInstance;
-        }
-
-
-        public static DataLoader initInstance(IConfiguration config)
-        {
-            if (uniqueInstance == null)
-            {
-                
-
-                uniqueInstance = new DataLoader();
-
-                persistanceType = (PersistanceType)Enum.Parse(typeof(PersistanceType), config.GetSection("PersistanceType").Value, true);
-
-                if (persistanceType == PersistanceType.File)
-                {
-                    filePathConfig = config.GetSection("FileDataPath").Get<FilePathConfig>();                    
-                    uniqueInstance.dataAccessor = new FileDataAccessor(filePathConfig.RootPath);
-                }
-                else
-                {
-                    string connectionString = config.GetConnectionString("MongoDbConnection");                    
-                    string mgmtDBName = config.GetConnectionString("DataStoreMgmtDatabaseName");                   
-
-                    uniqueInstance.dataAccessor = new MongoDataAccessor(connectionString, mgmtDBName);
-                }                                    
-            }
-
-            return uniqueInstance;
-        }
-
-        public string GetCurrentDataStoreName()
-        {
-            return this.currentDataStoreName;
-        }
-
-        public PersistanceType GetPersistanceType()
-        {
-            return persistanceType;
-        }
-
-        public void Load(IConfiguration config)
-        {
-            this.settings = config.GetSection("Scenarios").Get<List<ScenarioSetting>>();
+            
+            PersistanceType persistanceType = (PersistanceType)Enum.Parse(typeof(PersistanceType), config.GetSection("PersistanceType").Value, true);
 
             if (persistanceType == PersistanceType.File)
             {
-                this.currentDataStoreName = filePathConfig.DefaultDataStore;                                           
+               FilePathConfig filePathConfig = config.GetSection("FileDataPath").Get<FilePathConfig>();
+               this.dataAccessor = new FileDataAccessor(filePathConfig.RootPath);
             }
             else
             {
-                this.currentDataStoreName = config.GetConnectionString("DefaultDataStore");                               
+                string connectionString = config.GetConnectionString("MongoDbConnection");
+                string mgmtDBName = config.GetConnectionString("DataStoreMgmtDatabaseName");
+
+                this.dataAccessor = new MongoDataAccessor(connectionString, mgmtDBName);
             }
-            uniqueInstance.Load(this.currentDataStoreName);
+        }        
+
+        public List<DataStoreFrame> Load()
+        {
+            List<string> datastoreNames = dataAccessor.GetDataStoreList();
+
+            List<DataStoreFrame> datastores = new List<DataStoreFrame>();
+
+            foreach (string dsName in datastoreNames)
+            {
+                DataStoreFrame dsFrame = this.LoadDataStore(dsName);
+
+                datastores.Add(dsFrame);
+            }
+
+            return datastores;
         }
 
-        public void Load(string dsName)
+
+        public DataStoreFrame LoadDataStore(string dsName)
         {
-            KnowledgeGraphStore.GetInstance().Clean();
-            NLUStore.GetInstance().Clean();
+            List<Vertex> vList = null;
+            List<Edge> eList = null;
+            List<VisulizationConfig> vcList = null;
 
-            this.currentDataStoreName = dsName;
+            List<NLUIntentRule> iList = null;
+            List<EntityData> enList = null;
+            List<EntityAttributeData> eaList = null;
 
-            (this.vList, this.eList, this.vcList, this.iList , this.enList, this.eaList ) = this.dataAccessor.Load(dsName);
+            (vList, eList, vcList, iList, enList, eaList) = this.dataAccessor.Load(dsName);
 
-            if (this.vcList == null || this.vList == null || this.eList == null)
+            if (vcList == null || vList == null || eList == null)
             {
                 throw new Exception("Cannot load KG data from persistance.");
             }
 
-            DataPersistanceKGParser kgParser = new DataPersistanceKGParser(this.vList, this.eList, this.vcList);
-            kgParser.ParseKG();
+            DataPersistanceKGParser kgParser = new DataPersistanceKGParser();
+            KnowledgeGraphDataFrame kgDF = kgParser.ParseKG(vList, eList, vcList);
 
             log.Information("Knowledge Graph is parsed.");
             Console.WriteLine("Knowledge Graph is parsed.");
 
-            if (this.iList == null || this.enList == null)
+            NLUDataFrame nluDF = null;
+
+            if (iList == null || enList == null)
             {
                 log.Here().Warning("No NLU Data loaded from persistence");
             }
             else
             {
-                DataPersistanceNLUParser nluParser = new DataPersistanceNLUParser(this.iList, this.enList, this.eaList);
-                nluParser.Parse();
-
-                List<Vertex> roots = KnowledgeGraphStore.GetInstance().GetAllVertexes();
-                nluParser.ParseScenarioSettings(this.settings, roots);
+                DataPersistanceNLUParser nluParser = new DataPersistanceNLUParser();
+                nluDF = nluParser.Parse(iList, enList, eaList);                
 
                 log.Information("NLU materials is parsed.");
                 Console.WriteLine("NLU materials is parsed.");
             }
-        }
-        
 
-        public List<Vertex> GetVertexCollection()
-        {
-            return this.vList;
-        }
+            DataStoreFrame dsFrame = new DataStoreFrame(dsName, kgDF, nluDF);
 
-        public List<Edge> GetEdgeCollection()
-        {
-
-            return this.eList;
-        }
-
-        public List<VisulizationConfig> GetVisulizationConfigs()
-        {
-            return this.vcList;
-        }
-
-        public List<NLUIntentRule> GetIntentCollection()
-        {
-            return iList;
-        }
-
-        public List<EntityData> GetEntityCollection()
-        {
-            return enList;
-        }
-
-        public List<EntityAttributeData> GetEntityAttributeCollection()
-        {
-            return eaList;
-        }
+            return dsFrame;
+        }        
 
         public List<string> GetDataStoreList()
         {
            return this.dataAccessor.GetDataStoreList();
         }
-
-        public bool AddDataStore(string datastoreName)
+        
+        public bool CreateDataStore(string user, string datastoreName)
         {
-            return this.dataAccessor.AddDataStore(datastoreName);
+            return this.dataAccessor.AddDataStore(user, datastoreName);
         }
 
-        public bool DeleteDataStore(string datastoreName)
+        public bool DeleteDataStore(string user, string datastoreName)
         {
-            return this.dataAccessor.DeleteDataStore(datastoreName);
+            return this.dataAccessor.DeleteDataStore(user, datastoreName);
         }
     }
 }

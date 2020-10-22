@@ -9,15 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-
-namespace SmartKG.Common.DataStore
+namespace SmartKG.Common.DataStoreMgmt
 {
-    public class NLUStore
+    public class NLUDataFrame
     {
-        private static NLUStore uniqueInstance;
-
         private Dictionary<string, Dictionary<string, List<NLUEntity>>> standValueMap;
-        
+
         private Dictionary<string, Dictionary<string, Dictionary<string, NLUEntity>>> entityMap;
         private Dictionary<string, Dictionary<string, List<AttributePair>>> attributeMap;
 
@@ -26,24 +23,9 @@ namespace SmartKG.Common.DataStore
 
         private Dictionary<string, ScenarioSetting> sceanrioCache;
 
-        private NLUStore()
+        public NLUDataFrame()
         {
-            this.standValueMap = new Dictionary<string, Dictionary<string, List<NLUEntity>>>();
-            this.attributeMap = new Dictionary<string, Dictionary<string, List<AttributePair>>>();
-
-            this.entityMap = new Dictionary<string, Dictionary<string, Dictionary<string, NLUEntity>>>();            
-            this.intentPositiveDetermineRules = new List<NLUIntentRule>();
-            this.intentNegativeDeterminRules = new Dictionary<string, List<NLUIntentRule>>();
-            this.sceanrioCache = new Dictionary<string, ScenarioSetting>();
-        }
-
-        public static NLUStore GetInstance()
-        {
-            if (uniqueInstance == null)
-            {
-                uniqueInstance = new NLUStore();
-            }
-            return uniqueInstance;
+            this.Clean();
         }
 
         public void Clean()
@@ -56,7 +38,6 @@ namespace SmartKG.Common.DataStore
             this.intentNegativeDeterminRules = new Dictionary<string, List<NLUIntentRule>>();
             this.sceanrioCache = new Dictionary<string, ScenarioSetting>();
         }
-
         public NLUEntity AddEntity(string intentName, string entityValue, string entityType)
         {
             Dictionary<string, Dictionary<string, NLUEntity>> typeEntities;
@@ -80,17 +61,17 @@ namespace SmartKG.Common.DataStore
             }
 
             entities = typeEntities[entityType];
-            
+
 
             if (!entities.Keys.Contains(entityValue))
             {
                 NLUEntity entity = new NLUEntity(entityValue, entityType);
-                
+
                 entities.Add(entityValue, entity);
                 return entity;
             }
             else
-            {                
+            {
                 return entities[entityValue];
             }
         }
@@ -108,7 +89,7 @@ namespace SmartKG.Common.DataStore
                 this.standValueMap[intentName][similarWord].Add(entity);
             }
             else
-            { 
+            {
                 this.standValueMap[intentName].Add(similarWord, new List<NLUEntity>() { entity });
             }
         }
@@ -134,7 +115,7 @@ namespace SmartKG.Common.DataStore
         public List<NLUEntity> DetectEntities(string intentName, string query)
         {
             List<NLUEntity> resultList = new List<NLUEntity>();
-            
+
             if (!this.standValueMap.Keys.Contains(intentName))
             {
                 return resultList;
@@ -148,12 +129,12 @@ namespace SmartKG.Common.DataStore
 
                 List<string> similarWords = wordToEntity.Keys.ToList<string>();
 
-                foreach(string word in similarWords)
+                foreach (string word in similarWords)
                 {
                     string lowerWord = null;
                     if (word != null)
                         lowerWord = word.ToLower();
-                    
+
                     if (query.Contains(lowerWord))
                     {
                         int pos = query.IndexOf(lowerWord);
@@ -169,7 +150,7 @@ namespace SmartKG.Common.DataStore
                         else
                         {
                             results.Add(pos, entities.Select(item => item.Clone()).ToList());
-                        }                        
+                        }
                     }
                 }
 
@@ -178,7 +159,7 @@ namespace SmartKG.Common.DataStore
                     resultList.AddRange(pair.Value);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception("Parse entities error.", e);
             }
@@ -190,7 +171,7 @@ namespace SmartKG.Common.DataStore
         {
             if (entities == null || entities.Count() == 0)
                 return null;
-            
+
             try
             {
                 List<AttributePair> pairs = new List<AttributePair>();
@@ -216,7 +197,7 @@ namespace SmartKG.Common.DataStore
                 }
             }
             catch { return null; }
-            
+
         }
 
         public void AddIntentRule(NLUIntentRule intentRule)
@@ -259,12 +240,12 @@ namespace SmartKG.Common.DataStore
 
             int index = startIndex;
 
-            while(index < this.intentPositiveDetermineRules.Count())
+            while (index < this.intentPositiveDetermineRules.Count())
             {
                 NLUIntentRule rule = this.intentPositiveDetermineRules[index];
 
                 bool matched = IsMatched(rule.ruleSecs, query);
-                
+
                 if (matched)
                 {
                     result.intentName = rule.intentName;
@@ -289,7 +270,7 @@ namespace SmartKG.Common.DataStore
             }
             else
             {
-                foreach(NLUIntentRule rule in this.intentNegativeDeterminRules[intentName])
+                foreach (NLUIntentRule rule in this.intentNegativeDeterminRules[intentName])
                 {
                     bool matched = IsMatched(rule.ruleSecs, query);
 
@@ -299,11 +280,11 @@ namespace SmartKG.Common.DataStore
                     }
                 }
                 return false;
-            }            
+            }
         }
 
         public string DetectIntent(string query)
-        {           
+        {
             int index = 0;
 
             while (index < this.intentPositiveDetermineRules.Count())
@@ -311,7 +292,7 @@ namespace SmartKG.Common.DataStore
                 TempData temp = MatchPositiveRules(query, index);
 
                 if (temp == null)
-                { 
+                {
                     index += 1;
                 }
                 else
@@ -339,9 +320,7 @@ namespace SmartKG.Common.DataStore
         public ScenarioSetting GetSetting(string scenarioName)
         {
             if (!this.sceanrioCache.Keys.Contains(scenarioName))
-            {
-                /*this.sceanrioCache.Add(scenarioName, new ScenarioSetting());*/
-                //throw new Exception("The scenario " + scenarioName + " doesn't exist.");
+            {                
                 return null;
             }
             return this.sceanrioCache[scenarioName];

@@ -4,22 +4,24 @@
 using Serilog;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
+using SmartKG.Common.DataStoreMgmt;
 using SmartKG.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SmartKG.Common.DataStore;
 
 namespace SmartKG.KGManagement.GraphSearch
 {
     public class GraphExecutor
     {
-        private KnowledgeGraphStore store;
+        private KnowledgeGraphDataFrame kgDF;
         private ILogger log;
 
-        public GraphExecutor()
+        public GraphExecutor(string datastoreName)
         {
-            this.store = KnowledgeGraphStore.GetInstance();
+            DataStoreFrame dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);
+            this.kgDF = dsFrame.GetKG();
+
             log = Log.Logger.ForContext<GraphExecutor>();
         }
 
@@ -35,7 +37,7 @@ namespace SmartKG.KGManagement.GraphSearch
 
         public VisulizedVertex GetVertexById(string vId)
         {
-            Vertex vertex =  this.store.GetVertexById(vId);
+            Vertex vertex =  this.kgDF.GetVertexById(vId);
 
             if (vertex == null)
                 return null;
@@ -45,7 +47,7 @@ namespace SmartKG.KGManagement.GraphSearch
         
         public List<VisulizedVertex> SearchVertexesByName(string keyword)
         {
-            List<Vertex> searchedVertexes =  this.store.GetVertexByKeyword(keyword);
+            List<Vertex> searchedVertexes =  this.kgDF.GetVertexByKeyword(keyword);
 
             if (searchedVertexes == null || searchedVertexes.Count == 0)
             {
@@ -78,7 +80,7 @@ namespace SmartKG.KGManagement.GraphSearch
                 throw (e);
             }
 
-            List<Vertex> allVertexes = this.store.GetAllVertexes();
+            List<Vertex> allVertexes = this.kgDF.GetAllVertexes();
 
             List<VisulizedVertex> results = new List<VisulizedVertex>();
 
@@ -104,20 +106,20 @@ namespace SmartKG.KGManagement.GraphSearch
 
         public List<string> GetScenarioNames()
         {
-            HashSet<string> names = this.store.GetScenarioNames();
+            HashSet<string> names = this.kgDF.GetScenarioNames();
             if (names == null || names.Count == 0)
             {
                 return null;
             }
             else
             { 
-                return this.store.GetScenarioNames().ToList();
+                return this.kgDF.GetScenarioNames().ToList();
             }
         }
 
         public List<ColorConfig> GetColorConfigs(string scenarioName)
         {
-            Dictionary<string, List<ColorConfig>> colorConfigs = this.store.GetVertexLabelColorMap();
+            Dictionary<string, List<ColorConfig>> colorConfigs = this.kgDF.GetVertexLabelColorMap();
 
             if (colorConfigs == null || colorConfigs.Count == 0)
             {
@@ -148,7 +150,7 @@ namespace SmartKG.KGManagement.GraphSearch
 
         public (List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
         {
-            List<Vertex> catchedVertexes = this.store.GetVertexesByScenarios(scenarios);
+            List<Vertex> catchedVertexes = this.kgDF.GetVertexesByScenarios(scenarios);
 
             List<VisulizedVertex> vvs = new List<VisulizedVertex>();
 
@@ -157,7 +159,7 @@ namespace SmartKG.KGManagement.GraphSearch
                 vvs.Add(ConvertVertex(vertex));
             }
 
-            List<Edge> catchedEdges = this.store.GetRelationsByScenarios(scenarios);
+            List<Edge> catchedEdges = this.kgDF.GetRelationsByScenarios(scenarios);
 
             List<VisulizedEdge> ves = new List<VisulizedEdge>();
 
@@ -171,7 +173,7 @@ namespace SmartKG.KGManagement.GraphSearch
 
         public (List<VisulizedVertex>, List<VisulizedEdge>) GetFirstLevelRelationships(string vId)
         {
-            Vertex vertex = this.store.GetVertexById(vId);
+            Vertex vertex = this.kgDF.GetVertexById(vId);
 
             if (vertex == null)
             {
@@ -200,7 +202,7 @@ namespace SmartKG.KGManagement.GraphSearch
             List<VisulizedVertex> tmpRVVs;
             List<VisulizedEdge> tmpRVEs;
 
-            Dictionary <RelationLink, List<string>> childrenLinkDict = this.store.GetChildrenLinkDict(vId);
+            Dictionary <RelationLink, List<string>> childrenLinkDict = this.kgDF.GetChildrenLinkDict(vId);
 
             if (childrenLinkDict != null)
             {
@@ -210,7 +212,7 @@ namespace SmartKG.KGManagement.GraphSearch
                 rVEs.AddRange(tmpRVEs);
             }
 
-            Dictionary<RelationLink, List<string>> parentLinkDict = this.store.GetParentLinkDict(vId);
+            Dictionary<RelationLink, List<string>> parentLinkDict = this.kgDF.GetParentLinkDict(vId);
 
             if (parentLinkDict != null)
             {
@@ -245,7 +247,7 @@ namespace SmartKG.KGManagement.GraphSearch
                         
                         cIdSet.Add(cId);
                         
-                        VisulizedVertex vRV = ConvertVertex(this.store.GetVertexById(cId));
+                        VisulizedVertex vRV = ConvertVertex(this.kgDF.GetVertexById(cId));
 
                         VisulizedEdge vRE = new VisulizedEdge();
                         vRE.value = relationType;

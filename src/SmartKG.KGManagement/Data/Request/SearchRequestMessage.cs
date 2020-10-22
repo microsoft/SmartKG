@@ -21,6 +21,7 @@ namespace SmartKG.KGManagement.Data.Request
 
     public class DatastoreRequestMessage
     {
+        public string user { get; set; }
         public string datastoreName { get; set; }
     }
 }

@@ -158,13 +158,14 @@ namespace SmartKG.Common.DataPersistance
                 return false;
         }
 
-        public bool AddDataStore(string datastoreName)
+        public bool AddDataStore(string user, string datastoreName)
         {
             if (IsDataStoreExist(datastoreName))
                 return false;
 
             DatastoreItem item = new DatastoreItem();
             item.name = datastoreName;
+            item.creator = user;
 
             IMongoDatabase db = client.GetDatabase(this.mgmtDatabaseName);
             IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
@@ -174,7 +175,7 @@ namespace SmartKG.Common.DataPersistance
             return true;
         }
 
-        public bool DeleteDataStore(string datastoreName)
+        public bool DeleteDataStore(string user, string datastoreName)
         {
             if (!IsDataStoreExist(datastoreName))
                 return false;
@@ -184,9 +185,23 @@ namespace SmartKG.Common.DataPersistance
 
             var deleteFilter = Builders<DatastoreItem>.Filter.Eq("name", datastoreName);
 
-            collection.DeleteOne(deleteFilter);
+            var results = collection.Find(deleteFilter).ToList();
 
-            client.DropDatabase(datastoreName);
+            if (results.Count == 0)
+                return false;
+            
+            foreach (var result in results)
+            {
+                if (result.creator != user)
+                    continue;
+                else
+                { 
+                    collection.DeleteOne(deleteFilter);
+                    client.DropDatabase(datastoreName);
+                }
+            }
+
+            
 
             return true;
         }

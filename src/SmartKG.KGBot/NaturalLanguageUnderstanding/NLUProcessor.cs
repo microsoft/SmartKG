@@ -2,18 +2,17 @@
 // Licensed under the MIT license.
 
 using SmartKG.Common.Data.LU;
-using SmartKG.Common.DataStore;
-
+using SmartKG.Common.DataStoreMgmt;
 using System.Collections.Generic;
 
 namespace SmartKG.KGBot.NaturalLanguageUnderstanding
 {
     public class NLUProcessor
     {
-        private NLUStore nluStore = NLUStore.GetInstance();
-        public NLUProcessor()
+        private NLUDataFrame nluDF;
+        public NLUProcessor(string datastoreName)
         {
-
+            this.nluDF = DataStoreManager.GetInstance().GetDataStore(datastoreName).GetNLU();
         }
 
         public NLUResult Parse(string query)
@@ -34,7 +33,7 @@ namespace SmartKG.KGBot.NaturalLanguageUnderstanding
                 }
                 else
                 { 
-                    string intentName = nluStore.DetectIntent(query);
+                    string intentName = nluDF.DetectIntent(query);
 
                     if (intentName == null)
                     {
@@ -53,9 +52,9 @@ namespace SmartKG.KGBot.NaturalLanguageUnderstanding
 
         private NLUResult ParseIntentEntity(string intentName, string query)
         {           
-            List<NLUEntity> entities = nluStore.DetectEntities(intentName, query);
+            List<NLUEntity> entities = nluDF.DetectEntities(intentName, query);
 
-            List<AttributePair> attributes = nluStore.ParseAttributes(intentName, entities);
+            List<AttributePair> attributes = nluDF.ParseAttributes(intentName, entities);
 
             HashSet<string> relationTypeSet = new HashSet<string>();
 
@@ -73,8 +72,6 @@ namespace SmartKG.KGBot.NaturalLanguageUnderstanding
             NLUResult result = new NLUResult(intentName, entities, attributes, relationTypeSet);
 
             return result;
-        }
-
-        
+        }        
     }
 }

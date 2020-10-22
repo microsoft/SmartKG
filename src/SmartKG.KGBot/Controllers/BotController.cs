@@ -43,6 +43,7 @@ namespace SmartKG.KGBot.Controllers
             string userId = request.userId;
             string query = request.query;
             string sessionId = request.sessionId;
+            string datastoreName = request.datastoreName;
             
             QueryResult queryResult;
 
@@ -64,7 +65,7 @@ namespace SmartKG.KGBot.Controllers
                 query = query.ToLower();
 
                 DialogManager dm = new DialogManager();
-                queryResult = await dm.Process(userId, sessionId, query, runningMode);            
+                queryResult = await dm.Process(datastoreName, userId, sessionId, query, runningMode);            
             }
 
             ResponseMsg msg = new ResponseMsg();

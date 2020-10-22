@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using SmartKG.Common.Logger;
-using SmartKG.Common.DataPersistence;
 using SmartKG.Common.ContextStore;
 using Microsoft.OpenApi.Models;
+using SmartKG.Common.DataStoreMgmt;
 
 namespace SmartKG.KGBot
 {
@@ -68,9 +67,9 @@ namespace SmartKG.KGBot
             loggerFactory.AddSerilog();
 
             Serilog.ILogger log = Log.Logger.ForContext<Startup>().Here();
-                        
-            DataLoader.initInstance(Configuration);            
-            DataLoader.GetInstance().Load(Configuration);
+                    
+            DataStoreManager.initInstance(Configuration);
+            DataStoreManager.GetInstance().LoadDataStores();
             log.Information("KG and NLU Data is initialized and loaded.");
             
             ContextAccessor.initInstance(Configuration);

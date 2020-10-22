@@ -51,13 +51,13 @@ namespace SmartKG.KGBot.Managment
             log.Error(GetOverallLogMsg() + "\n" + e.Message, e);
         }
 
-        public async Task<QueryResult> Process(string userId, string sessionId, string query, RUNNINGMODE runningMode)
+        public async Task<QueryResult> Process(string datastoreName, string userId, string sessionId, string query, RUNNINGMODE runningMode)
         {
             this.userId = userId;
             this.sessionId = sessionId;
             this.query = query;
             this.runningMode = runningMode;
-            this.dQuerier = new DataQuerier(runningMode);
+            this.dQuerier = new DataQuerier(datastoreName, runningMode);
             this.msgGenerator = new MessageGenerator(runningMode);
 
 
@@ -66,7 +66,7 @@ namespace SmartKG.KGBot.Managment
             ContextManager contextMgmt = new ContextManager(userId, sessionId);
             contextMgmt.GetContext();
             
-            NLUResult nlu = new NLUProcessor().Parse(query);
+            NLUResult nlu = new NLUProcessor(datastoreName).Parse(query);
 
             LogInformation(_log.Here(), "nlu", nlu.ToString());
 

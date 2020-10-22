@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.Common.DataStore;
 using System;
 using System.Collections.Generic;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
+using SmartKG.Common.DataStoreMgmt;
 
 namespace SmartKG.Common.Parser.DataPersistance
 {
@@ -13,18 +13,9 @@ namespace SmartKG.Common.Parser.DataPersistance
     {
         public static string defaultRelationType = "contains";
           
-
-        private List<Vertex> vCollection;
-        private List<Edge> eColletion;
-        private List<VisulizationConfig> vcList;
-
-
-        public DataPersistanceKGParser(List<Vertex> vList, List<Edge> eList, List<VisulizationConfig> vcList)
+        public DataPersistanceKGParser()
         {
             
-            this.vCollection = vList; 
-            this.eColletion = eList;
-            this.vcList = vcList;
         }       
 
         private (Dictionary<string, HashSet<string>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, List<Edge>>) GenerateRelationship(List<Vertex> vertexes, List<Edge> edges)
@@ -173,20 +164,17 @@ namespace SmartKG.Common.Parser.DataPersistance
 
             return (vertexNameIdsMap, outRelationMap, inRelationMap, scenarioEdgesMap);
         }        
-
-        public void ParseKG()
-        {
-            List<Vertex> vertexes = this.vCollection; // this.GetVertexes(null);
-            List<Edge> edges = this.eColletion; // this.GetEdges(null);
-
-            (Dictionary<string, HashSet<string>> nameIdMap, Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict,  Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict, Dictionary<string, List<Edge>> scenarioEdgesMap)  = this.GenerateRelationship(vertexes, edges);           
+        
+        public KnowledgeGraphDataFrame ParseKG(List<Vertex> vertexes, List<Edge> edges, List<VisulizationConfig> vcList)
+        {            
+            (Dictionary<string, HashSet<string>> nameIdMap, Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict, Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict, Dictionary<string, List<Edge>> scenarioEdgesMap) = this.GenerateRelationship(vertexes, edges);
 
             Dictionary<string, List<Vertex>> vNameCache = new Dictionary<string, List<Vertex>>();
             Dictionary<string, Vertex> vIdCache = new Dictionary<string, Vertex>();
             List<Vertex> roots = new List<Vertex>();
 
             HashSet<string> scenarioNames = new HashSet<string>();
-            
+
             foreach (Vertex vertex in vertexes)
             {
                 scenarioNames.UnionWith(vertex.scenarios);
@@ -194,7 +182,7 @@ namespace SmartKG.Common.Parser.DataPersistance
                 if (vertex.nodeType == "ROOT")
                 {
                     roots.Add(vertex);
-                }                
+                }
 
                 if (vNameCache.ContainsKey(vertex.name))
                 {
@@ -209,9 +197,9 @@ namespace SmartKG.Common.Parser.DataPersistance
                 vIdCache.Add(vertex.id, vertex);
             }
 
-            Dictionary<string, List<ColorConfig>>  vertexLabelsMap = new Dictionary<string, List<ColorConfig>>();
+            Dictionary<string, List<ColorConfig>> vertexLabelsMap = new Dictionary<string, List<ColorConfig>>();
 
-            foreach (VisulizationConfig vc in this.vcList)
+            foreach (VisulizationConfig vc in vcList)
             {
                 string scenarioName = vc.scenario;
                 List<ColorConfig> cc = vc.labelsOfVertexes;
@@ -219,17 +207,19 @@ namespace SmartKG.Common.Parser.DataPersistance
                 vertexLabelsMap.Add(scenarioName, cc);
             }
 
-            KnowledgeGraphStore store = KnowledgeGraphStore.GetInstance();            
+            KnowledgeGraphDataFrame kgDF = new KnowledgeGraphDataFrame();
 
-            store.SetRootVertexes(roots);
-            store.SetVertexIdCache(vIdCache);
-            store.SetVertexNameCache(vNameCache);
-            store.SetOutRelationDict(outRelationDict);
-            store.SetInRelationDict(inRelationDict);
-            store.SetNameIdCache(nameIdMap);
-            store.SetScenarioEdgesDict(scenarioEdgesMap);
-            store.SetScenarioNames(scenarioNames);
-            store.SetVertexLabelColorMap(vertexLabelsMap);
+            kgDF.SetRootVertexes(roots);
+            kgDF.SetVertexIdCache(vIdCache);
+            kgDF.SetVertexNameCache(vNameCache);
+            kgDF.SetOutRelationDict(outRelationDict);
+            kgDF.SetInRelationDict(inRelationDict);
+            kgDF.SetNameIdCache(nameIdMap);
+            kgDF.SetScenarioEdgesDict(scenarioEdgesMap);
+            kgDF.SetScenarioNames(scenarioNames);
+            kgDF.SetVertexLabelColorMap(vertexLabelsMap);
+
+            return kgDF;
         }
     }
 }

@@ -119,7 +119,7 @@ namespace SmartKG.Common.DataPersistance
             return list;
         }
 
-        public bool AddDataStore(string datastoreName)
+        public bool AddDataStore(string user, string datastoreName)
         {            
             string targetDir = this.rootPath + Path.DirectorySeparatorChar + datastoreName;
 
@@ -130,11 +130,15 @@ namespace SmartKG.Common.DataPersistance
             else
             {
                 Directory.CreateDirectory(targetDir);
+
+                string real_targetDir = this.rootPath + Path.DirectorySeparatorChar + user + Path.DirectorySeparatorChar + datastoreName;
+                Directory.CreateDirectory(real_targetDir);
+
                 return true;
             }
         }
 
-        public bool DeleteDataStore(string datastoreName)
+        public bool DeleteDataStore(string user, string datastoreName)
         {
             string targetDir = this.rootPath + Path.DirectorySeparatorChar + datastoreName;
             if (!Directory.Exists(targetDir))
@@ -143,7 +147,11 @@ namespace SmartKG.Common.DataPersistance
             }
             else
             {
-                return DeleteDir(targetDir);                
+                string real_targetDir = this.rootPath + Path.DirectorySeparatorChar + user + Path.DirectorySeparatorChar + datastoreName;
+                if (!Directory.Exists(real_targetDir))
+                    return false;
+                else
+                    return DeleteDir(targetDir);                
             }
         }
 

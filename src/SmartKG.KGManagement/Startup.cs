@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,11 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using SmartKG.Common.Data.KG;
 using SmartKG.Common.Logger;
-using SmartKG.Common.Importer;
-using SmartKG.Common.Data.Visulization;
-using SmartKG.Common.DataPersistence;
+using SmartKG.Common.DataStoreMgmt;
 
 namespace SmartKG.KGManagement
 {
@@ -65,8 +61,8 @@ namespace SmartKG.KGManagement
 
             Serilog.ILogger log = Log.Logger.ForContext<Startup>().Here();
 
-            DataLoader.initInstance(Configuration);
-            DataLoader.GetInstance().Load(Configuration);
+            DataStoreManager.initInstance(Configuration);
+            DataStoreManager.GetInstance().LoadDataStores();
             log.Information("KG Data is initialized and loaded.");            
         }
     }

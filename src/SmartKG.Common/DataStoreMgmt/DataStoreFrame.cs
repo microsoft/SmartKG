@@ -11,20 +11,36 @@ using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data;
 
-namespace SmartKG.Common.DataStore
+namespace SmartKG.Common.DataStoreMgmt
 {
-    public class DataManager : KGBotLogHandler
+    public class DataStoreFrame
     {
-        private KnowledgeGraphStore kgStore;
-        private NLUStore nluStore;
+        private string datastoreName;
+        private KnowledgeGraphDataFrame kgDF;
+        private NLUDataFrame nluDF;
 
         private ILogger log;
 
-        public DataManager()
-        {        
-            this.kgStore = KnowledgeGraphStore.GetInstance();
-            this.nluStore = NLUStore.GetInstance();
-            log = Log.Logger.ForContext<DataManager>();
+        public DataStoreFrame(string datastoreName, KnowledgeGraphDataFrame kgDF, NLUDataFrame nluDF)
+        {
+            this.datastoreName = datastoreName;
+            this.kgDF = kgDF; //new KnowledgeGraphDataFrame();
+            this.nluDF = nluDF; // new NLUDataFrame();
+        }
+
+        public string GetName()
+        {
+            return this.datastoreName;
+        }
+
+        public KnowledgeGraphDataFrame GetKG()
+        {
+            return this.kgDF;
+        }
+
+        public NLUDataFrame GetNLU()
+        {
+            return this.nluDF;
         }
 
         public void LogInformation(ILogger log, string title, string content)
@@ -39,19 +55,19 @@ namespace SmartKG.Common.DataStore
 
         public int GetMaxOptions(string scenarioName)
         {
-            
-            return this.nluStore.GetSetting(scenarioName).maxOptions;
+
+            return this.nluDF.GetSetting(scenarioName).maxOptions;
         }
 
         public SortSetting GetSortSetting(string scenarioName)
         {
-            return this.nluStore.GetSetting(scenarioName).sortSetting;
+            return this.nluDF.GetSetting(scenarioName).sortSetting;
         }
 
         public List<DialogSlot> GetConfiguredSlots(string scenarioName)
         {
-            if (this.nluStore.GetSetting(scenarioName) != null)
-                return this.nluStore.GetSetting(scenarioName).slots;
+            if (this.nluDF.GetSetting(scenarioName) != null)
+                return this.nluDF.GetSetting(scenarioName).slots;
             else
                 return null;
         }
@@ -64,7 +80,7 @@ namespace SmartKG.Common.DataStore
             }
             else
             {
-                List<Vertex> vertexes = kgStore.GetVertexByLabel(label);
+                List<Vertex> vertexes = kgDF.GetVertexByLabel(label);
                 return Filter(vertexes, scenarioName, attributes);
             }
         }
@@ -77,7 +93,7 @@ namespace SmartKG.Common.DataStore
             }
             else if (string.IsNullOrWhiteSpace(startVertexName) && !string.IsNullOrWhiteSpace(scenarioName))
             {
-                Vertex root = nluStore.GetRoot(scenarioName);
+                Vertex root = nluDF.GetRoot(scenarioName);
                 if (root != null)
                 {
                     startVertexName = root.name;
@@ -88,7 +104,7 @@ namespace SmartKG.Common.DataStore
                 }
             }
 
-            List<Vertex> vertexes = kgStore.GetVertexByName(startVertexName);
+            List<Vertex> vertexes = kgDF.GetVertexByName(startVertexName);
 
             List<Vertex> results = Filter(vertexes, scenarioName, attributes);
 
@@ -104,7 +120,7 @@ namespace SmartKG.Common.DataStore
 
         private List<Vertex> Filter(List<Vertex> vertexes, string scenarioName, List<AttributePair> attributes)
         {
-            
+
             if (vertexes != null)
             {
                 List<Vertex> results = new List<Vertex>();
@@ -148,7 +164,7 @@ namespace SmartKG.Common.DataStore
             }
             else if (string.IsNullOrWhiteSpace(startVertexName) && !string.IsNullOrWhiteSpace(scenarioName))
             {
-                Vertex root = nluStore.GetRoot(scenarioName);
+                Vertex root = nluDF.GetRoot(scenarioName);
                 if (root != null)
                 {
                     startVertexName = root.name;
@@ -184,15 +200,15 @@ namespace SmartKG.Common.DataStore
 
                 if (relationTypeSet == null)
                 {
-                    childrenIds = kgStore.GetChildrenIds(vertex.id, null, scenarioName);
+                    childrenIds = kgDF.GetChildrenIds(vertex.id, null, scenarioName);
                 }
                 else
                 {
                     foreach (string relationType in relationTypeSet)
                     {
-                        Dictionary<string, HashSet<string>> cIds = kgStore.GetChildrenIds(vertex.id, relationType, scenarioName);
+                        Dictionary<string, HashSet<string>> cIds = kgDF.GetChildrenIds(vertex.id, relationType, scenarioName);
                         if (cIds != null && cIds.Count > 0)
-                        {                            
+                        {
                             childrenIds.Add(relationType, cIds[relationType]);
                         }
                     }
@@ -201,11 +217,11 @@ namespace SmartKG.Common.DataStore
                 if (childrenIds == null)
                     continue;
 
-                foreach(string relationType in childrenIds.Keys)
-                { 
+                foreach (string relationType in childrenIds.Keys)
+                {
                     foreach (string childId in childrenIds[relationType])
                     {
-                        Vertex child = kgStore.GetVertexById(childId);
+                        Vertex child = kgDF.GetVertexById(childId);
                         if (child != null)
                         {
                             if (child.isLeaf())
@@ -213,7 +229,7 @@ namespace SmartKG.Common.DataStore
                                 if (IsSelected(child, attributes))
                                 {
                                     if (results.ContainsKey(relationType))
-                                    { 
+                                    {
                                         results[relationType].Add(child);
                                     }
                                     else
@@ -228,7 +244,7 @@ namespace SmartKG.Common.DataStore
                             }
                         }
                     }
-                
+
                 }
                 index += 1;
             }
@@ -274,28 +290,28 @@ namespace SmartKG.Common.DataStore
             }
 
             string id = vertex.id;
-            
+
             Dictionary<string, HashSet<string>> childrenIds = new Dictionary<string, HashSet<string>>();
 
             if (relationTypeSet != null)
             {
                 foreach (string relationType in relationTypeSet)
                 {
-                    Dictionary<string, HashSet<string>> cIds = kgStore.GetChildrenIds(vertex.id, relationType, scenarioName);//allTypeChildrenIds.SelectMany(x => x.Value).ToList();
+                    Dictionary<string, HashSet<string>> cIds = kgDF.GetChildrenIds(vertex.id, relationType, scenarioName);//allTypeChildrenIds.SelectMany(x => x.Value).ToList();
                     if (cIds != null && cIds.Count > 0)
                     {
-                        
+
                         childrenIds.Add(relationType, cIds[relationType]);
                     }
                 }
             }
             else
             {
-                childrenIds = kgStore.GetChildrenIds(vertex.id, null, scenarioName);
+                childrenIds = kgDF.GetChildrenIds(vertex.id, null, scenarioName);
             }
-            
 
-            if (childrenIds == null ||  childrenIds.Count == 0)
+
+            if (childrenIds == null || childrenIds.Count == 0)
             {
                 LogInformation(log.Here(), vertex.name, "has no child");
                 return null;
@@ -308,7 +324,7 @@ namespace SmartKG.Common.DataStore
 
                 foreach (string cId in childrenIds[relationType])
                 {
-                    Vertex child = kgStore.GetVertexById(cId);
+                    Vertex child = kgDF.GetVertexById(cId);
                     if (child != null && IsSelected(child, attributes))
                         vertexes.Add(child);
                 }
@@ -317,10 +333,10 @@ namespace SmartKG.Common.DataStore
                 {
                     results.Add(relationType, vertexes);
                 }
-                
+
             }
 
             return results;
-        }                        
+        }
     }
 }

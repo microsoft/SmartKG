@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SmartKG.Common.DataPersistence;
+using SmartKG.Common.DataStoreMgmt;
 using SmartKG.KGManagement.Data.Request;
 using SmartKG.KGManagement.Data.Response;
 
@@ -12,25 +15,8 @@ namespace SmartKG.KGManagement.Controllers
     [ApiController]
     public class DataStoreMgmtController : ControllerBase
     {
-        static DataLoader dataLoader = DataLoader.GetInstance();
-
-
-        [HttpGet]
-        [Route("api/[controller]/current")]
-        [ProducesResponseType(typeof(CurrentDatastoreResult), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<CurrentDatastoreResult>> GetCurrent()
-        {
-            CurrentDatastoreResult msg = new CurrentDatastoreResult();
-            msg.success = true;
-
-            string cdsName = dataLoader.GetCurrentDataStoreName();
-
-            msg.currentDatastoreName = cdsName;
-
-            return Ok(msg);
-        }
-
+        DataStoreManager dsManager = DataStoreManager.GetInstance();
+        
         // Get api/datastoremgmt
         [HttpGet]
         [Route("api/[controller]")]
@@ -42,7 +28,7 @@ namespace SmartKG.KGManagement.Controllers
             DatastoreResult msg = new DatastoreResult();
             msg.success = true;
 
-            List<string> dsNames =  dataLoader.GetDataStoreList();
+            List<string> dsNames = dsManager.GetDataStoreList();
 
             if (dsNames.Count == 0)
             { 
@@ -66,9 +52,10 @@ namespace SmartKG.KGManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseResult>> Post([FromBody] DatastoreRequestMessage request)
         {
-            string datastoreName = request.datastoreName;
+            string user = request.user;
+            string datastoreName = request.datastoreName;            
 
-            if (!dataLoader.AddDataStore(datastoreName))
+            if (!dsManager.CreateDataStore(user, datastoreName))
             {
                 ResponseResult msg = new ResponseResult();
                 msg.success = false;
@@ -93,18 +80,10 @@ namespace SmartKG.KGManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseResult>> Delete([FromBody] DatastoreRequestMessage request)
         {
-            string datastoreName = request.datastoreName;
+            string user = request.user;
+            string datastoreName = request.datastoreName;            
 
-            if (datastoreName == dataLoader.GetCurrentDataStoreName())
-            {
-                ResponseResult msg = new ResponseResult();
-                msg.success = false;
-                msg.responseMessage = "Datastore " + datastoreName + " is the default datastore now. To delete it, you need to set other datastore as default one first.\n";
-
-                return Ok(msg);
-            }
-
-            if (!dataLoader.DeleteDataStore(datastoreName))
+            if (!dsManager.DeleteDataStore(user, datastoreName))
             {
                 ResponseResult msg = new ResponseResult();
                 msg.success = true;

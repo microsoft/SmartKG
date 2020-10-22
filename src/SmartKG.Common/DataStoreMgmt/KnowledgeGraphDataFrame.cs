@@ -8,40 +8,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmartKG.Common.DataStore
+namespace SmartKG.Common.DataStoreMgmt
 {
-    public sealed class KnowledgeGraphStore
+    public class KnowledgeGraphDataFrame
     {
-        private static KnowledgeGraphStore uniqueInstance;
         private Dictionary<string, List<Vertex>> vertexNameCache { get; set; }
         private Dictionary<string, Vertex> vertexIdCache { get; set; }
         private Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict { get; set; }
         private Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict { get; set; }
         private Dictionary<string, HashSet<string>> nameIdCache { get; set; }
 
-        private Dictionary<string, List<Edge>> scenarioEdgesDict {get;set;}
+        private Dictionary<string, List<Edge>> scenarioEdgesDict { get; set; }
 
         private Dictionary<string, List<ColorConfig>> vertexLabelColorMap { get; set; }
 
         private List<Vertex> rootVertexes { get; set; }
 
         private HashSet<string> scenarioNames { get; set; }
-       
+
         private ILogger log;
 
-        private KnowledgeGraphStore()
+        public KnowledgeGraphDataFrame()
         {
-            log = Log.Logger.ForContext<KnowledgeGraphStore>();
-        }
-
-        public static KnowledgeGraphStore GetInstance()
-        {
-
-            if (uniqueInstance == null)
-            {
-                uniqueInstance = new KnowledgeGraphStore();
-            }
-            return uniqueInstance;
+            this.Clean();
         }
 
         public void Clean()
@@ -60,16 +49,16 @@ namespace SmartKG.Common.DataStore
 
             this.vertexLabelColorMap = new Dictionary<string, List<ColorConfig>>();
 
-            this.rootVertexes = new  List<Vertex>();
+            this.rootVertexes = new List<Vertex>();
 
             this.scenarioNames = new HashSet<string>();
-    }
+        }
 
         public void SetRootVertexes(List<Vertex> roots)
         {
             this.rootVertexes = roots;
-        }        
-        
+        }
+
         public List<Vertex> GetRootVertexes()
         {
             return this.rootVertexes;
@@ -132,7 +121,7 @@ namespace SmartKG.Common.DataStore
 
             foreach (List<Vertex> vertexes in this.vertexNameCache.Values)
             {
-                foreach(Vertex vertex in vertexes)
+                foreach (Vertex vertex in vertexes)
                 {
                     if (vertex.label.Contains(label))
                     {
@@ -172,8 +161,8 @@ namespace SmartKG.Common.DataStore
             List<string> vNames = this.vertexNameCache.Keys.ToList();
 
             HashSet<string> matchedNames = new HashSet<string>();
-            
-            foreach(string vName in vNames)
+
+            foreach (string vName in vNames)
             {
                 if (vName.Contains(keyword))
                 {
@@ -183,7 +172,7 @@ namespace SmartKG.Common.DataStore
 
             List<Vertex> results = new List<Vertex>();
 
-            foreach(string mV in matchedNames)
+            foreach (string mV in matchedNames)
             {
                 List<Vertex> mR = GetVertexByName(mV);
                 if (mR != null && mR.Count > 0)
@@ -212,7 +201,7 @@ namespace SmartKG.Common.DataStore
             }
 
             List<Vertex> catchedVertexes = new List<Vertex>();
-           
+
             foreach (Vertex vertex in allVertexes)
             {
                 if (vertex.scenarios == null || vertex.scenarios.Count == 0)
@@ -225,7 +214,7 @@ namespace SmartKG.Common.DataStore
                     if (vertex.scenarios.Contains(scenario))
                     {
                         catchedVertexes.Add(vertex);
-                        
+
                         break;
                     }
                 }
@@ -237,17 +226,17 @@ namespace SmartKG.Common.DataStore
         public List<Edge> GetRelationsByScenarios(List<string> scenarios)
         {
             List<Edge> results = new List<Edge>();
-            
+
             if (scenarios == null || scenarios.Count == 0)
             {
-                foreach(string key in this.scenarioEdgesDict.Keys)
+                foreach (string key in this.scenarioEdgesDict.Keys)
                 {
                     results.AddRange(this.scenarioEdgesDict[key]);
                 }
             }
             else
             {
-                foreach(string scenario in scenarios)
+                foreach (string scenario in scenarios)
                 {
                     if (this.scenarioEdgesDict.ContainsKey(scenario))
                     {
@@ -310,12 +299,12 @@ namespace SmartKG.Common.DataStore
             }
 
             RelationLink targetLink = new RelationLink(relationType, scenarioName);
-            
+
             Dictionary<string, HashSet<string>> childrenIds = new Dictionary<string, HashSet<string>>();
 
             if (outRelationDict.ContainsKey(vertexId))
             {
-                foreach(RelationLink link in outRelationDict[vertexId].Keys)
+                foreach (RelationLink link in outRelationDict[vertexId].Keys)
                 {
                     if (targetLink.IsCompatible(link))
                     {
@@ -327,7 +316,7 @@ namespace SmartKG.Common.DataStore
                             childrenIds.Add(linkRelationType, cIds);
                         }
 
-                        List<string> conncectedIds = outRelationDict[vertexId][link]; 
+                        List<string> conncectedIds = outRelationDict[vertexId][link];
                         foreach (string cid in conncectedIds)
                         {
                             childrenIds[linkRelationType].Add(cid);
@@ -337,6 +326,6 @@ namespace SmartKG.Common.DataStore
             }
 
             return childrenIds;
-        }        
+        }
     }
 }

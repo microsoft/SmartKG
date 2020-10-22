@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +30,9 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]/entitycolor")]
         [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IResult>> Get(string scenarioName)
+        public async Task<ActionResult<IResult>> Get(string datastoreName, string scenarioName)
         {
-            GraphExecutor executor = new GraphExecutor();
+            GraphExecutor executor = new GraphExecutor(datastoreName);
 
             List<ColorConfig> configs = executor.GetColorConfigs(scenarioName);
 

@@ -1,19 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
-using SmartKG.Common.DataPersistence;
 using SmartKG.KGManagement.Data;
-using SmartKG.KGManagement.Data.Request;
 using SmartKG.KGManagement.Data.Response;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using SmartKG.DataUploader.Executor;
 using System.ComponentModel.DataAnnotations;
+using SmartKG.Common.DataStoreMgmt;
 
 namespace SmartKG.KGManagement.Controllers
 {
@@ -166,7 +166,7 @@ namespace SmartKG.KGManagement.Controllers
         {            
             string dsName = form.DatastoreName;
 
-            DataLoader.GetInstance().Load(dsName);
+            DataStoreManager.GetInstance().LoadDataStore(dsName);
 
             ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
 

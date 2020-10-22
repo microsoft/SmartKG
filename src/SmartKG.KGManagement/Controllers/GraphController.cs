@@ -32,11 +32,11 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]")]
         [ProducesResponseType(typeof(RelationResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IResult>> Get(string[] scenarios)
+        public async Task<ActionResult<IResult>> Get(string datastoreName, string[] scenarios)
         {
             RelationResult relationResult;
 
-            GraphExecutor executor = new GraphExecutor();
+            GraphExecutor executor = new GraphExecutor(datastoreName);
             (List<VisulizedVertex> vvs, List<VisulizedEdge> ves) = executor.GetVertexesAndEdgesByScenarios(scenarios.ToList());
 
             string scenarioStr = "所有 scenarios";

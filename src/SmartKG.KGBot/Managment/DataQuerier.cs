@@ -5,7 +5,7 @@ using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
-using SmartKG.Common.DataStore;
+using SmartKG.Common.DataStoreMgmt;
 using SmartKG.KGBot.Data.Response;
 using System;
 using System.Collections.Generic;
@@ -17,17 +17,18 @@ namespace SmartKG.KGBot.Managment
     public class DataQuerier
     {
         private string quitPromptStr = "\n或者输入 q 退出当前对话。\n";
-        private DataManager kgMgmt;
+        
         private MessageGenerator msgGenerator;
+        private DataStoreFrame dsFrame;
 
-        public DataQuerier(RUNNINGMODE runningMode)
+        public DataQuerier(string datastoreName, RUNNINGMODE runningMode)
         {
-            this.kgMgmt = new DataManager();
+            this.dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);            
             this.msgGenerator = new MessageGenerator(runningMode);
         }
 
         public QueryResult SearchVertexes(ContextManager contextMgmt, List<NLUEntity> entities)
-        {
+        {            
             QueryResult responseContent = new QueryResult(false, "Failed", ResponseItemType.Other); 
 
             if (entities == null && entities.Count == 0)
@@ -43,13 +44,14 @@ namespace SmartKG.KGBot.Managment
 
                 if (firstEntity.GetEntityType() == "NodeName")
                 {
-                    Vertex vertex = kgMgmt.SearchGraph(firstEntity.GetEntityValue(), contextMgmt.GetSecnarioName(), contextMgmt.GetSavedAttributes());
+                    
+                    Vertex vertex = dsFrame.SearchGraph(firstEntity.GetEntityValue(), contextMgmt.GetSecnarioName(), contextMgmt.GetSavedAttributes());
 
                     results.Add(vertex);
                 }
                 else if (firstEntity.GetEntityType() == "Label")
                 {
-                    results = kgMgmt.SearchGraphByLabel(firstEntity.GetEntityValue(), contextMgmt.GetSecnarioName(), contextMgmt.GetSavedAttributes());
+                    results = dsFrame.SearchGraphByLabel(firstEntity.GetEntityValue(), contextMgmt.GetSecnarioName(), contextMgmt.GetSavedAttributes());
                 }
                 
 
@@ -79,7 +81,7 @@ namespace SmartKG.KGBot.Managment
 
                                 foreach (Vertex vertex in results)
                                 {
-                                    Dictionary<string, List<Vertex>> childrenDict = kgMgmt.GetChildren(vertex, relationTypeSet, contextMgmt.GetSavedAttributes(), contextMgmt.GetSecnarioName());
+                                    Dictionary<string, List<Vertex>> childrenDict = dsFrame.GetChildren(vertex, relationTypeSet, contextMgmt.GetSavedAttributes(), contextMgmt.GetSecnarioName());
                                     if (childrenDict != null)
                                     {
                                         List<Vertex> currentChildren = childrenDict[entity.GetEntityValue()];
@@ -160,8 +162,8 @@ namespace SmartKG.KGBot.Managment
         }
 
         public QueryResult HandleSlotFilling(ContextManager contextMgmt, HashSet<string> relationTypeSet)
-        {
-            Dictionary<string, List<Vertex>> vertexDict = kgMgmt.FilterGraph(contextMgmt.GetStartVertexName(), contextMgmt.GetSecnarioName(), relationTypeSet, contextMgmt.GetSavedAttributes());
+        {            
+            Dictionary<string, List<Vertex>> vertexDict = dsFrame.FilterGraph(contextMgmt.GetStartVertexName(), contextMgmt.GetSecnarioName(), relationTypeSet, contextMgmt.GetSavedAttributes());
 
             if (vertexDict == null || vertexDict.Count() == 0)
             {
@@ -174,7 +176,7 @@ namespace SmartKG.KGBot.Managment
                 {
                     contextMgmt.StartDialog();
 
-                    Vertex startVertex = kgMgmt.SearchGraph(contextMgmt.GetStartVertexName(), contextMgmt.GetSecnarioName(), contextMgmt.GetSavedAttributes());
+                    Vertex startVertex = dsFrame.SearchGraph(contextMgmt.GetStartVertexName(), contextMgmt.GetSecnarioName(), contextMgmt.GetSavedAttributes());
 
                     return GetChildren(contextMgmt, startVertex, relationTypeSet);
                 }
@@ -190,7 +192,7 @@ namespace SmartKG.KGBot.Managment
         public List<DialogSlot> GetValidSlots(ContextManager contextMgmt)
         {
             List<DialogSlot> validSlots = new List<DialogSlot>();
-            List<DialogSlot> slots = kgMgmt.GetConfiguredSlots(contextMgmt.GetSecnarioName());
+            List<DialogSlot> slots = dsFrame.GetConfiguredSlots(contextMgmt.GetSecnarioName());
 
             if (slots != null && slots.Count() > 0)
             {
@@ -260,13 +262,13 @@ namespace SmartKG.KGBot.Managment
 
         public QueryResult GetChildren(ContextManager contextMgmt, Vertex parentVertex, HashSet<string> relationTypeSet)
         {
-            Dictionary<string, List<Vertex>> childrenDict = kgMgmt.GetChildren(parentVertex, relationTypeSet, contextMgmt.GetSavedAttributes(), contextMgmt.GetSecnarioName());
+            Dictionary<string, List<Vertex>> childrenDict = dsFrame.GetChildren(parentVertex, relationTypeSet, contextMgmt.GetSavedAttributes(), contextMgmt.GetSecnarioName());
 
             string headMessage = msgGenerator.GetInformationOfVertex(parentVertex);
 
             if ((childrenDict == null || childrenDict.Count == 0) && (relationTypeSet != null && relationTypeSet.Count > 0))
             {
-                childrenDict = kgMgmt.GetChildren(parentVertex, null, contextMgmt.GetSavedAttributes(), contextMgmt.GetSecnarioName());
+                childrenDict = dsFrame.GetChildren(parentVertex, null, contextMgmt.GetSavedAttributes(), contextMgmt.GetSecnarioName());
             }
 
             if (childrenDict == null || childrenDict.Count == 0)

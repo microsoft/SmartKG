@@ -1,41 +1,35 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using SmartKG.Common.DataStore;
 using System.Collections.Generic;
 using SmartKG.Common.Data;
 using System;
 using Serilog;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Data.KG;
+using SmartKG.Common.DataStoreMgmt;
 
 namespace SmartKG.Common.DataPersistance
 {
     public class DataPersistanceNLUParser
     {
-        private List<NLUIntentRule> iList;
-        private List<EntityData> eList;
-        private List<EntityAttributeData> eaList;
-
-        private NLUStore nluStore = NLUStore.GetInstance();
-        public DataPersistanceNLUParser(List<NLUIntentRule> iList, List<EntityData> eList, List<EntityAttributeData> eaList)
-        {
-            this.iList = iList;
-            this.eList = eList;
-            this.eaList = eaList;
+        public DataPersistanceNLUParser()
+        {            
         }
 
-        public void Parse()
+        public NLUDataFrame Parse(List<NLUIntentRule> iList, List<EntityData> eList, List<EntityAttributeData> eaList)
         {
+            NLUDataFrame nluDF = new NLUDataFrame();
+
             if (iList == null || iList.Count == 0)
             {
                 throw new Exception("No Intent is defined.");
             }
             else
-            { 
-                foreach(NLUIntentRule intentRule in iList)
+            {
+                foreach (NLUIntentRule intentRule in iList)
                 {
-                    nluStore.AddIntentRule(intentRule);
+                    nluDF.AddIntentRule(intentRule);
                 }
             }
 
@@ -44,11 +38,11 @@ namespace SmartKG.Common.DataPersistance
                 throw new Exception("No Entity is defined.");
             }
             else
-            { 
+            {
                 foreach (EntityData entity in eList)
                 {
-                    NLUEntity nluEntity = nluStore.AddEntity(entity.intentName, entity.entityValue, entity.entityType);
-                    nluStore.AddSimilarWord(entity.intentName, entity.similarWord, nluEntity);
+                    NLUEntity nluEntity = nluDF.AddEntity(entity.intentName, entity.entityValue, entity.entityType);
+                    nluDF.AddSimilarWord(entity.intentName, entity.similarWord, nluEntity);
                 }
             }
 
@@ -60,12 +54,14 @@ namespace SmartKG.Common.DataPersistance
             {
                 foreach (EntityAttributeData ea in eaList)
                 {
-                    nluStore.AddAttribute(ea.intentName, new NLUEntity(ea.entityValue, ea.entityType), new AttributePair(ea.attributeName, ea.attributeValue));
+                    nluDF.AddAttribute(ea.intentName, new NLUEntity(ea.entityValue, ea.entityType), new AttributePair(ea.attributeName, ea.attributeValue));
                 }
             }
+
+            return nluDF;
         }
 
-        public void ParseScenarioSettings(List<ScenarioSetting> kgSettings, List<Vertex> rootVertexes)
+        public void ParseScenarioSettings(NLUDataFrame nluDF, List<ScenarioSetting> kgSettings, List<Vertex> rootVertexes)
         {
 
             Dictionary<string, ScenarioSetting> scenarioCache = new Dictionary<string, ScenarioSetting>();
@@ -99,7 +95,7 @@ namespace SmartKG.Common.DataPersistance
                 }
             }
 
-            NLUStore.GetInstance().SetSceanrioCache(scenarioCache);
+            nluDF.SetSceanrioCache(scenarioCache);
         }
     }
 }
