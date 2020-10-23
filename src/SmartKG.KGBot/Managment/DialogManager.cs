@@ -63,18 +63,31 @@ namespace SmartKG.KGBot.Managment
 
             LogInformation(_log.Here(), "runningMode", runningMode.ToString());
 
-            ContextManager contextMgmt = new ContextManager(userId, sessionId);
-            contextMgmt.GetContext();
-            
+            ContextManager contextMgmt = new ContextManager(datastoreName, userId, sessionId);
+            bool isSameDataStore = contextMgmt.GetContext();
+
+            QueryResult result = null;
+
+            if (!isSameDataStore)
+            {
+                result = this.msgGenerator.GenerateErrorMessage("在本轮对话结束前更改 Datastore 导致之前对话退出。");
+                contextMgmt.ExitDialog();
+                contextMgmt.UpdateContext();
+                return result;
+            }
+
             NLUResult nlu = new NLUProcessor(datastoreName).Parse(query);
 
             LogInformation(_log.Here(), "nlu", nlu.ToString());
 
-            NLUResultType type = nlu.GetType();            
+            NLUResultType type = nlu.GetType();                        
 
-            QueryResult result = null;
-
-            if (type == NLUResultType.UNKNOWN && contextMgmt.GetIntent() == null)
+            if (type == NLUResultType.NOTEXIST)
+            {
+                result = this.msgGenerator.GenerateErrorMessage("无法查找语料，请确认 Datastore 是否存在，以及其中是否有数据。");
+                contextMgmt.ExitDialog();
+            }
+            else if (type == NLUResultType.UNKNOWN && contextMgmt.GetIntent() == null)
             {
                 result = this.msgGenerator.GenerateErrorMessage("无法识别意图。");
                 contextMgmt.ExitDialog();
@@ -137,7 +150,6 @@ namespace SmartKG.KGBot.Managment
                             contextMgmt.RefreshDurationTime();
                         }
                         
-
                         return responseContent;
                     }
                     else

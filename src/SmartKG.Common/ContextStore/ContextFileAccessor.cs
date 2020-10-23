@@ -32,9 +32,9 @@ namespace SmartKG.Common.ContextStore
             return userId + "_" + sessionId;
         }
 
-        public DialogContext GetContext(string userId, string sessionId)
+        public (bool, DialogContext) GetContext(string userId, string sessionId)
         {
-            DialogContext context;
+            DialogContext context = null;            
 
             if (File.Exists(filePath))
             {
@@ -68,7 +68,7 @@ namespace SmartKG.Common.ContextStore
 
                     if (key == GetKey(userId, sessionId))
                     {
-                        return JsonConvert.DeserializeObject<DialogContext>(contextJsonStr);
+                        return (false, JsonConvert.DeserializeObject<DialogContext>(contextJsonStr));
                     }
                 }
 
@@ -77,7 +77,7 @@ namespace SmartKG.Common.ContextStore
                 string newLine = GetKey(userId, sessionId) + "\t" + JsonConvert.SerializeObject(context) + Environment.NewLine;
 
                 File.AppendAllText(this.filePath, newLine);
-                return context;
+                return (true, context);
             }
             else
             {
@@ -86,11 +86,11 @@ namespace SmartKG.Common.ContextStore
                 string newLine = GetKey(userId, sessionId) + "\t" + JsonConvert.SerializeObject(context) + Environment.NewLine;
 
                 File.WriteAllText(this.filePath, newLine);
-                return context;
+                return (true, context);
             }
         }
 
-        public void UpdateContext(string userId, string sessionId, DialogContext context)
+        public bool UpdateContext(string userId, string sessionId, DialogContext context)
         {
             if (!File.Exists(filePath))
             {
@@ -137,6 +137,7 @@ namespace SmartKG.Common.ContextStore
             }
 
             File.WriteAllText(this.filePath, newContent);
+            return true;
         }
 
         public void CleanContext()

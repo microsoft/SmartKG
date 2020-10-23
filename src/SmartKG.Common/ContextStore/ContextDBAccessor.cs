@@ -31,8 +31,9 @@ namespace SmartKG.Common.ContextStore
             log.Here().Information("Context in MongoDB. connectionString: " + connectionString + ", ContextDatabaseName: " + dbName);                
         }
 
-        public DialogContext GetContext(string userId, string sessionId)
+        public (bool, DialogContext) GetContext(string userId, string sessionId)
         {
+            bool newlyCreated = true;
 
             DialogContext context = null;
             try
@@ -48,6 +49,7 @@ namespace SmartKG.Common.ContextStore
                 if (contexts != null && contexts.Count() > 0)
                 {
                     context = contexts[0];
+                    newlyCreated = false;
                 }
                 else
                 {
@@ -61,20 +63,22 @@ namespace SmartKG.Common.ContextStore
                 throw (e);
             }
 
-            return context;
+            return (newlyCreated, context);
         }
 
-        public void UpdateContext(string userId, string sessionId, DialogContext context)
+        public bool UpdateContext(string userId, string sessionId, DialogContext context)
         {
             try
             {
-                this.collection.ReplaceOneAsync<DialogContext>(x => x.userId == userId && x.sessionId == sessionId, context);
+                this.collection.ReplaceOneAsync<DialogContext>(x => x.userId == userId && x.sessionId == sessionId, context);                
             }
             catch (Exception e)
             {
                 Log.Error(e, e.Message);
                 throw (e);
-            }           
+            }
+
+            return true;
         }
 
         public void CleanContext()

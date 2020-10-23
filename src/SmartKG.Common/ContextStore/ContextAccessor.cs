@@ -60,7 +60,7 @@ namespace SmartKG.Common.ContextStore
             return uniqueInstance;
         }
 
-        public DialogContext GetContext(string userId, string sessionId)
+        public (bool, DialogContext) GetContext(string userId, string sessionId)
         {
             return this.accessor.GetContext(userId, sessionId);
 

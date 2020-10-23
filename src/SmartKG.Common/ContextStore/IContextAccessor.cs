@@ -7,8 +7,8 @@ namespace SmartKG.Common.ContextStore
 {
     public interface IContextAccessor
     {
-        DialogContext GetContext(string userId, string sessionId);
-        void UpdateContext(string userId, string sessionId, DialogContext context);
+        (bool, DialogContext) GetContext(string userId, string sessionId);
+        bool UpdateContext(string userId, string sessionId, DialogContext context);
 
         void CleanContext();
     }

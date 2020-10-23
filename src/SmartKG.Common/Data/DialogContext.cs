@@ -23,7 +23,8 @@ namespace SmartKG.Common.Data
 
     [BsonIgnoreExtraElements]
     public class DialogContext
-    {        
+    {
+        public string datastoreName { get; set; }
         public DialogStatus status { get; set; }
         public string intent { get; set; }
         public string scenarioName { get; set; }
@@ -42,6 +43,7 @@ namespace SmartKG.Common.Data
 
         public DialogContext(string userId, string sessionId, int maxDurationInvalidInput)
         {
+            this.datastoreName = null;
             this.entities = new List<object>();
             this.vertexCandidates = null;
             this.status = DialogStatus.PENDING;

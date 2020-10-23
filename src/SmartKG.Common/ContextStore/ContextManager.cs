@@ -22,12 +22,14 @@ namespace SmartKG.Common.ContextStore
 
         private string userId;
         private string sessionId;
+        private string datastoreName;
 
         private ContextAccessor accController = ContextAccessor.GetInstance(); 
 
         private ILogger log;
-        public ContextManager(string userId, string sessionId)
-        {           
+        public ContextManager(string datastoreName, string userId, string sessionId)
+        {
+            this.datastoreName = datastoreName;
             this.userId = userId;
             this.sessionId = sessionId;
 
@@ -44,9 +46,30 @@ namespace SmartKG.Common.ContextStore
             log.Error("userId: " + this.userId + ", sessionId:" + this.sessionId + "\n" + e.Message, e);
         }
 
-        public void GetContext()
+        public bool GetContext()
         {
-            this.context = accController.GetContext(userId, sessionId);
+            (bool isNewlyCreated, DialogContext aContext) = accController.GetContext(userId, sessionId);
+
+            if (isNewlyCreated)
+            {
+                aContext.datastoreName = this.datastoreName;
+            }
+            else
+            {
+                if (aContext.datastoreName != this.datastoreName)
+                {
+                    if (aContext.status != DialogStatus.PENDING)
+                    {
+                        this.context = aContext;
+                        return false;
+                    }
+                    else
+                        aContext.datastoreName = this.datastoreName;
+                }
+            }
+
+            this.context = aContext;
+            return true;
         }
 
         public void UpdateContext()
@@ -215,8 +238,9 @@ namespace SmartKG.Common.ContextStore
         }
 
         public void ExitDialog()
-        {
+        {            
             LogInformation(log.Here(), "exit dialog", "");
+            this.context.datastoreName = null;
             this.context.vertexCandidates = null;
             this.context.status = DialogStatus.PENDING;
             this.context.slots = null;
