@@ -1,10 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartKG.Common.ContextStore;
+using SmartKG.Common.Data;
 using SmartKG.Common.DataStoreMgmt;
 using SmartKG.KGManagement.Data.Request;
 using SmartKG.KGManagement.Data.Response;
@@ -86,8 +92,8 @@ namespace SmartKG.KGManagement.Controllers
             if (!dsManager.DeleteDataStore(user, datastoreName))
             {
                 ResponseResult msg = new ResponseResult();
-                msg.success = true;
-                msg.responseMessage = "Datastore " + datastoreName + " doesn't exist. You don't need to delete it.\n";
+                msg.success = false;
+                msg.responseMessage = "Fail to delete Datastore " + datastoreName + ". Make sure the datastore exists and you are the creator of it.\n";
 
                 return Ok(msg);
             }
@@ -99,6 +105,141 @@ namespace SmartKG.KGManagement.Controllers
 
                 return Ok(msg);
             }
-        }        
+        }
+
+
+        // POST api/datastoremgmt/preprocess/upload
+        [HttpPost]
+        [Route("api/[controller]/preprocess/upload")]
+        [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ResponseResult>> Upload([FromForm] FileForm form)
+        {
+            string scenario = form.Scenario;
+            string datastoreName = form.DatastoreName;
+            var file = form.UploadFile;
+
+            string excelDir = dsManager.GetUploadedFileSaveDir();
+
+            Directory.CreateDirectory(excelDir);
+
+            string savedFileName = null;
+            if (file != null)
+            {
+                if (file.Length > 0)
+                {
+                    string newFileName = GenerateTempFileName(file.FileName);
+
+                    var filePath = excelDir + Path.DirectorySeparatorChar + newFileName;
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    savedFileName = newFileName;
+                }
+
+            }
+
+            ConvertFiles(savedFileName, scenario, datastoreName);
+
+            ResponseResult msg = new ResponseResult();
+            msg.success = true;
+            msg.responseMessage = "File: " + savedFileName + " has been received.\n";
+
+            return Ok(msg);
+        }
+
+        private string GenerateTempFileName(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return null;
+            }
+
+            string[] fileNameSecs = fileName.Split(Path.DirectorySeparatorChar);
+
+            fileName = fileNameSecs[fileNameSecs.Length - 1];
+
+            string[] secs = fileName.Split(".");
+
+            string suffix = secs[secs.Length - 1];
+
+            string tmpStr = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+            string newSuffix = "_" + tmpStr + "." + suffix;
+
+            string newFileName = fileName.Replace("." + suffix, newSuffix);
+
+            return newFileName;
+        }
+
+        private void ConvertFiles(string savedFileName, string scenario, string datastoreName)
+        {
+            (FileUploadConfig uploadConfig, string pythonArgs, string targetDir) = dsManager.GenerateConvertDirs(datastoreName, savedFileName, scenario);
+
+            RunCommand(uploadConfig.PythonEnvPath, uploadConfig.ConvertScriptPath, pythonArgs);
+
+            if (this.dsManager.GetPersistanceType() == PersistanceType.MongoDB)
+            {
+                SmartKG.DataUploader.Executor.DataUploader uploader = new SmartKG.DataUploader.Executor.DataUploader();
+                uploader.UploadDataFile(targetDir, datastoreName);
+            }
+
+            return;
+        }
+
+        private void RunCommand(string envPath, string cmd, string args)
+        {
+
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = envPath;
+
+            start.Arguments = string.Format("{0} {1}", cmd, args);
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+            using (Process process = Process.Start(start))
+            {
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string result = reader.ReadToEnd();
+                    Console.Write(result);
+                }
+            }
+        }
+
+        // POST api/datastoremgmt/preprocess/reload
+        [HttpPost]
+        [Route("api/[controller]/preprocess/reload")]
+        [ProducesResponseType(typeof(ResponseResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ResponseResult>> ReloadData([FromForm] ReloadForm form)
+        {
+            string dsName = form.DatastoreName;
+
+            DataStoreManager.GetInstance().LoadDataStore(dsName);
+
+            ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
+
+            ResponseResult msg = new ResponseResult();
+            msg.success = true;
+            msg.responseMessage = "Data has been reloaded.\n";
+
+            return Ok(msg);
+        }
     }
+
+    public class FileForm
+    {
+        [Required] public string DatastoreName { get; set; }
+        [Required] public string Scenario { get; set; }
+        [Required] public IFormFile UploadFile { get; set; }
+    }
+
+    public class ReloadForm
+    {
+        [Required] public string DatastoreName { get; set; }
+    }
+
 }

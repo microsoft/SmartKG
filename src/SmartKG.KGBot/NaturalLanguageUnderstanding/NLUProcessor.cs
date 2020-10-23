@@ -9,15 +9,23 @@ namespace SmartKG.KGBot.NaturalLanguageUnderstanding
 {
     public class NLUProcessor
     {
-        private NLUDataFrame nluDF;
+        private NLUDataFrame nluDF = null;
         public NLUProcessor(string datastoreName)
         {
-            this.nluDF = DataStoreManager.GetInstance().GetDataStore(datastoreName).GetNLU();
+            DataStoreFrame dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);
+
+            if (dsFrame != null)
+                this.nluDF = DataStoreManager.GetInstance().GetDataStore(datastoreName).GetNLU();
         }
 
         public NLUResult Parse(string query)
         {
-            
+            if (nluDF == null)
+            {
+                NLUResult result = new NLUResult(NLUResultType.NOTEXIST);
+                return result;
+            }
+
             if (int.TryParse(query, out int num))
             {
                 NLUResult result = new NLUResult(num);

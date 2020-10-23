@@ -191,14 +191,16 @@ namespace SmartKG.Common.DataStoreMgmt
             }
         }
 
-        public List<Vertex> GetVertexesByScenarios(List<string> scenarios)
+        public (bool, List<Vertex>) GetVertexesByScenarios(List<string> scenarios)
         {
             List<Vertex> allVertexes = this.vertexIdCache.Values.ToList();
 
             if (scenarios == null || scenarios.Count == 0)
             {
-                return allVertexes;
+                return (true, allVertexes);
             }
+
+            bool isScenarioExist = false;
 
             List<Vertex> catchedVertexes = new List<Vertex>();
 
@@ -213,6 +215,7 @@ namespace SmartKG.Common.DataStoreMgmt
                 {
                     if (vertex.scenarios.Contains(scenario))
                     {
+                        isScenarioExist = true;
                         catchedVertexes.Add(vertex);
 
                         break;
@@ -220,7 +223,7 @@ namespace SmartKG.Common.DataStoreMgmt
                 }
             }
 
-            return catchedVertexes;
+            return (isScenarioExist, catchedVertexes);
         }
 
         public List<Edge> GetRelationsByScenarios(List<string> scenarios)

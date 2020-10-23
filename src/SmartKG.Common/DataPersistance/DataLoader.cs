@@ -22,11 +22,14 @@ namespace SmartKG.Common.DataPersistence
         private ILogger log = Log.Logger.ForContext<DataLoader>();
 
         private IDataAccessor dataAccessor;
-        
+        private PersistanceType persistanceType;
+        private FileUploadConfig uploadConfig;
+
+
         public DataLoader(IConfiguration config)
         {
-            
-            PersistanceType persistanceType = (PersistanceType)Enum.Parse(typeof(PersistanceType), config.GetSection("PersistanceType").Value, true);
+            uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
+            persistanceType = (PersistanceType)Enum.Parse(typeof(PersistanceType), config.GetSection("PersistanceType").Value, true);
 
             if (persistanceType == PersistanceType.File)
             {
@@ -52,7 +55,10 @@ namespace SmartKG.Common.DataPersistence
             {
                 DataStoreFrame dsFrame = this.LoadDataStore(dsName);
 
-                datastores.Add(dsFrame);
+                if (dsFrame != null)
+                { 
+                    datastores.Add(dsFrame);
+                }
             }
 
             return datastores;
@@ -73,7 +79,8 @@ namespace SmartKG.Common.DataPersistence
 
             if (vcList == null || vList == null || eList == null)
             {
-                throw new Exception("Cannot load KG data from persistance.");
+                log.Here().Warning("No KG Data loaded from persistence");
+                return null;
             }
 
             DataPersistanceKGParser kgParser = new DataPersistanceKGParser();
@@ -115,6 +122,16 @@ namespace SmartKG.Common.DataPersistence
         public bool DeleteDataStore(string user, string datastoreName)
         {
             return this.dataAccessor.DeleteDataStore(user, datastoreName);
+        }
+        
+        public PersistanceType GetPersistanceType()
+        {
+            return this.persistanceType;
+        }
+
+        public FileUploadConfig GetUploadConfig()
+        {
+            return this.uploadConfig;
         }
     }
 }

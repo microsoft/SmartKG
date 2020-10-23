@@ -15,13 +15,6 @@ namespace SmartKG.KGBot.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "Welcome to SmarKG" };
-        }
-
-        // GET api/welcome/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "SmartKG";
-        }       
+        }          
     }
 }

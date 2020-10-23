@@ -30,6 +30,12 @@ namespace SmartKG.Common.DataPersistance
         
         public (List<Vertex>, List<Edge>) LoadKG(string dsName)
         {
+            if (string.IsNullOrWhiteSpace(dsName))
+            {
+                log.Here().Warning("The datastore: " + dsName + " doesn't exist.");
+                return (null, null);
+            }
+
             string kgPath = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar + "KG" + Path.DirectorySeparatorChar;
 
             if (string.IsNullOrWhiteSpace(kgPath) || !Directory.Exists(kgPath))
@@ -54,6 +60,12 @@ namespace SmartKG.Common.DataPersistance
 
         public List<VisulizationConfig> LoadConfig(string dsName)
         {
+            if (string.IsNullOrWhiteSpace(dsName))
+            {
+                log.Here().Warning("The datastore: " + dsName + " doesn't exist.");
+                return null;
+            }
+
             string vcPath = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar + "Visulization" + Path.DirectorySeparatorChar;
 
             if (string.IsNullOrWhiteSpace(vcPath) || !Directory.Exists(vcPath))
@@ -73,6 +85,12 @@ namespace SmartKG.Common.DataPersistance
 
         public  ( List<NLUIntentRule>, List<EntityData>, List<EntityAttributeData> ) LoadNLU(string dsName)
         {
+            if (string.IsNullOrWhiteSpace(dsName))
+            {
+                log.Here().Warning("The datastore: " + dsName + " doesn't exist.");
+                return (null, null, null);
+            }
+
             string nluPath = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar + "NLU" + Path.DirectorySeparatorChar;
 
             if (string.IsNullOrWhiteSpace(nluPath) || !Directory.Exists(nluPath))

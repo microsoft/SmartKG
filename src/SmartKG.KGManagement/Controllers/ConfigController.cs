@@ -23,7 +23,7 @@ namespace SmartKG.KGManagement.Controllers
 
         public ConfigController()
         {
-            log = Log.Logger.ForContext<ScenariosController>();
+            log = Log.Logger.ForContext<ConfigController>();
         }
 
         [HttpGet]
@@ -32,32 +32,56 @@ namespace SmartKG.KGManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IResult>> Get(string datastoreName, string scenarioName)
         {
-            GraphExecutor executor = new GraphExecutor(datastoreName);
-
-            List<ColorConfig> configs = executor.GetColorConfigs(scenarioName);
-
             ConfigResult result = new ConfigResult();
-            result.success = true;
 
-            if (configs == null)
+            if (string.IsNullOrWhiteSpace(datastoreName))
             {
-                result.responseMessage = "There is no color config defined in the KG. ";
+                result.success = false;
+                result.responseMessage = "datastoreName不能为空。";
             }
             else
-            {
-                result.responseMessage = "There are " + configs.Count + " color config defined.";
-                result.entityColorConfig = new Dictionary<string,string>();
+            { 
+                GraphExecutor executor = new GraphExecutor(datastoreName);
 
-                foreach(ColorConfig config in configs)
+                (bool isDSExist, bool isScenarioExist, List<ColorConfig> configs) = executor.GetColorConfigs(scenarioName);
+
+                if (!isDSExist)
                 {
-                    if (!result.entityColorConfig.ContainsKey(config.itemLabel))
+                    result.success = false;
+                    result.responseMessage = "Datastore " + datastoreName + "不存在，或没有数据导入。";
+                }
+                else
+                { 
+                    if (!isScenarioExist)
+                    {
+                        result.success = false;
+                        result.responseMessage = "scenario " + scenarioName + " 不存在。";
+                    }
+                    else
                     { 
-                        result.entityColorConfig.Add(config.itemLabel, config.color);
+                        result.success = true;
+
+                        if (configs == null)
+                        {
+                            result.responseMessage = "scenario " + scenarioName + " 没有 color config 的定义。";
+                        }
+                        else
+                        {
+                            result.responseMessage = "一共有 " + configs.Count + " color config 的定义。";
+                            result.entityColorConfig = new Dictionary<string,string>();
+
+                            foreach(ColorConfig config in configs)
+                            {
+                                if (!result.entityColorConfig.ContainsKey(config.itemLabel))
+                                { 
+                                    result.entityColorConfig.Add(config.itemLabel, config.color);
+                                }
+                            }
+
+                        }
                     }
                 }
-
             }
-
             log.Information("[Response]: " + JsonConvert.SerializeObject(result));
 
             return Ok(result);

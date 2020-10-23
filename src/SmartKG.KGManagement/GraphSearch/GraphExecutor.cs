@@ -14,13 +14,15 @@ namespace SmartKG.KGManagement.GraphSearch
 {
     public class GraphExecutor
     {
-        private KnowledgeGraphDataFrame kgDF;
+        private KnowledgeGraphDataFrame kgDF = null;
         private ILogger log;
 
         public GraphExecutor(string datastoreName)
         {
             DataStoreFrame dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);
-            this.kgDF = dsFrame.GetKG();
+
+            if (dsFrame != null)
+                this.kgDF = dsFrame.GetKG();
 
             log = Log.Logger.ForContext<GraphExecutor>();
         }
@@ -35,23 +37,30 @@ namespace SmartKG.KGManagement.GraphSearch
             log.Error(e.Message, e);
         }
 
-        public VisulizedVertex GetVertexById(string vId)
+        public (bool, VisulizedVertex) GetVertexById(string vId)
         {
+            if (this.kgDF == null)
+                return (false, null);
+
             Vertex vertex =  this.kgDF.GetVertexById(vId);
 
             if (vertex == null)
-                return null;
+                return (true, null);
             else
-                return ConvertVertex(vertex);
+                return (true, ConvertVertex(vertex));
         }
         
-        public List<VisulizedVertex> SearchVertexesByName(string keyword)
+        public (bool, List<VisulizedVertex>) SearchVertexesByName(string keyword)
         {
+
+            if (this.kgDF == null)
+                return (false, null);
+
             List<Vertex> searchedVertexes =  this.kgDF.GetVertexByKeyword(keyword);
 
             if (searchedVertexes == null || searchedVertexes.Count == 0)
             {
-                return null;
+                return (true, null);
             }
 
             List<VisulizedVertex> results = new List<VisulizedVertex>();
@@ -61,11 +70,14 @@ namespace SmartKG.KGManagement.GraphSearch
                 results.Add(ConvertVertex(vertex));
             }
 
-            return results;
+            return (true, results);
         }
 
-        public List<VisulizedVertex> FilterVertexesByProperty(string propertyName, string propertyValue)
+        public (bool, List<VisulizedVertex>) FilterVertexesByProperty(string propertyName, string propertyValue)
         {
+            if (this.kgDF == null)
+                return (false, null);
+
             if (string.IsNullOrEmpty(propertyName))
             {
                 Exception e = new Exception("Invalid input: propertyName is empty.");
@@ -101,29 +113,36 @@ namespace SmartKG.KGManagement.GraphSearch
                 }
             }
 
-            return results;
+            return (true, results);
         }
 
-        public List<string> GetScenarioNames()
+        public (bool, List<string>) GetScenarioNames()
         {
+            if (this.kgDF == null)
+                return (false, null);
+
             HashSet<string> names = this.kgDF.GetScenarioNames();
             if (names == null || names.Count == 0)
             {
-                return null;
+                return (true, null);
             }
             else
             { 
-                return this.kgDF.GetScenarioNames().ToList();
+                return (true, this.kgDF.GetScenarioNames().ToList());
             }
         }
 
-        public List<ColorConfig> GetColorConfigs(string scenarioName)
+        public (bool, bool, List<ColorConfig>) GetColorConfigs(string scenarioName)
         {
+
+            if (this.kgDF == null)
+                return (false, false, null);
+
             Dictionary<string, List<ColorConfig>> colorConfigs = this.kgDF.GetVertexLabelColorMap();
 
             if (colorConfigs == null || colorConfigs.Count == 0)
             {
-                return null;
+                return (true, false, null);
             }
             else if (string.IsNullOrWhiteSpace(scenarioName))
             {
@@ -133,24 +152,28 @@ namespace SmartKG.KGManagement.GraphSearch
                     configs.AddRange(colorConfigs[scenario]);
                 }
 
-                return configs;
+                return (true, true, configs);
             }
             else
             {
                 if (!colorConfigs.ContainsKey(scenarioName))
                 {
-                    return null;
+                    return (true, false, null);
                 }
                 else
                 {
-                    return colorConfigs[scenarioName];
+                    return (true, true, colorConfigs[scenarioName]);
                 }
             }
         }
 
-        public (List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
+        public (bool, bool, List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
         {
-            List<Vertex> catchedVertexes = this.kgDF.GetVertexesByScenarios(scenarios);
+
+            if (this.kgDF == null)
+                return (false, false, null, null);
+
+            (bool isSceanrioExist, List<Vertex> catchedVertexes) = this.kgDF.GetVertexesByScenarios(scenarios);
 
             List<VisulizedVertex> vvs = new List<VisulizedVertex>();
 
@@ -168,16 +191,19 @@ namespace SmartKG.KGManagement.GraphSearch
                 ves.Add(ConvertEdge(edge));
             }
             
-            return (vvs, ves);
+            return (true, isSceanrioExist, vvs, ves);
         }
 
-        public (List<VisulizedVertex>, List<VisulizedEdge>) GetFirstLevelRelationships(string vId)
+        public (bool, List<VisulizedVertex>, List<VisulizedEdge>) GetFirstLevelRelationships(string vId)
         {
+            if (this.kgDF == null)
+                return (false, null, null);
+
             Vertex vertex = this.kgDF.GetVertexById(vId);
 
             if (vertex == null)
             {
-                return (null, null);
+                return (true, null, null);
             }
 
             List<VisulizedVertex> rVVs = new List<VisulizedVertex>();
@@ -222,7 +248,7 @@ namespace SmartKG.KGManagement.GraphSearch
                 rVEs.AddRange(tmpRVEs);
             }
 
-            return (rVVs, rVEs);
+            return (true, rVVs, rVEs);
         }
 
         private (List<VisulizedVertex>, List<VisulizedEdge>) GetConnectedVertexesAndEdges(string vId, Dictionary<RelationLink, List<string>> relationDict, bool vIsSrc)

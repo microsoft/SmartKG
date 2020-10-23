@@ -11,7 +11,7 @@ namespace SmartKG.Common.Data.LU
     public enum NLUResultType
     {
         [Description("Not Completed")]
-        NORMAL, NUMBER, QUITDIALOG, UNKNOWN
+        NORMAL, NUMBER, QUITDIALOG, UNKNOWN, NOTEXIST
     }
 
     public class NLUResult

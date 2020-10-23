@@ -36,6 +36,12 @@ namespace SmartKG.Common.DataPersistance
 
         public (List<Vertex>, List<Edge>) LoadKG(string dbName)
         {
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                log.Here().Warning("The database: " + dbName + " doesn't exist.");
+                return (null, null);
+            }
+
             try
             {
                 BsonDocument allFilter = new BsonDocument();
@@ -65,7 +71,11 @@ namespace SmartKG.Common.DataPersistance
 
         public List<VisulizationConfig> LoadConfig(string dbName)
         {
-            Console.WriteLine("Database Name: " + dbName);
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                log.Here().Warning("The database: " + dbName + " doesn't exist.");
+                return null;
+            }
 
             try
             {
@@ -87,7 +97,11 @@ namespace SmartKG.Common.DataPersistance
 
         public (List<NLUIntentRule>, List<EntityData>, List<EntityAttributeData>) LoadNLU(string dbName)
         {
-            Console.WriteLine("Database Name: " + dbName);
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                log.Here().Warning("The database: " + dbName + " doesn't exist.");
+                return (null, null, null);
+            }
 
             try
             {
@@ -104,6 +118,15 @@ namespace SmartKG.Common.DataPersistance
                 List<EntityAttributeData> eaList = eaCollection.Find(allFilter).ToList();
 
                 log.Here().Information("NLU Data has been parsed from MongoDB.");
+
+                if (iList != null && iList.Count == 0)
+                    iList = null;
+
+                if (eList != null && eList.Count == 0)
+                    eList = null;
+
+                if (eaList != null && eaList.Count == 0)
+                    eaList = null;
 
                 return (iList, eList, eaList);
             }
@@ -189,21 +212,24 @@ namespace SmartKG.Common.DataPersistance
 
             if (results.Count == 0)
                 return false;
-            
+
+            bool deleted = false;
+
             foreach (var result in results)
             {
-                if (result.creator != user)
+                if (result.creator !=null && result.creator != user)
+                { 
                     continue;
+                }
                 else
                 { 
                     collection.DeleteOne(deleteFilter);
                     client.DropDatabase(datastoreName);
+                    deleted = true;
                 }
             }
 
-            
-
-            return true;
+            return deleted;
         }
     }       
 }

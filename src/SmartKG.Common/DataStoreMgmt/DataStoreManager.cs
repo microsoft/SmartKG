@@ -3,8 +3,11 @@
 
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using SmartKG.Common.Data;
 using SmartKG.Common.DataPersistence;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SmartKG.Common.DataStoreMgmt
 {
@@ -105,6 +108,54 @@ namespace SmartKG.Common.DataStoreMgmt
 
             log.Error("The " + dsName + " doesn't existed.");
             return null;
+        }
+
+        public string GetUploadedFileSaveDir()
+        {
+            FileUploadConfig uploadConfig = this.dataLoader.GetUploadConfig();
+            string excelDir = uploadConfig.ExcelDir;
+
+            return excelDir;
+        }
+
+        public PersistanceType GetPersistanceType()
+        {
+            return this.dataLoader.GetPersistanceType();
+        }
+
+        public (FileUploadConfig, string, string) GenerateConvertDirs(string datastoreName, string savedFileName, string scenario)
+        {
+            FileUploadConfig uploadConfig = this.dataLoader.GetUploadConfig();
+            PersistanceType persistanceType = this.dataLoader.GetPersistanceType();
+
+            string excelDir = uploadConfig.ExcelDir;
+
+            string pythonArgs = "--configPath \"" + uploadConfig.ColorConfigPath + "\" ";
+
+            pythonArgs += " --srcPaths ";
+
+            pythonArgs += "\"" + excelDir + Path.DirectorySeparatorChar + savedFileName + "\" ";
+
+
+            pythonArgs += " --scenarios ";
+
+
+            pythonArgs += "\"" + scenario + "\" ";
+
+            string targetDir = null;
+
+            if (persistanceType == PersistanceType.File)
+            {
+                targetDir = uploadConfig.LocalRootPath + Path.DirectorySeparatorChar + datastoreName;
+            }
+            else
+            {
+                targetDir = excelDir + Path.DirectorySeparatorChar + DateTime.Now.ToString("MMddyyyyHHmmss");
+            }
+
+            pythonArgs += " --destPath \"" + targetDir + "\" ";
+
+            return (uploadConfig, pythonArgs, targetDir);
         }
     }
 }
