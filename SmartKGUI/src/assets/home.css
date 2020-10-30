@@ -107,7 +107,7 @@
 }
 
 .chart-search {
-    height: 40px;
+    height: 100px;
     position: relative;
     width: 400px;
     /* background: #ffffff; */
@@ -128,7 +128,7 @@
 
 .chart-search-div {
     position: absolute;
-    top: 42px;
+    top: 96px;
     left: 0;
     line-height: 25px;
     width: 220px;

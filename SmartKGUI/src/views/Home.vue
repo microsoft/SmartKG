@@ -3,7 +3,12 @@
     <div class="chart-page">
       <div id="echart" width="400" height="400"></div>
       <div id="tip">
-        <el-popover placement="bottom" width="400" trigger="click" style="padding:0!important">
+        <el-popover
+          placement="bottom"
+          width="400"
+          trigger="click"
+          style="padding: 0 !important"
+        >
           <div class="bot">
             <div class="chat">
               <div class="chat-title">
@@ -11,14 +16,14 @@
               </div>
               <div class="history" id="history">
                 <div v-for="item of histroyList" v-bind:key="item.key">
-                  <div v-if="item.from=='user'" class="user-info-wrap">
-                    <div class="user-info">{{item.info}}</div>
+                  <div v-if="item.from == 'user'" class="user-info-wrap">
+                    <div class="user-info">{{ item.info }}</div>
                     <i class="el-icon-user-solid user-icon"></i>
                   </div>
-                  <div v-if="item.from=='bot'" class="bot-info-wrap">
+                  <div v-if="item.from == 'bot'" class="bot-info-wrap">
                     <i class="el-icon-service bot-icon"></i>
                     <div class="bot-info">
-                      <pre>{{item.info}}</pre>
+                      <pre>{{ item.info }}</pre>
                     </div>
                   </div>
                 </div>
@@ -29,7 +34,7 @@
                     v-model="currentText"
                     type="text"
                     id="curentChat"
-                    style="border-radius: 5px;"
+                    style="border-radius: 5px"
                     v-on:keyup.enter="send"
                   />
                   <div class="btnsend" @click="send()" title="send">
@@ -40,7 +45,7 @@
             </div>
           </div>
           <el-button slot="reference">
-            <i class="el-icon-service" style="font-size:30px"></i>
+            <i class="el-icon-service" style="font-size: 30px"></i>
           </el-button>
         </el-popover>
       </div>
@@ -56,12 +61,28 @@
               v-on:keyup.enter="gotochartEnter"
               ref="search"
             />
-            <button class="chart-search-btn" @click="gotochartSmallBtn()"></button>
+            <button
+              class="chart-search-btn"
+              @click="gotochartSmallBtn()"
+            ></button>
           </div>
+          <el-select
+            v-model="selectDataStore"
+            placeholder="请选择数据库"
+            style="left: -88px; width: 222px; margin-bottom: 10px"
+            :change="changeDataStore()"
+          >
+            <el-option
+              v-for="item in datastoreList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
           <el-select
             v-model="selectSce"
             placeholder="请选择场景"
-            style="left: -88px; width:222px;"
+            style="left: -88px; width: 222px"
             :change="changeScen()"
           >
             <el-option
@@ -75,15 +96,17 @@
         <div class="chart-result">
           <p class="title" v-if="isExpand">
             模糊搜索结果信息：共找到
-            <span class="result-num">{{list.length}}</span>结果
+            <span class="result-num">{{ list.length }}</span
+            >结果
           </p>
-          <ul class="item-list" :class="{close:!isExpand,expand:isExpand}">
+          <ul class="item-list" :class="{ close: !isExpand, expand: isExpand }">
             <li
               class="list-item"
+              style="justify-content: left"
               v-for="item of list"
               v-bind:key="item.id"
-              :class="{'active':item.id==currentId}"
-              @click="getNodes(item.id,item.name)"
+              :class="{ active: item.id == currentId }"
+              @click="getNodes(item.id, item.name)"
               v-html="changeListKey(item.name)"
             ></li>
           </ul>
@@ -91,7 +114,10 @@
           <div class="control">
             <span class="control-btn" @click="isExpand = !isExpand">
               全部收起
-              <span class="arrow" :class="{up:isExpand,down:!isExpand}"></span>
+              <span
+                class="arrow"
+                :class="{ up: isExpand, down: !isExpand }"
+              ></span>
             </span>
           </div>
         </div>
@@ -100,7 +126,7 @@
   </div>
 </template>
 
-<style type="text/css">
+<style type="text/css" scoped>
 @import "../assets/home.css";
 </style>
 
@@ -126,12 +152,15 @@ export default {
       currentId: "",
       baseURL: window.urlapi,
       scenariosList: [],
+      datastoreList: [],
       colorList: [],
       selectSce: "",
+      lastScen: "",
+      selectDataStore: "",
+      lastDataStore: "",
       histroyList: [],
       currentText: "",
-      lastScen: "",
-      sessionId: ""
+      sessionId: "",
     };
   },
   components: {},
@@ -144,14 +173,15 @@ export default {
         .post(`${this.baseURL}/api/bot`, {
           userId: "",
           sessionId: this.sessionId,
-          query: this.currentText
+          datastoreName: this.selectDataStore,
+          query: this.currentText,
         })
-        .then(res => {
+        .then((res) => {
           this.sessionId = res.data.sessionId;
           this.histroyList.push({
             from: "bot",
             info: res.data.result.responseMessage,
-            key: new Date().valueOf()
+            key: new Date().valueOf(),
           });
           setTimeout(() => {
             document.querySelector("#history").scrollTop = 99999;
@@ -160,7 +190,7 @@ export default {
       this.histroyList.push({
         from: "user",
         info: this.currentText,
-        key: new Date().valueOf()
+        key: new Date().valueOf(),
       });
       this.currentText = "";
       setTimeout(() => {
@@ -172,23 +202,64 @@ export default {
         return;
       }
       this.lastScen = this.selectSce;
+      // axios
+      //   .get(
+      //     `${this.baseURL}/api/Graph/visulize?datastoreName=${encodeURI(
+      //       this.selectDataStore
+      //     )}&scenarioName=${encodeURI(this.selectSce)}`
+      //   )
+      //   .then((res) => {
+      //     this.nodes = res.data.nodes;
+      //     this.edges = res.data.relations;
+      //     this.process();
+      //     this.generate();
+      //   });
       axios
-        .get(`${this.baseURL}/api/graph?scenarios=${encodeURI(this.selectSce)}`)
-        .then(res => {
-          this.nodes = res.data.nodes;
-          this.edges = res.data.relations;
-          this.process();
-          this.generate();
+        .get(
+          `${this.baseURL}/api/Config/entitycolor?datastoreName=${encodeURI(
+            this.selectDataStore
+          )}&scenarioName=${encodeURI(this.selectSce)}`
+        )
+        .then((response) => {
+          for (let [key, value] of Object.entries(
+            response.data.entityColorConfig
+          )) {
+            this.colorList.push({ name: key, color: value });
+          }
+          axios
+            .get(
+              `${this.baseURL}/api/Graph/visulize?datastoreName=${encodeURI(
+                this.selectDataStore
+              )}&scenarioName=${encodeURI(this.selectSce)}`
+            )
+            .then((res) => {
+              this.nodes = res.data.nodes;
+              this.edges = res.data.relations;
+              this.process();
+              this.generate();
+            });
         });
+    },
+    changeDataStore() {
+      if (
+        this.selectDataStore == "" ||
+        this.selectDataStore == this.lastDataStore
+      ) {
+        return;
+      }
+      this.lastDataStore = this.selectDataStore;
+      this.getScenarios();
+      this.lastScen = "";
+      this.selectSce = "";
     },
     gotochartEnter() {
       axios
         .get(`${this.baseURL}/api/Search?keyword=${encodeURI(this.keyWord)}`)
-        .then(response => {
+        .then((response) => {
           this.currentId = response.data.nodes[0].id;
           axios
             .get(`${this.baseURL}/api/Search/${response.data.nodes[0].id}`)
-            .then(res => {
+            .then((res) => {
               this.nodes = res.data.nodes;
               this.edges = res.data.relations;
               this.process();
@@ -225,8 +296,10 @@ export default {
           return;
         }
         axios
-          .get(`${this.baseURL}/api/Search?keyword=${encodeURI(this.keyWord)}`)
-          .then(response => {
+          .get(
+            `${this.baseURL}/api/Graph/search?datastoreName=${this.selectDataStore}&keyword=${this.keyWord}`
+          )
+          .then((response) => {
             if (response.data.nodes === null) {
               this.list = [];
               this.charts.dispose();
@@ -238,23 +311,27 @@ export default {
       }, 2000);
     },
     getNodes(id, name) {
-      this.lastScen = "";
-      this.selectSce = "";
+      // this.lastScen = "";
+      // this.selectSce = "";
       this.currentId = id;
-      axios.get(`${this.baseURL}/api/Search/${id}`).then(res => {
-        this.nodes = res.data.nodes;
-        this.edges = res.data.relations;
-        this.process();
-        this.generate();
-        this.charts.hideLoading();
-      });
+      axios
+        .get(
+          `${this.baseURL}/api/Graph/search?datastoreName=${this.selectDataStore}&keyword=${id}`
+        )
+        .then((res) => {
+          this.nodes = res.data.nodes;
+          this.edges = res.data.relations;
+          this.process();
+          this.generate();
+          this.charts.hideLoading();
+        });
     },
     generate() {
       this.charts = echarts.init(document.getElementById("echart"));
       var option = {
         title: {
           top: "bottom",
-          left: "right"
+          left: "right",
         },
         tooltip: {
           trigger: "item",
@@ -272,9 +349,9 @@ export default {
             return str;
           },
           textStyle: {
-            width: "100px"
+            width: "100px",
           },
-          extraCssText: "text-align:left;"
+          extraCssText: "text-align:left;",
         },
         draggable: true,
         series: [
@@ -292,10 +369,10 @@ export default {
               layoutAnimation: false,
               repulsion: 300,
               edgeLength: 140,
-              gravity: 0.1
+              gravity: 0.1,
             },
             edgeLabel: {
-              show: true
+              show: true,
             },
             data: this.nodes,
             links: this.edges,
@@ -303,22 +380,22 @@ export default {
             label: {
               color: "#000",
               normal: {
-                position: "right"
-              }
+                position: "right",
+              },
             },
             lineStyle: {
               normal: {
-                curveness: 0.2
-              }
-            }
-          }
-        ]
+                curveness: 0.2,
+              },
+            },
+          },
+        ],
       };
       this.charts.setOption(option);
-      this.charts.on("click", e => {
+      this.charts.on("click", (e) => {
         this.charts.showLoading({
           text: "正在加载数据",
-          color: "none"
+          color: "none",
         });
         this.getChildNode(e.data).then(() => {
           this.process();
@@ -326,26 +403,28 @@ export default {
           option.series[0].links = this.edges;
           this.charts.setOption(option);
           this.charts.resize({
-            width: "auto"
+            width: "auto",
           });
           this.charts.hideLoading();
         });
       });
     },
     getChildNode(node) {
+      console.log(3333);
       let url = "";
       if (/属性/.test(node.info)) {
         url = `${this.baseURL}/api/Search/property?name=${encodeURI(
           node.displayName
         )}&value=${encodeURI(node.name)}`;
       } else {
-        url = `${this.baseURL}/api/Search/${node.id}`;
+        url = `${this.baseURL}​/api​/Graph​/relations​?id=${node.id}&datastoreName=${this.selectDataStore}`;
       }
+      console.log(url, node);
       let promise = new Promise((resolve, reject) => {
         axios({
           method: "get",
-          url
-        }).then(res => {
+          url,
+        }).then((res) => {
           if (res.data.nodes == null) {
             this.charts.hideLoading();
             resolve();
@@ -383,7 +462,7 @@ export default {
           show: true,
           position: "bottom",
           width: "30",
-          color: "#000"
+          color: "#000",
         };
         this.nodes[i].symbolSize = 30;
         if (this.nodes[i].name == "true") {
@@ -394,7 +473,7 @@ export default {
           color: "#cccccc",
           borderColor: "#cccccc",
           shadowColor: "rgba(0, 0, 0, 0.5)",
-          shadowBlur: 3
+          shadowBlur: 3,
         };
         for (let k = 0; k < this.colorList.length; k++) {
           if (this.nodes[i].info == this.colorList[k].name) {
@@ -402,7 +481,7 @@ export default {
               color: this.colorList[k].color,
               borderColor: "#ffffff",
               shadowColor: "rgba(0, 0, 0, 0.5)",
-              shadowBlur: 3
+              shadowBlur: 3,
             };
             this.nodes[i].label.color = this.colorList[k].color;
           }
@@ -415,32 +494,45 @@ export default {
           if (this.edges[i].target == this.nodes[j].id)
             this.edges[i].lineStyle = {
               width: 2,
-              color: "#000000"
+              color: "#000000",
             };
         }
         this.edges[i].label = {
-          formatter: this.edges[i].value
+          formatter: this.edges[i].value,
         };
       }
-    }
+    },
+    getScenarios() {
+      this.scenariosList = [];
+      axios
+        .get(
+          `${this.baseURL}/api/Graph/scenarios?datastoreName=${this.selectDataStore}`
+        )
+        .then((response) => {
+          for (let i = 0; i < response.data.scenarioNames.length; i++) {
+            this.scenariosList.push({
+              id: i,
+              name: response.data.scenarioNames[i],
+            });
+          }
+        });
+    },
+    getDataStore() {
+      this.datastoreList = [];
+      axios.get(`${this.baseURL}/api/DataStoreMgmt`).then((response) => {
+        console.log(response);
+        for (let i = 0; i < response.data.datastoreNames.length; i++) {
+          this.datastoreList.push({
+            id: i,
+            name: response.data.datastoreNames[i],
+          });
+        }
+      });
+    },
   },
   mounted() {
-    axios.get(`${this.baseURL}/api/scenarios`).then(response => {
-      for (let i = 0; i < response.data.scenarioNames.length; i++) {
-        this.scenariosList.push({
-          id: i,
-          name: response.data.scenarioNames[i]
-        });
-      }
-    });
-    axios.get(`${this.baseURL}/api/config/entitycolor`).then(response => {
-      for (let [key, value] of Object.entries(
-        response.data.entityColorConfig
-      )) {
-        this.colorList.push({ name: key, color: value });
-      }
-    });
-  }
+    this.getDataStore();
+  },
 };
 </script>
 
