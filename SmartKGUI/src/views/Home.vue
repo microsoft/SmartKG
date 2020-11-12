@@ -316,7 +316,7 @@ export default {
       this.currentId = id;
       axios
         .get(
-          `${this.baseURL}/api/Graph/search?datastoreName=${this.selectDataStore}&keyword=${id}`
+          `${this.baseURL}/api/Graph/relations/${id}?datastoreName=${this.selectDataStore}`
         )
         .then((res) => {
           this.nodes = res.data.nodes;
@@ -398,6 +398,7 @@ export default {
           color: "none",
         });
         this.getChildNode(e.data).then(() => {
+          this.charts = echarts.init(document.getElementById("echart"));
           this.process();
           option.series[0].data = this.nodes;
           option.series[0].links = this.edges;
@@ -417,7 +418,7 @@ export default {
           node.displayName
         )}&value=${encodeURI(node.name)}`;
       } else {
-        url = `${this.baseURL}​/api​/Graph​/relations​?id=${node.id}&datastoreName=${this.selectDataStore}`;
+        url = `${this.baseURL}/api/Graph/relations/${node.id}?datastoreName=${this.selectDataStore}`;
       }
       console.log(url, node);
       let promise = new Promise((resolve, reject) => {
@@ -425,23 +426,11 @@ export default {
           method: "get",
           url,
         }).then((res) => {
-          if (res.data.nodes == null) {
-            this.charts.hideLoading();
-            resolve();
-          } else {
-            for (let i = 0; i < this.nodes.length; i++) {
-              for (let j = 0; j < res.data.nodes.length; j++) {
-                if (res.data.nodes[j].id == this.nodes[i].id) {
-                  res.data.nodes.splice(j, 1);
-                  j--;
-                }
-              }
-            }
-            this.nodes = this.nodes.concat(res.data.nodes);
-            this.edges = this.edges.concat(res.data.relations);
+            console.log(res, 62);
+            this.nodes = res.data.nodes;
+            this.edges = res.data.relations;
             this.process();
             resolve();
-          }
         });
       });
       return promise;
