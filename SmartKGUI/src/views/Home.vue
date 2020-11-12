@@ -198,6 +198,9 @@ export default {
       }, 150);
     },
     changeScen() {
+      
+      
+
       if (this.selectSce == "" || this.selectSce == this.lastScen) {
         return;
       }
@@ -392,13 +395,16 @@ export default {
         ],
       };
       this.charts.setOption(option);
+      if(this.charts){
+        this.charts.off('click');
+      }
       this.charts.on("click", (e) => {
+        this.charts = echarts.init(document.getElementById("echart"));
         this.charts.showLoading({
           text: "正在加载数据",
           color: "none",
         });
         this.getChildNode(e.data).then(() => {
-          this.charts = echarts.init(document.getElementById("echart"));
           this.process();
           option.series[0].data = this.nodes;
           option.series[0].links = this.edges;
