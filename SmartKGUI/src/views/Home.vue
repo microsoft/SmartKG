@@ -400,6 +400,7 @@ export default {
       }
       this.charts.on("click", (e) => {
         this.charts = echarts.init(document.getElementById("echart"));
+        console.log(e, 5555)
         this.charts.showLoading({
           text: "正在加载数据",
           color: "none",
@@ -417,22 +418,19 @@ export default {
       });
     },
     getChildNode(node) {
-      console.log(3333);
       let url = "";
       if (/属性/.test(node.info)) {
-        url = `${this.baseURL}/api/Search/property?name=${encodeURI(
+        url = `${this.baseURL}/api/Graph/Search/property?name=${encodeURI(
           node.displayName
-        )}&value=${encodeURI(node.name)}`;
+        )}&value=${encodeURI(node.name)}&datastoreName=${this.selectDataStore}`;
       } else {
         url = `${this.baseURL}/api/Graph/relations/${node.id}?datastoreName=${this.selectDataStore}`;
       }
-      console.log(url, node);
       let promise = new Promise((resolve, reject) => {
         axios({
           method: "get",
           url,
         }).then((res) => {
-            console.log(res, 62);
             this.nodes = res.data.nodes;
             this.edges = res.data.relations;
             this.process();
@@ -515,7 +513,6 @@ export default {
     getDataStore() {
       this.datastoreList = [];
       axios.get(`${this.baseURL}/api/DataStoreMgmt`).then((response) => {
-        console.log(response);
         for (let i = 0; i < response.data.datastoreNames.length; i++) {
           this.datastoreList.push({
             id: i,
