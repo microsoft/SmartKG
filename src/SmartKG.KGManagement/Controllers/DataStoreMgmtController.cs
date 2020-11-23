@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
 using SmartKG.Common.DataStoreMgmt;
@@ -21,8 +22,14 @@ namespace SmartKG.KGManagement.Controllers
     [ApiController]
     public class DataStoreMgmtController : ControllerBase
     {
+        private ILogger log;
         DataStoreManager dsManager = DataStoreManager.GetInstance();
         
+        public DataStoreMgmtController()
+        {
+            log = Log.Logger.ForContext<DataStoreMgmtController>();
+        }
+
         // Get api/datastoremgmt
         [HttpGet]
         [Route("api/[controller]")]

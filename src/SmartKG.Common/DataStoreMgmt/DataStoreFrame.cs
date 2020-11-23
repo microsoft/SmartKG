@@ -23,6 +23,7 @@ namespace SmartKG.Common.DataStoreMgmt
 
         public DataStoreFrame(string datastoreName, KnowledgeGraphDataFrame kgDF, NLUDataFrame nluDF)
         {
+            log = Log.Logger.ForContext<DataStoreFrame>();
             this.datastoreName = datastoreName;
             this.kgDF = kgDF; //new KnowledgeGraphDataFrame();
             this.nluDF = nluDF; // new NLUDataFrame();
@@ -285,7 +286,7 @@ namespace SmartKG.Common.DataStoreMgmt
         {
             if (vertex.isLeaf())
             {
-                LogInformation(log.Here(), vertex.name, "is not leaf");
+                LogInformation(log.Here(), vertex.name, "is a leaf");
                 return null;
             }
 

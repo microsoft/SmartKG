@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Serilog;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Utils;
 using System;
@@ -13,8 +14,12 @@ namespace SmartKG.Common.Importer
     public class NLUDataImporter
     {
         private string rootPath;
+        private ILogger log;
+
         public NLUDataImporter(string rootPath)
-        {            
+        {
+            log = Log.Logger.ForContext<NLUDataImporter>();
+
             if (string.IsNullOrWhiteSpace(rootPath))
             {
                 throw new Exception("Rootpath of NLU files are invalid.");

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Serilog;
 
 namespace SmartKG.Common.DataStoreMgmt
 {
@@ -22,9 +23,11 @@ namespace SmartKG.Common.DataStoreMgmt
         private Dictionary<string, List<NLUIntentRule>> intentNegativeDeterminRules;
 
         private Dictionary<string, ScenarioSetting> sceanrioCache;
+        private ILogger log;
 
         public NLUDataFrame()
         {
+            log = Log.Logger.ForContext<NLUDataFrame>();
             this.Clean();
         }
 

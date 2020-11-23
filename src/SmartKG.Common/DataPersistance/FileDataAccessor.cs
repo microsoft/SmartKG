@@ -11,7 +11,6 @@ using SmartKG.Common.Logger;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace SmartKG.Common.DataPersistance
 {
@@ -25,7 +24,7 @@ namespace SmartKG.Common.DataPersistance
         public FileDataAccessor(string rootPath)
         {
             this.rootPath = rootPath;
-            this.log = Log.Logger.ForContext<MongoDataAccessor>();
+            this.log = Log.Logger.ForContext<FileDataAccessor>();
         }  
         
         public (List<Vertex>, List<Edge>) LoadKG(string dsName)

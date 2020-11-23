@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Serilog;
 using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.KG;
@@ -21,8 +22,11 @@ namespace SmartKG.KGBot.Managment
         private MessageGenerator msgGenerator;
         private DataStoreFrame dsFrame;
 
+        private ILogger log;
         public DataQuerier(string datastoreName, RUNNINGMODE runningMode)
         {
+            log = Log.Logger.ForContext<DataQuerier>();
+
             this.dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);            
             this.msgGenerator = new MessageGenerator(runningMode);
         }

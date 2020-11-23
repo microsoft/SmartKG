@@ -28,11 +28,11 @@ namespace SmartKG.KGBot.Managment
 
         private RUNNINGMODE runningMode;      
 
-        ILogger _log;
+        private ILogger log;
 
         public DialogManager()
         {           
-            _log = Log.Logger.ForContext<DialogManager>();
+            log = Log.Logger.ForContext<DialogManager>();
 
         }
 
@@ -61,7 +61,7 @@ namespace SmartKG.KGBot.Managment
             this.msgGenerator = new MessageGenerator(runningMode);
 
 
-            LogInformation(_log.Here(), "runningMode", runningMode.ToString());
+            LogInformation(log.Here(), "runningMode", runningMode.ToString());
 
             ContextManager contextMgmt = new ContextManager(datastoreName, userId, sessionId);
             bool isSameDataStore = contextMgmt.GetContext();
@@ -78,7 +78,7 @@ namespace SmartKG.KGBot.Managment
 
             NLUResult nlu = new NLUProcessor(datastoreName).Parse(query);
 
-            LogInformation(_log.Here(), "nlu", nlu.ToString());
+            LogInformation(log.Here(), "nlu", nlu.ToString());
 
             NLUResultType type = nlu.GetType();                        
 
@@ -135,7 +135,7 @@ namespace SmartKG.KGBot.Managment
                     }
                 }
 
-                LogInformation(_log.Here(), "DialogStatus", contextMgmt.GetStatus().ToString());
+                LogInformation(log.Here(), "DialogStatus", contextMgmt.GetStatus().ToString());
 
                 if (contextMgmt.GetStatus() == DialogStatus.PENDING)
                 {                    
@@ -181,7 +181,7 @@ namespace SmartKG.KGBot.Managment
                         }
                         catch(Exception e) 
                         {
-                            LogError(_log.Here(), e);
+                            LogError(log.Here(), e);
                             responseContent = ResolveInvalidOptionInput(contextMgmt);
                         }
 
@@ -221,7 +221,7 @@ namespace SmartKG.KGBot.Managment
                         }
                         catch(Exception e)
                         {
-                            LogError(_log.Here(), e);
+                            LogError(log.Here(), e);
                             responseContent = ResolveInvalidOptionInput(contextMgmt);
                         }
                     }
@@ -235,7 +235,7 @@ namespace SmartKG.KGBot.Managment
             }
             catch(Exception e)
             {
-                LogError(_log.Here(), e);
+                LogError(log.Here(), e);
                 QueryResult responseContent =  this.msgGenerator.GenerateErrorMessage("无法识别意图。");
                 contextMgmt.ExitDialog();
 

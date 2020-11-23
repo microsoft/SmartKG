@@ -19,7 +19,7 @@ namespace SmartKG.Common.DataPersistence
 {    
     public class DataLoader
     {
-        private ILogger log = Log.Logger.ForContext<DataLoader>();
+        private ILogger log;
 
         private IDataAccessor dataAccessor;
         private PersistanceType persistanceType;
@@ -28,6 +28,8 @@ namespace SmartKG.Common.DataPersistence
 
         public DataLoader(IConfiguration config)
         {
+            this.log = Log.Logger.ForContext<DataLoader>();
+
             uploadConfig = config.GetSection("FileUploadConfig").Get<FileUploadConfig>();
             persistanceType = (PersistanceType)Enum.Parse(typeof(PersistanceType), config.GetSection("PersistanceType").Value, true);
 

@@ -30,6 +30,7 @@ namespace SmartKG.Common.DataStoreMgmt
 
         public KnowledgeGraphDataFrame()
         {
+            log = Log.Logger.ForContext<KnowledgeGraphDataFrame>();
             this.Clean();
         }
 

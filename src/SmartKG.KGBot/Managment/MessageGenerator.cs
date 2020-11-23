@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Serilog;
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.KG;
 using SmartKG.KGBot.Data.Response;
@@ -10,8 +11,12 @@ namespace SmartKG.KGBot.Managment
     public class MessageGenerator
     {        
         private RUNNINGMODE runningMode;
+        private ILogger log;
+
         public MessageGenerator(RUNNINGMODE runningMode)
         {
+            log = Log.Logger.ForContext<MessageGenerator>();
+
             this.runningMode = runningMode;
         }
 

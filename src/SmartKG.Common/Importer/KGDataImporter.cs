@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Newtonsoft.Json;
+using Serilog;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Utils;
 using System;
@@ -20,9 +21,12 @@ namespace SmartKG.Common.Importer
         private HashSet<string> vertexIds = new HashSet<string>();
         private HashSet<string> edgeIds = new HashSet<string>();
 
+        private ILogger log;
+
         public KGDataImporter(string rootPath)
         {
-           
+            log = Log.Logger.ForContext<KGDataImporter>();
+
             if (string.IsNullOrWhiteSpace(rootPath))
             {
                 throw new Exception("Rootpath of KG files are invalid.");

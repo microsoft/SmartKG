@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Serilog;
 using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace SmartKG.Common.Importer
 {
@@ -14,9 +13,12 @@ namespace SmartKG.Common.Importer
     {
         private string rootPath;
         private List<VisulizationConfig> vConfig;
-        
+        private ILogger log;
+
         public VisuliaztionImporter(string rootPath)
         {
+            log = Log.Logger.ForContext<VisuliaztionImporter>();
+
             if (string.IsNullOrWhiteSpace(rootPath))
             {
                 throw new Exception("Rootpath of VisulizationConfig files are invalid.");

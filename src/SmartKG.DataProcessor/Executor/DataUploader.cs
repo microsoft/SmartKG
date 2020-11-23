@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDBUploader.DataProcessor.Accessor;
+using Serilog;
 using SmartKG.Common.Data;
 using SmartKG.Common.Importer;
 using System;
@@ -18,9 +19,11 @@ namespace SmartKG.DataUploader.Executor
         static MDBWriter writer = new MDBWriter(config);
 
         private string defaultDBName = null;
+        private ILogger log;
 
         public DataUploader()
         {
+            log = Log.Logger.ForContext<DataUploader>();
             defaultDBName = config.GetConnectionString("DefaultDataStore");
         }
 

@@ -19,12 +19,12 @@ namespace SmartKG.KGManagement.GraphSearch
 
         public GraphExecutor(string datastoreName)
         {
+            log = Log.Logger.ForContext<GraphExecutor>();
+
             DataStoreFrame dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);
 
             if (dsFrame != null)
-                this.kgDF = dsFrame.GetKG();
-
-            log = Log.Logger.ForContext<GraphExecutor>();
+                this.kgDF = dsFrame.GetKG();            
         }
 
         public void LogInformation(ILogger log, string title, string content)

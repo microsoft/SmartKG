@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,13 @@ namespace SmartKG.KGBot
 {
     public class FileUploadOperation : IOperationFilter
     {
+        private ILogger log;
+
+        public FileUploadOperation()
+        {
+            log = Log.Logger.ForContext<FileUploadOperation>();
+        }
+
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (operation.OperationId.ToLower() == "apivaluesuploadpost")

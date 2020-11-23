@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Serilog;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataStoreMgmt;
@@ -12,10 +13,11 @@ namespace SmartKG.Common.Parser.DataPersistance
     public class DataPersistanceKGParser
     {
         public static string defaultRelationType = "contains";
-          
+        private ILogger log;
+
         public DataPersistanceKGParser()
         {
-            
+            log = Log.Logger.ForContext<DataPersistanceKGParser>();
         }       
 
         private (Dictionary<string, HashSet<string>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, Dictionary<RelationLink, List<string>>>, Dictionary<string, List<Edge>>) GenerateRelationship(List<Vertex> vertexes, List<Edge> edges)

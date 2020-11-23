@@ -13,8 +13,11 @@ namespace SmartKG.Common.DataPersistance
 {
     public class DataPersistanceNLUParser
     {
+        private ILogger log;
+
         public DataPersistanceNLUParser()
-        {            
+        {
+            log = Log.Logger.ForContext<DataPersistanceNLUParser>();
         }
 
         public NLUDataFrame Parse(List<NLUIntentRule> iList, List<EntityData> eList, List<EntityAttributeData> eaList)
