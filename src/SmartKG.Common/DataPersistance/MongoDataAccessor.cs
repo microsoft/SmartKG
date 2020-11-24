@@ -25,11 +25,14 @@ namespace SmartKG.Common.DataPersistance
 
         private string mgmtDatabaseName;
 
+        private string connectionString;
+
         public MongoDataAccessor(string connectionString, string mgmtDatabaseName)
         {
             this.log = Log.Logger.ForContext<MongoDataAccessor>();
 
-            this.client = new MongoClient(new MongoUrl(connectionString));
+            this.connectionString = connectionString;
+            this.client = new MongoClient(new MongoUrl(this.connectionString));
 
             this.mgmtDatabaseName = mgmtDatabaseName;
         }
@@ -138,7 +141,7 @@ namespace SmartKG.Common.DataPersistance
         }
 
         public (List<Vertex>, List<Edge>, List<VisulizationConfig>, List<NLUIntentRule>, List<EntityData>, List<EntityAttributeData>) Load(string dbName)
-        {
+        {            
             (var vList, var eList) = this.LoadKG(dbName);
 
             var vcList = this.LoadConfig(dbName);
