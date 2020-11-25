@@ -188,6 +188,7 @@ export default {
     },
     uploadSend() {
       let result = [];
+      console.log(this.uploadFiles.length);
       for (let i = 0; i < this.uploadFiles.length; i++) {
         let formData = new FormData();
         formData.append("DatastoreName", this.currentDataStore);
@@ -198,15 +199,17 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         };
-        axios
-          .post(
-            `${this.baseURL}/api/DataStoreMgmt/preprocess/upload`,
-            formData,
-            config
-          )
-          .then((res) => {
-            result.push(true);
-          });
+        setTimeout(() => {
+          axios
+            .post(
+              `${this.baseURL}/api/DataStoreMgmt/preprocess/upload`,
+              formData,
+              config
+            )
+            .then((res) => {
+              result.push(true);
+            });
+        }, i * 1000);
       }
       let timer = setInterval(() => {
         if (result.length == this.uploadFiles.length) {
@@ -220,7 +223,7 @@ export default {
                 `${this.baseURL}/api/DataStoreMgmt/preprocess/reload`,
                 formData
               )
-              .then((res) => { });
+              .then((res) => {});
           } else {
             alert("上传失败");
           }
