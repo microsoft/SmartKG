@@ -132,6 +132,12 @@ namespace SmartKG.KGManagement.GraphSearch
             }
         }
 
+        /*public bool UpdateColorConfigs(string scenarioName, Dictionary<string, string> entityColors)
+        {
+            if (this.kgDF == null)
+                return false;
+        }*/
+
         public (bool, bool, List<ColorConfig>) GetColorConfigs(string scenarioName)
         {
 
