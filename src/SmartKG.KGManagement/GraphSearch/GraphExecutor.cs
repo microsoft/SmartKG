@@ -230,10 +230,12 @@ namespace SmartKG.KGManagement.GraphSearch
 
             Dictionary <RelationLink, List<string>> childrenLinkDict = this.kgDF.GetChildrenLinkDict(vId);
 
+            HashSet<string> addedIDs = new HashSet<string>();
+
             if (childrenLinkDict != null)
             {
-                (tmpRVVs, tmpRVEs) = GetConnectedVertexesAndEdges(vId, childrenLinkDict, true);
-
+                (tmpRVVs, tmpRVEs) = GetConnectedVertexesAndEdges(addedIDs, vId, childrenLinkDict, true);
+                
                 rVVs.AddRange(tmpRVVs);
                 rVEs.AddRange(tmpRVEs);
             }
@@ -242,7 +244,7 @@ namespace SmartKG.KGManagement.GraphSearch
 
             if (parentLinkDict != null)
             {
-                (tmpRVVs, tmpRVEs) = GetConnectedVertexesAndEdges(vId, parentLinkDict, false);
+                (tmpRVVs, tmpRVEs) = GetConnectedVertexesAndEdges(addedIDs, vId, parentLinkDict, false);
 
                 rVVs.AddRange(tmpRVVs);
                 rVEs.AddRange(tmpRVEs);
@@ -251,7 +253,7 @@ namespace SmartKG.KGManagement.GraphSearch
             return (true, rVVs, rVEs);
         }
 
-        private (List<VisulizedVertex>, List<VisulizedEdge>) GetConnectedVertexesAndEdges(string vId, Dictionary<RelationLink, List<string>> relationDict, bool vIsSrc)
+        private (List<VisulizedVertex>, List<VisulizedEdge>) GetConnectedVertexesAndEdges(HashSet<string> addedIDs, string vId, Dictionary<RelationLink, List<string>> relationDict, bool vIsSrc)
         {
             List<VisulizedVertex> rVVs = new List<VisulizedVertex>();
             List<VisulizedEdge> rVEs = new List<VisulizedEdge>();
@@ -289,7 +291,11 @@ namespace SmartKG.KGManagement.GraphSearch
                             vRE.sourceId = vRV.id;
                         }
 
-                        rVVs.Add(vRV);
+                        if (!addedIDs.Contains(vRV.id))
+                        { 
+                            rVVs.Add(vRV);
+                            addedIDs.Add(vRV.id);
+                        }
                         rVEs.Add(vRE);
                     }
                 }
