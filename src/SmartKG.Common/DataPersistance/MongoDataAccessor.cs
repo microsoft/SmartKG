@@ -38,7 +38,7 @@ namespace SmartKG.Common.DataPersistance
         }
 
         public (List<Vertex>, List<Edge>) LoadKG(string dbName)
-        {
+        {            
             if (string.IsNullOrWhiteSpace(dbName))
             {
                 log.Here().Warning("The database: " + dbName + " doesn't exist.");

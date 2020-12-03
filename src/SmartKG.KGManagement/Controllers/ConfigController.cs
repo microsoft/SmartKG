@@ -26,32 +26,6 @@ namespace SmartKG.KGManagement.Controllers
             log = Log.Logger.ForContext<ConfigController>();
         }
 
-       /* [HttpPut]
-        [Route("api/[controller]/entitycolor")]
-        [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IResult>> Put(string datastoreName, string scenarioName, Dictionary<string, string> entityColorConfig)
-        {
-            ConfigResult result = new ConfigResult();
-
-            if (string.IsNullOrWhiteSpace(datastoreName))
-            {
-                result.success = false;
-                result.responseMessage = "datastoreName不能为空。";
-            }
-            else if (string.IsNullOrWhiteSpace(scenarioName))
-            {
-                result.success = false;
-                result.responseMessage = "scenarioName不能为空。";
-            }
-            else
-            {
-
-            }
-
-            return Ok(result);
-        }*/
-
         [HttpGet]
         [Route("api/[controller]/entitycolor")]
         [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]

@@ -50,7 +50,13 @@ namespace SmartKG.Common.DataStoreMgmt
 
         public bool DeleteDataStore(string user, string dsName)
         {
-            return this.dataLoader.DeleteDataStore(user, dsName);
+            bool success =  this.dataLoader.DeleteDataStore(user, dsName);
+
+            if (success)
+            {
+                this.datastoreDict.Remove(dsName);
+            }
+            return success;
         }
 
         public List<string> GetDataStoreList()
@@ -65,25 +71,29 @@ namespace SmartKG.Common.DataStoreMgmt
             int count = 0;
             foreach(DataStoreFrame dsFrame in datastores)
             {
-                if (this.SaveDataStoreInDict(dsFrame))
+                bool success;
+
+                (success, _)= this.SaveDataStoreInDict(dsFrame);
+
+                if (success)
                     count += 1;
             }
 
             log.Information("Totally " + count + " datastores have been loaded.");
         }
 
-        public void LoadDataStore(string dsName)
+        public (bool, string) LoadDataStore(string dsName)
         {
             DataStoreFrame dsFrame = this.dataLoader.LoadDataStore(dsName);
-            this.SaveDataStoreInDict(dsFrame);
+            return this.SaveDataStoreInDict(dsFrame);
         }
 
-        private bool SaveDataStoreInDict(DataStoreFrame dsFrame)
+        private (bool, string) SaveDataStoreInDict(DataStoreFrame dsFrame)
         {
             if (dsFrame == null)
             {
                 log.Error("Error: DataStoreFrame doesn't exist.");
-                return false;
+                return (false, "DataStoreFrame doesn't exist.");
             }
 
             string dsName = dsFrame.GetName();
@@ -91,12 +101,12 @@ namespace SmartKG.Common.DataStoreMgmt
             if (this.datastoreDict.ContainsKey(dsName))
             {
                 log.Error("Error: DataStore Name cannot be duplicated. The " + dsName + " has existed.");
-                return false;
+                return (false, "DataStore Name cannot be duplicated. The " + dsName + " has existed.");
             }
 
             this.datastoreDict.Add(dsName, dsFrame);
             log.Information("The " + dsName + " has been loaded.");
-            return true;
+            return (true, "The " + dsName + " has been loaded.");
         }
 
         public DataStoreFrame GetDataStore(string dsName)
