@@ -86,7 +86,8 @@ namespace SmartKG.Common.DataPersistence
             }
 
             DataPersistanceKGParser kgParser = new DataPersistanceKGParser();
-            KnowledgeGraphDataFrame kgDF = kgParser.ParseKG(vList, eList, vcList);
+            KnowledgeGraphDataFrame kgDF = kgParser.ParseKG(vList, eList);
+            KGConfigFrame kgConfigFrame = kgParser.ParseKGConfig(vcList);
 
             log.Information("Knowledge Graph is parsed.");
             Console.WriteLine("Knowledge Graph is parsed.");
@@ -106,10 +107,15 @@ namespace SmartKG.Common.DataPersistence
                 Console.WriteLine("NLU materials is parsed.");
             }
 
-            DataStoreFrame dsFrame = new DataStoreFrame(dsName, kgDF, nluDF);
+            DataStoreFrame dsFrame = new DataStoreFrame(dsName, kgDF, kgConfigFrame, nluDF);
 
             return dsFrame;
-        }        
+        }
+        
+        public bool UpdateColorConfig(string user, string datastoreName, string scenarioName, List<ColorConfig> colorConfigs)
+        {
+            return this.dataAccessor.UpdateColorConfig(user, datastoreName, scenarioName, colorConfigs);
+        }
 
         public List<string> GetDataStoreList()
         {

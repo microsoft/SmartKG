@@ -14,7 +14,7 @@ namespace SmartKG.KGManagement.GraphSearch
 {
     public class GraphExecutor
     {
-        private KnowledgeGraphDataFrame kgDF = null;
+        private KnowledgeGraphDataFrame kgDF = null;      
         private ILogger log;
 
         public GraphExecutor(string datastoreName)
@@ -24,7 +24,9 @@ namespace SmartKG.KGManagement.GraphSearch
             DataStoreFrame dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);
 
             if (dsFrame != null)
-                this.kgDF = dsFrame.GetKG();            
+            { 
+                this.kgDF = dsFrame.GetKG();                
+            }
         }
 
         public void LogInformation(ILogger log, string title, string content)
@@ -130,42 +132,7 @@ namespace SmartKG.KGManagement.GraphSearch
             { 
                 return (true, this.kgDF.GetScenarioNames().ToList());
             }
-        }
-
-        public (bool, bool, List<ColorConfig>) GetColorConfigs(string scenarioName)
-        {
-
-            if (this.kgDF == null)
-                return (false, false, null);
-
-            Dictionary<string, List<ColorConfig>> colorConfigs = this.kgDF.GetVertexLabelColorMap();
-
-            if (colorConfigs == null || colorConfigs.Count == 0)
-            {
-                return (true, false, null);
-            }
-            else if (string.IsNullOrWhiteSpace(scenarioName))
-            {
-                List<ColorConfig> configs = new List<ColorConfig>();
-                foreach (string scenario in colorConfigs.Keys)
-                {
-                    configs.AddRange(colorConfigs[scenario]);
-                }
-
-                return (true, true, configs);
-            }
-            else
-            {
-                if (!colorConfigs.ContainsKey(scenarioName))
-                {
-                    return (true, false, null);
-                }
-                else
-                {
-                    return (true, true, colorConfigs[scenarioName]);
-                }
-            }
-        }
+        }               
 
         public (bool, bool, List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
         {

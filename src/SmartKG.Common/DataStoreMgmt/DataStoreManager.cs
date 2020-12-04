@@ -4,6 +4,7 @@
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using SmartKG.Common.Data;
+using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataPersistence;
 using System;
 using System.Collections.Generic;
@@ -100,12 +101,16 @@ namespace SmartKG.Common.DataStoreMgmt
 
             if (this.datastoreDict.ContainsKey(dsName))
             {
-                log.Error("Error: DataStore Name cannot be duplicated. The " + dsName + " has existed.");
-                return (false, "DataStore Name cannot be duplicated. The " + dsName + " has existed.");
+                log.Warning("Warning: DataStore Name cannot be duplicated. The " + dsName + " has existed.");                
+                this.datastoreDict[dsName] = dsFrame;
+                log.Information("The " + dsName + " has been reloaded.");
             }
-
-            this.datastoreDict.Add(dsName, dsFrame);
-            log.Information("The " + dsName + " has been loaded.");
+            else
+            {                
+                this.datastoreDict.Add(dsName, dsFrame);
+                log.Information("The " + dsName + " has been loaded now.");
+            }
+            
             return (true, "The " + dsName + " has been loaded.");
         }
 
@@ -166,6 +171,11 @@ namespace SmartKG.Common.DataStoreMgmt
             pythonArgs += " --destPath \"" + targetDir + "\" ";
 
             return (uploadConfig, pythonArgs, targetDir);
+        }
+
+        public bool UpdateColorConfig(string user, string dsName, string scenarioName, List<ColorConfig> colorConfigs)
+        {
+            return this.dataLoader.UpdateColorConfig(user, dsName, scenarioName, colorConfigs);
         }
     }
 }

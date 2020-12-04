@@ -41,7 +41,7 @@ namespace SmartKG.KGManagement.Controllers
             }
             else
             { 
-                GraphExecutor executor = new GraphExecutor(datastoreName);
+                ConfigExecutor executor = new ConfigExecutor(null, datastoreName);
 
                 (bool isDSExist, bool isScenarioExist, List<ColorConfig> configs) = executor.GetColorConfigs(scenarioName);
 
@@ -86,5 +86,53 @@ namespace SmartKG.KGManagement.Controllers
 
             return Ok(result);
         }
+
+         [HttpPost]
+         [Route("api/[controller]/entitycolor")]
+         [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]
+         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+         public async Task<ActionResult<IResult>> Post(string user, string datastoreName, string scenarioName, Dictionary<string, string> entityColorConfig)
+         {
+             ConfigResult result = new ConfigResult();
+
+             if (string.IsNullOrWhiteSpace(datastoreName))
+             {
+                 result.success = false;
+                 result.responseMessage = "datastoreName不能为空。";
+             }
+             else if (string.IsNullOrWhiteSpace(scenarioName))
+             {
+                 result.success = false;
+                 result.responseMessage = "scenarioName不能为空。";
+             }
+             else
+             {
+                ConfigExecutor executor = new ConfigExecutor(user, datastoreName);
+
+                if (entityColorConfig == null || entityColorConfig.Count == 0)
+                {
+                    result.success = false;
+                    result.responseMessage = "color config 不能为空。";
+                }
+
+                List<ColorConfig> colorConfigs = new List<ColorConfig>();
+
+                foreach(string eName in entityColorConfig.Keys)
+                {
+                    ColorConfig config = new ColorConfig();
+                    config.itemLabel = eName;
+                    config.color = entityColorConfig[eName];
+
+                    colorConfigs.Add(config);
+                }
+
+                (bool success, string msg) = executor.UpdateColorConfigs(scenarioName, colorConfigs);
+                result.success = success;
+                result.responseMessage = msg;
+
+              }
+
+            return Ok(result);
+         }
     }
 }

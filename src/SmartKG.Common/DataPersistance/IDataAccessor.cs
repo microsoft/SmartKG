@@ -20,5 +20,7 @@ namespace SmartKG.Common.DataPersistence
 
         bool DeleteDataStore(string user, string dsName);
 
+        bool UpdateColorConfig(string user, string dsName, string scenarioName, List<ColorConfig> colorConfigs);
+
     }
 }

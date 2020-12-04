@@ -17,15 +17,17 @@ namespace SmartKG.Common.DataStoreMgmt
     {
         private string datastoreName;
         private KnowledgeGraphDataFrame kgDF;
+        private KGConfigFrame kgConfigFrame;
         private NLUDataFrame nluDF;
 
         private ILogger log;
 
-        public DataStoreFrame(string datastoreName, KnowledgeGraphDataFrame kgDF, NLUDataFrame nluDF)
+        public DataStoreFrame(string datastoreName, KnowledgeGraphDataFrame kgDF, KGConfigFrame kgConfigFrame, NLUDataFrame nluDF)
         {
             log = Log.Logger.ForContext<DataStoreFrame>();
             this.datastoreName = datastoreName;
             this.kgDF = kgDF; //new KnowledgeGraphDataFrame();
+            this.kgConfigFrame = kgConfigFrame;
             this.nluDF = nluDF; // new NLUDataFrame();
         }
 
@@ -37,6 +39,11 @@ namespace SmartKG.Common.DataStoreMgmt
         public KnowledgeGraphDataFrame GetKG()
         {
             return this.kgDF;
+        }
+
+        public KGConfigFrame GetKGConfig()
+        {
+            return this.kgConfigFrame;
         }
 
         public NLUDataFrame GetNLU()
