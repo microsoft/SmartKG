@@ -1,10 +1,10 @@
-﻿using Serilog;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Serilog;
 using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataStoreMgmt;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SmartKG.KGManagement.GraphSearch
 {

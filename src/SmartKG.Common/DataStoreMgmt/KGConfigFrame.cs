@@ -1,8 +1,9 @@
-﻿using Serilog;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Serilog;
 using SmartKG.Common.Data.Visulization;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartKG.Common.DataStoreMgmt
 {
