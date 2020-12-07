@@ -39,6 +39,11 @@ namespace SmartKG.KGManagement.Controllers
                 result.success = false;
                 result.responseMessage = "datastoreName不能为空。";
             }
+            else if (string.IsNullOrWhiteSpace(scenarioName))
+            {
+                result.success = false;
+                result.responseMessage = "scenarioName不能为空。";
+            }
             else
             { 
                 ConfigExecutor executor = new ConfigExecutor(null, datastoreName);
