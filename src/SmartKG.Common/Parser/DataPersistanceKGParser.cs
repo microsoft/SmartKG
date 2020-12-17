@@ -167,7 +167,26 @@ namespace SmartKG.Common.Parser.DataPersistance
             return (vertexNameIdsMap, outRelationMap, inRelationMap, scenarioEdgesMap);
         }        
         
-        public KnowledgeGraphDataFrame ParseKG(List<Vertex> vertexes, List<Edge> edges, List<VisulizationConfig> vcList)
+        public KGConfigFrame ParseKGConfig(List<VisulizationConfig> vcList)
+        {
+            KGConfigFrame kgConfigFrame = new KGConfigFrame();
+
+            Dictionary<string, List<ColorConfig>> vertexLabelsMap = new Dictionary<string, List<ColorConfig>>();
+
+            foreach (VisulizationConfig vc in vcList)
+            {
+                string scenarioName = vc.scenario;
+                List<ColorConfig> cc = vc.labelsOfVertexes;
+
+                vertexLabelsMap.Add(scenarioName, cc);
+            }
+
+            kgConfigFrame.SetVertexLabelColorMap(vertexLabelsMap);
+
+            return kgConfigFrame;
+        }
+
+        public KnowledgeGraphDataFrame ParseKG(List<Vertex> vertexes, List<Edge> edges)
         {            
             (Dictionary<string, HashSet<string>> nameIdMap, Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict, Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict, Dictionary<string, List<Edge>> scenarioEdgesMap) = this.GenerateRelationship(vertexes, edges);
 
@@ -199,15 +218,7 @@ namespace SmartKG.Common.Parser.DataPersistance
                 vIdCache.Add(vertex.id, vertex);
             }
 
-            Dictionary<string, List<ColorConfig>> vertexLabelsMap = new Dictionary<string, List<ColorConfig>>();
-
-            foreach (VisulizationConfig vc in vcList)
-            {
-                string scenarioName = vc.scenario;
-                List<ColorConfig> cc = vc.labelsOfVertexes;
-
-                vertexLabelsMap.Add(scenarioName, cc);
-            }
+           
 
             KnowledgeGraphDataFrame kgDF = new KnowledgeGraphDataFrame();
 
@@ -215,11 +226,9 @@ namespace SmartKG.Common.Parser.DataPersistance
             kgDF.SetVertexIdCache(vIdCache);
             kgDF.SetVertexNameCache(vNameCache);
             kgDF.SetOutRelationDict(outRelationDict);
-            kgDF.SetInRelationDict(inRelationDict);
-            kgDF.SetNameIdCache(nameIdMap);
+            kgDF.SetInRelationDict(inRelationDict);            
             kgDF.SetScenarioEdgesDict(scenarioEdgesMap);
-            kgDF.SetScenarioNames(scenarioNames);
-            kgDF.SetVertexLabelColorMap(vertexLabelsMap);
+            kgDF.SetScenarioNames(scenarioNames);            
 
             return kgDF;
         }

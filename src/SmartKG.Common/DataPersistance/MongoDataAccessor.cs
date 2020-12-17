@@ -38,7 +38,7 @@ namespace SmartKG.Common.DataPersistance
         }
 
         public (List<Vertex>, List<Edge>) LoadKG(string dbName)
-        {
+        {            
             if (string.IsNullOrWhiteSpace(dbName))
             {
                 log.Here().Warning("The database: " + dbName + " doesn't exist.");
@@ -201,7 +201,7 @@ namespace SmartKG.Common.DataPersistance
             return true;
         }
 
-        public bool DeleteDataStore(string user, string datastoreName)
+        private bool IsDataStoreCreatedByUser(string user, string datastoreName)
         {
             if (!IsDataStoreExist(datastoreName))
                 return false;
@@ -216,23 +216,50 @@ namespace SmartKG.Common.DataPersistance
             if (results.Count == 0)
                 return false;
 
-            bool deleted = false;
+            if (string.IsNullOrWhiteSpace(user))
+                return true;
 
-            foreach (var result in results)
-            {
-                if (result.creator !=null && result.creator != user)
-                { 
-                    continue;
-                }
-                else
-                { 
-                    collection.DeleteOne(deleteFilter);
-                    client.DropDatabase(datastoreName);
-                    deleted = true;
-                }
-            }
+            if (string.IsNullOrWhiteSpace(results[0].creator))
+                return true;
 
-            return deleted;
+            if (results[0].creator != user)
+                return false;
+            else
+                return true;
+        }
+
+        public bool DeleteDataStore(string user, string datastoreName)
+        {
+            if (!IsDataStoreCreatedByUser(user, datastoreName))
+                return false;
+            
+            var deleteFilter = Builders<DatastoreItem>.Filter.Eq("name", datastoreName);
+
+            IMongoDatabase db = client.GetDatabase(this.mgmtDatabaseName);
+            IMongoCollection<DatastoreItem> collection = db.GetCollection<DatastoreItem>("DataStores");
+            collection.DeleteOne(deleteFilter);
+            client.DropDatabase(datastoreName);
+            return true;
+        }
+
+        public bool UpdateColorConfig(string user, string dsName, string scenarioName, List<ColorConfig> colorConfigs)
+        {
+            if (!IsDataStoreExist(dsName))
+                return false;
+
+            IMongoDatabase db = client.GetDatabase(dsName);
+            IMongoCollection<VisulizationConfig> collection = db.GetCollection<VisulizationConfig>("VisulizationConfigs");
+
+            var deleteFilter = Builders<VisulizationConfig>.Filter.Eq("scenario", scenarioName);
+            collection.DeleteOne(deleteFilter);
+
+            VisulizationConfig vConfig = new VisulizationConfig();
+            vConfig.scenario = scenarioName;
+            vConfig.labelsOfVertexes = colorConfigs;
+
+            collection.InsertOne(vConfig);
+
+            return true;
         }
     }       
 }

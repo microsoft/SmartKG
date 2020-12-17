@@ -225,14 +225,16 @@ namespace SmartKG.KGManagement.Controllers
         {
             string dsName = form.DatastoreName;
 
-            DataStoreManager.GetInstance().LoadDataStore(dsName);
-
-            ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
-
+            (bool success, string message) = DataStoreManager.GetInstance().LoadDataStore(dsName);
             ResponseResult msg = new ResponseResult();
-            msg.success = true;
-            msg.responseMessage = "Data has been reloaded.\n";
 
+            if (success)
+            {
+                ContextAccessor.GetInstance().CleanContext(); // Clean all contexts and restart from clean env for a new datastore
+            }
+            msg.success = success;
+            msg.responseMessage = message;
+            
             return Ok(msg);
         }
     }

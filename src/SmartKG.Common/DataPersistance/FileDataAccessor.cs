@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Newtonsoft.Json;
 using Serilog;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.LU;
@@ -65,15 +66,15 @@ namespace SmartKG.Common.DataPersistance
                 return null;
             }
 
-            string vcPath = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar + "Visulization" + Path.DirectorySeparatorChar;
+            string vcDir = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar + "Visulization" + Path.DirectorySeparatorChar;
 
-            if (string.IsNullOrWhiteSpace(vcPath) || !Directory.Exists(vcPath))
+            if (string.IsNullOrWhiteSpace(vcDir) || !Directory.Exists(vcDir))
             {
-                log.Here().Warning("The path of VCFilePath: " + vcPath + " doesn't exist.");
+                log.Here().Warning("The path of VCFilePath: " + vcDir + " doesn't exist.");
                 return null;
             }
 
-            VisuliaztionImporter vImporter = new VisuliaztionImporter(vcPath);
+            VisuliaztionImporter vImporter = new VisuliaztionImporter(vcDir);
 
             List<VisulizationConfig>  vcList = vImporter.GetVisuliaztionConfigs();
 
@@ -194,6 +195,75 @@ namespace SmartKG.Common.DataPersistance
             }
 
             Directory.Delete(targetDir);
+
+            return true;
+        }
+
+        public bool UpdateColorConfig(string user, string dsName, string scenarioName, List<ColorConfig> colorConfigs)
+        {
+            if (string.IsNullOrWhiteSpace(dsName))
+            {
+                log.Here().Error("Error: The datastore: " + dsName + " doesn't exist.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(scenarioName))
+            {
+                log.Here().Error("Error: The scenario: " + scenarioName + " doesn't exist.");
+                return false;
+            }
+
+            string vcDir = this.rootPath + Path.DirectorySeparatorChar + dsName + Path.DirectorySeparatorChar ;
+
+            if (string.IsNullOrWhiteSpace(vcDir) || !Directory.Exists(vcDir))
+            {
+                log.Here().Warning("The path of VCFilePath: " + vcDir + " doesn't exist.");
+                return false;
+            }
+
+            string vcPath = vcDir + "Visulization" + Path.DirectorySeparatorChar + "VisulizationConfig_" + scenarioName + ".json";
+
+            //VisuliaztionImporter vImporter = new VisuliaztionImporter(vcPath);
+            List<VisulizationConfig> vcList = new List<VisulizationConfig>();
+
+            if (File.Exists(vcPath))
+            { 
+                string json = System.IO.File.ReadAllText(vcPath);
+                vcList = JsonConvert.DeserializeObject<List<VisulizationConfig>>(json);            
+            }
+
+            bool replaced = false;
+            foreach(VisulizationConfig config in vcList)
+            {
+                if (string.IsNullOrWhiteSpace(config.scenario) || config.scenario != scenarioName)
+                {
+                    continue;
+                }
+                else
+                {
+                    config.labelsOfVertexes = colorConfigs;
+                    replaced = true;
+                    break;
+                }
+            }
+
+            if (!replaced)
+            {
+                VisulizationConfig vc = new VisulizationConfig();
+                vc.scenario = scenarioName;
+                vc.labelsOfVertexes = colorConfigs;
+
+                vcList.Add(vc);                
+            }
+
+            using (StreamWriter file = File.CreateText(vcPath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+
+                serializer.Serialize(file, vcList);
+            }
+
+            log.Here().Information("Visulization Config data has been parsed from Files.");
 
             return true;
         }

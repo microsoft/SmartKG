@@ -15,12 +15,11 @@ namespace SmartKG.Common.DataStoreMgmt
         private Dictionary<string, List<Vertex>> vertexNameCache { get; set; }
         private Dictionary<string, Vertex> vertexIdCache { get; set; }
         private Dictionary<string, Dictionary<RelationLink, List<string>>> outRelationDict { get; set; }
-        private Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict { get; set; }
-        private Dictionary<string, HashSet<string>> nameIdCache { get; set; }
+        private Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict { get; set; }        
 
         private Dictionary<string, List<Edge>> scenarioEdgesDict { get; set; }
 
-        private Dictionary<string, List<ColorConfig>> vertexLabelColorMap { get; set; }
+        //private Dictionary<string, List<ColorConfig>> vertexLabelColorMap { get; set; }
 
         private List<Vertex> rootVertexes { get; set; }
 
@@ -42,13 +41,11 @@ namespace SmartKG.Common.DataStoreMgmt
 
             this.outRelationDict = new Dictionary<string, Dictionary<RelationLink, List<string>>>();
 
-            this.inRelationDict = new Dictionary<string, Dictionary<RelationLink, List<string>>>();
-
-            this.nameIdCache = new Dictionary<string, HashSet<string>>();
+            this.inRelationDict = new Dictionary<string, Dictionary<RelationLink, List<string>>>();            
 
             this.scenarioEdgesDict = new Dictionary<string, List<Edge>>();
 
-            this.vertexLabelColorMap = new Dictionary<string, List<ColorConfig>>();
+            //this.vertexLabelColorMap = new Dictionary<string, List<ColorConfig>>();
 
             this.rootVertexes = new List<Vertex>();
 
@@ -65,15 +62,7 @@ namespace SmartKG.Common.DataStoreMgmt
             return this.rootVertexes;
         }
 
-        public void SetVertexLabelColorMap(Dictionary<string, List<ColorConfig>> map)
-        {
-            this.vertexLabelColorMap = map;
-        }
-
-        public Dictionary<string, List<ColorConfig>> GetVertexLabelColorMap()
-        {
-            return this.vertexLabelColorMap;
-        }
+        
 
         public HashSet<string> GetScenarioNames()
         {
@@ -84,8 +73,6 @@ namespace SmartKG.Common.DataStoreMgmt
         {
             this.scenarioNames = scenarios;
         }
-
-
 
         public void SetVertexNameCache(Dictionary<string, List<Vertex>> vertexNameCache)
         {
@@ -105,12 +92,7 @@ namespace SmartKG.Common.DataStoreMgmt
         public void SetInRelationDict(Dictionary<string, Dictionary<RelationLink, List<string>>> inRelationDict)
         {
             this.inRelationDict = inRelationDict;
-        }
-
-        public void SetNameIdCache(Dictionary<string, HashSet<string>> nameIdMap)
-        {
-            this.nameIdCache = nameIdMap;
-        }
+        }       
 
         public List<Vertex> GetVertexByLabel(string label)
         {

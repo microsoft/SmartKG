@@ -14,7 +14,7 @@ namespace SmartKG.KGManagement.GraphSearch
 {
     public class GraphExecutor
     {
-        private KnowledgeGraphDataFrame kgDF = null;
+        private KnowledgeGraphDataFrame kgDF = null;      
         private ILogger log;
 
         public GraphExecutor(string datastoreName)
@@ -24,7 +24,9 @@ namespace SmartKG.KGManagement.GraphSearch
             DataStoreFrame dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);
 
             if (dsFrame != null)
-                this.kgDF = dsFrame.GetKG();            
+            { 
+                this.kgDF = dsFrame.GetKG();                
+            }
         }
 
         public void LogInformation(ILogger log, string title, string content)
@@ -130,42 +132,7 @@ namespace SmartKG.KGManagement.GraphSearch
             { 
                 return (true, this.kgDF.GetScenarioNames().ToList());
             }
-        }
-
-        public (bool, bool, List<ColorConfig>) GetColorConfigs(string scenarioName)
-        {
-
-            if (this.kgDF == null)
-                return (false, false, null);
-
-            Dictionary<string, List<ColorConfig>> colorConfigs = this.kgDF.GetVertexLabelColorMap();
-
-            if (colorConfigs == null || colorConfigs.Count == 0)
-            {
-                return (true, false, null);
-            }
-            else if (string.IsNullOrWhiteSpace(scenarioName))
-            {
-                List<ColorConfig> configs = new List<ColorConfig>();
-                foreach (string scenario in colorConfigs.Keys)
-                {
-                    configs.AddRange(colorConfigs[scenario]);
-                }
-
-                return (true, true, configs);
-            }
-            else
-            {
-                if (!colorConfigs.ContainsKey(scenarioName))
-                {
-                    return (true, false, null);
-                }
-                else
-                {
-                    return (true, true, colorConfigs[scenarioName]);
-                }
-            }
-        }
+        }               
 
         public (bool, bool, List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
         {
@@ -230,10 +197,12 @@ namespace SmartKG.KGManagement.GraphSearch
 
             Dictionary <RelationLink, List<string>> childrenLinkDict = this.kgDF.GetChildrenLinkDict(vId);
 
+            HashSet<string> addedIDs = new HashSet<string>();
+
             if (childrenLinkDict != null)
             {
-                (tmpRVVs, tmpRVEs) = GetConnectedVertexesAndEdges(vId, childrenLinkDict, true);
-
+                (tmpRVVs, tmpRVEs) = GetConnectedVertexesAndEdges(addedIDs, vId, childrenLinkDict, true);
+                
                 rVVs.AddRange(tmpRVVs);
                 rVEs.AddRange(tmpRVEs);
             }
@@ -242,7 +211,7 @@ namespace SmartKG.KGManagement.GraphSearch
 
             if (parentLinkDict != null)
             {
-                (tmpRVVs, tmpRVEs) = GetConnectedVertexesAndEdges(vId, parentLinkDict, false);
+                (tmpRVVs, tmpRVEs) = GetConnectedVertexesAndEdges(addedIDs, vId, parentLinkDict, false);
 
                 rVVs.AddRange(tmpRVVs);
                 rVEs.AddRange(tmpRVEs);
@@ -251,7 +220,7 @@ namespace SmartKG.KGManagement.GraphSearch
             return (true, rVVs, rVEs);
         }
 
-        private (List<VisulizedVertex>, List<VisulizedEdge>) GetConnectedVertexesAndEdges(string vId, Dictionary<RelationLink, List<string>> relationDict, bool vIsSrc)
+        private (List<VisulizedVertex>, List<VisulizedEdge>) GetConnectedVertexesAndEdges(HashSet<string> addedIDs, string vId, Dictionary<RelationLink, List<string>> relationDict, bool vIsSrc)
         {
             List<VisulizedVertex> rVVs = new List<VisulizedVertex>();
             List<VisulizedEdge> rVEs = new List<VisulizedEdge>();
@@ -289,7 +258,11 @@ namespace SmartKG.KGManagement.GraphSearch
                             vRE.sourceId = vRV.id;
                         }
 
-                        rVVs.Add(vRV);
+                        if (!addedIDs.Contains(vRV.id))
+                        { 
+                            rVVs.Add(vRV);
+                            addedIDs.Add(vRV.id);
+                        }
                         rVEs.Add(vRE);
                     }
                 }

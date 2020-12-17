@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +22,32 @@ namespace SmartKG.KGManagement.Controllers
     {
         private ILogger log;
 
+        static string[] ColourValues = new string[] {
+        "#FF0000", "#000000", "#808080", "#008000",
+        "#0000FF", "#000080", "#FF00FF", "#800080",
+        "#800000", "#00FF00", "#FFBF00", "#FF7F50",
+        "#DE3163", "#6495ED", "#40E0D0", "#2E86C1"
+        };
+
         public ConfigController()
         {
             log = Log.Logger.ForContext<ConfigController>();
+        }
+
+        [HttpGet]
+        [Route("api/[controller]/colors")]
+        [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ColorResult>> Get()
+        {
+            ColorResult result = new ColorResult();
+
+            result.success = true;
+            result.responseMessage = "These colors you could used as your entity colors.";
+
+            result.colors = ColourValues.ToList<string>();
+
+            return result;
         }
 
         [HttpGet]
@@ -39,9 +63,14 @@ namespace SmartKG.KGManagement.Controllers
                 result.success = false;
                 result.responseMessage = "datastoreName不能为空。";
             }
+            else if (string.IsNullOrWhiteSpace(scenarioName))
+            {
+                result.success = false;
+                result.responseMessage = "scenarioName不能为空。";
+            }
             else
             { 
-                GraphExecutor executor = new GraphExecutor(datastoreName);
+                ConfigExecutor executor = new ConfigExecutor(null, datastoreName);
 
                 (bool isDSExist, bool isScenarioExist, List<ColorConfig> configs) = executor.GetColorConfigs(scenarioName);
 
@@ -86,5 +115,53 @@ namespace SmartKG.KGManagement.Controllers
 
             return Ok(result);
         }
+
+         [HttpPost]
+         [Route("api/[controller]/entitycolor")]
+         [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]
+         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+         public async Task<ActionResult<IResult>> Post(string user, string datastoreName, string scenarioName, Dictionary<string, string> entityColorConfig)
+         {
+             ConfigResult result = new ConfigResult();
+
+             if (string.IsNullOrWhiteSpace(datastoreName))
+             {
+                 result.success = false;
+                 result.responseMessage = "datastoreName不能为空。";
+             }
+             else if (string.IsNullOrWhiteSpace(scenarioName))
+             {
+                 result.success = false;
+                 result.responseMessage = "scenarioName不能为空。";
+             }
+             else
+             {
+                ConfigExecutor executor = new ConfigExecutor(user, datastoreName);
+
+                if (entityColorConfig == null || entityColorConfig.Count == 0)
+                {
+                    result.success = false;
+                    result.responseMessage = "color config 不能为空。";
+                }
+
+                List<ColorConfig> colorConfigs = new List<ColorConfig>();
+
+                foreach(string eName in entityColorConfig.Keys)
+                {
+                    ColorConfig config = new ColorConfig();
+                    config.itemLabel = eName;
+                    config.color = entityColorConfig[eName];
+
+                    colorConfigs.Add(config);
+                }
+
+                (bool success, string msg) = executor.UpdateColorConfigs(scenarioName, colorConfigs);
+                result.success = success;
+                result.responseMessage = msg;
+
+              }
+
+            return Ok(result);
+         }
     }
 }

@@ -4,6 +4,7 @@
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using SmartKG.Common.Data;
+using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataPersistence;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,13 @@ namespace SmartKG.Common.DataStoreMgmt
 
         public bool DeleteDataStore(string user, string dsName)
         {
-            return this.dataLoader.DeleteDataStore(user, dsName);
+            bool success =  this.dataLoader.DeleteDataStore(user, dsName);
+
+            if (success)
+            {
+                this.datastoreDict.Remove(dsName);
+            }
+            return success;
         }
 
         public List<string> GetDataStoreList()
@@ -65,38 +72,46 @@ namespace SmartKG.Common.DataStoreMgmt
             int count = 0;
             foreach(DataStoreFrame dsFrame in datastores)
             {
-                if (this.SaveDataStoreInDict(dsFrame))
+                bool success;
+
+                (success, _)= this.SaveDataStoreInDict(dsFrame);
+
+                if (success)
                     count += 1;
             }
 
             log.Information("Totally " + count + " datastores have been loaded.");
         }
 
-        public void LoadDataStore(string dsName)
+        public (bool, string) LoadDataStore(string dsName)
         {
             DataStoreFrame dsFrame = this.dataLoader.LoadDataStore(dsName);
-            this.SaveDataStoreInDict(dsFrame);
+            return this.SaveDataStoreInDict(dsFrame);
         }
 
-        private bool SaveDataStoreInDict(DataStoreFrame dsFrame)
+        private (bool, string) SaveDataStoreInDict(DataStoreFrame dsFrame)
         {
             if (dsFrame == null)
             {
                 log.Error("Error: DataStoreFrame doesn't exist.");
-                return false;
+                return (false, "DataStoreFrame doesn't exist.");
             }
 
             string dsName = dsFrame.GetName();
 
             if (this.datastoreDict.ContainsKey(dsName))
             {
-                log.Error("Error: DataStore Name cannot be duplicated. The " + dsName + " has existed.");
-                return false;
+                log.Warning("Warning: DataStore Name cannot be duplicated. The " + dsName + " has existed.");                
+                this.datastoreDict[dsName] = dsFrame;
+                log.Information("The " + dsName + " has been reloaded.");
             }
-
-            this.datastoreDict.Add(dsName, dsFrame);
-            log.Information("The " + dsName + " has been loaded.");
-            return true;
+            else
+            {                
+                this.datastoreDict.Add(dsName, dsFrame);
+                log.Information("The " + dsName + " has been loaded now.");
+            }
+            
+            return (true, "The " + dsName + " has been loaded.");
         }
 
         public DataStoreFrame GetDataStore(string dsName)
@@ -156,6 +171,11 @@ namespace SmartKG.Common.DataStoreMgmt
             pythonArgs += " --destPath \"" + targetDir + "\" ";
 
             return (uploadConfig, pythonArgs, targetDir);
+        }
+
+        public bool UpdateColorConfig(string user, string dsName, string scenarioName, List<ColorConfig> colorConfigs)
+        {
+            return this.dataLoader.UpdateColorConfig(user, dsName, scenarioName, colorConfigs);
         }
     }
 }

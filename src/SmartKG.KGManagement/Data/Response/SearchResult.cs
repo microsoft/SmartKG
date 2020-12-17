@@ -63,8 +63,15 @@ namespace SmartKG.KGManagement.Data.Response
         public bool success { get; set; }
         public string responseMessage { get; set; }
 
-        //public List<ColorConfig> vertexColorConfigs { get; set; }
         public Dictionary<string, string> entityColorConfig { get; set; }
+    }
+
+    public class ColorResult: IResult
+    {
+        public bool success { get; set; }
+        public string responseMessage { get; set; }
+
+        public List<string> colors;
     }
 
     public class ResponseResult : IResult
