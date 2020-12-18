@@ -70,7 +70,7 @@
           </span>
         </el-dialog>
         <!--  -->
-        <el-dialog title="设置颜色" :visible.sync="colorVisible" width="30%">
+        <el-dialog title="设置颜色" :visible.sync="colorVisible" width="40%">
           <div style="margin-bottom: 20px">
             <el-select
               v-model="selectDataStore"
@@ -193,6 +193,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 import axios from "axios";
+import qs from 'qs';
 
 export default {
   name: "Upload",
@@ -250,15 +251,17 @@ export default {
     },
 
     reloadData(){
-      // axios
-      //   .get(
-      //     `${this.baseURL}/api/Config/entitycolor?datastoreName=${encodeURI(
-      //       this.selectDataStore
-      //     )}&scenarioName=${encodeURI(this.selectSce)}`
-      //   )
-      //   .then(res => {
-
-      //   });
+      if(this.radio == ""){
+        alert("请选择要加载的数据库");
+        return;
+      }
+      axios
+        .post(
+          `${this.baseURL}/api/DataStoreMgmt/preprocess/reload`,qs.stringify({"DatastoreName": this.radio})
+        )
+        .then(res => {
+          console.log(res);
+        });
     },
 
     changeScen() {
