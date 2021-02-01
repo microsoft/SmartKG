@@ -4,7 +4,7 @@
       <p class="title">请您选择数据仓库</p>
       <div id="download">
         <div class="list">
-          <div v-for="item of dataStores" v-bind:key="item.key">
+          <!-- <div v-for="item of dataStores" v-bind:key="item.key">
             <div class="list-item">
               <el-radio
                 v-model="radio"
@@ -25,13 +25,30 @@
                 >上传数据</el-button
               >
             </div>
-          </div>
+          </div> -->
+          <el-select
+            v-model="radio"
+            placeholder="请选择数据库"
+            :change="getDataStore()"
+          >
+            <el-option
+              v-for="item in dataStores"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
         </div>
         <el-button type="primary" @click="dialogCreateVisible = true"
           >新建数据仓库</el-button
         >
-        <el-button type="primary" @click="dialogDelVisible = true"
-          >删除仓库</el-button
+        <el-button type="primary" @click="openDel()">删除仓库</el-button>
+        <el-button type="primary" @click="openUploadwin(radio)"
+          >上传数据</el-button
+        >
+        <el-button type="primary" @click="reloadData()">加载数据</el-button>
+        <el-button type="primary" @click="colorVisible = true"
+          >设置颜色</el-button
         >
         <el-button type="primary" @click="download()">下载模板</el-button>
         <el-dialog
@@ -52,7 +69,76 @@
             <el-button type="primary" @click="saveDataStore()">确 定</el-button>
           </span>
         </el-dialog>
+        <!--  -->
+        <el-dialog title="设置颜色" :visible.sync="colorVisible" width="40%">
+          <div style="margin-bottom: 20px">
+            <el-select
+              v-model="selectDataStore"
+              placeholder="请选择数据库"
+              :change="changeDataStore()"
+            >
+              <el-option
+                v-for="item in dataStores"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name"
+              ></el-option>
+            </el-select>
+            <el-select
+              v-model="selectSce"
+              placeholder="请选择场景"
+              :change="changeScen()"
+            >
+              <el-option
+                v-for="item in scenariosList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name"
+              ></el-option>
+            </el-select>
+          </div>
+          <p v-for="item in colorList" :key="item.id" class="color-p">
+            <span class="color-item1">{{ item.name }}</span>
+            <span class="color-item2">
+              <input
+                v-model="item.color"
+                type="text"
+                autocomplete="off"
+                placeholder="请输入颜色数值"
+                class="el-input__inner"
+              />
+              <span
+                class="color-block"
+                v-bind:style="{ background: item.color }"
+              ></span>
+              <span v-if="checkColor(item.color)" class="error-info">
+                格式错误!</span
+              >
+            </span>
+          </p>
+          <div class="other-color">
+            <h5 v-if="otherColorList.length > 0" style="margin-bottom: 10px">
+              其他备选颜色
+            </h5>
+            <span
+              v-for="item in otherColorList"
+              :key="item.id"
+              class="other-color-item"
+            >
+              <span>{{ item.color }}</span>
+              <span
+                class="color-block"
+                v-bind:style="{ background: item.color }"
+              ></span>
+            </span>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="colorVisible = false">取 消</el-button>
+            <el-button type="primary" @click="saveColor()">保 存</el-button>
+          </span>
+        </el-dialog>
 
+        <!--  -->
         <el-dialog
           title="删除数据库"
           :visible.sync="dialogDelVisible"
@@ -107,6 +193,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 import axios from "axios";
+import qs from 'qs';
 
 export default {
   name: "Upload",
@@ -118,10 +205,20 @@ export default {
       dialogDefaultVisible: false,
       dialogDelVisible: false,
       dialogUploadVisible: false,
+      colorVisible: false,
       input: "",
-      radio: 1,
+      radio: "",
       uploadFiles: [],
       defaultDataStore: "",
+      selectDataStore: "",
+      lastDataStore: "",
+      scenariosList: [],
+      selectSce: "",
+      colorList: [],
+      otherColorList: [],
+      lastScen: "",
+      lastDataStore: "",
+      selectRadioDataStore: ""
     };
   },
   components: {},
@@ -145,6 +242,129 @@ export default {
         });
     },
 
+    openDel(){
+      if(this.radio == ""){
+        alert("请选择要删除的数据库");
+        return;
+      }
+      this.dialogDelVisible = true;
+    },
+
+    reloadData(){
+      if(this.radio == ""){
+        alert("请选择要加载的数据库");
+        return;
+      }
+      axios
+        .post(
+          `${this.baseURL}/api/DataStoreMgmt/preprocess/reload`,qs.stringify({"DatastoreName": this.radio})
+        )
+        .then(res => {
+          console.log(res);
+        });
+    },
+
+    changeScen() {
+      if (this.selectSce == "" || this.selectSce == this.lastScen) {
+        return;
+      }
+      this.lastScen = this.selectSce;
+      axios
+        .get(
+          `${this.baseURL}/api/Config/entitycolor?datastoreName=${encodeURI(
+            this.selectDataStore
+          )}&scenarioName=${encodeURI(this.selectSce)}`
+        )
+        .then((response) => {
+          this.colorList = [];
+          for (let [key, value] of Object.entries(
+            response.data.entityColorConfig
+          )) {
+            this.colorList.push({ name: key, color: value });
+          }
+          console.log(this.colorList);
+          axios.get(`${this.baseURL}/api/Config/colors`).then((res) => {
+            this.otherColorList = [];
+            for (let [key, value] of Object.entries(res.data.colors)) {
+              this.otherColorList.push({ name: key, color: value });
+            }
+          });
+        });
+    },
+
+    saveColor() {
+      let str = "";
+      for (let i = 0; i < this.colorList.length; i++) {
+        if(this.checkColor(this.colorList[i].color)){
+          alert("颜色格式错误")
+          return false;
+        }
+        str +=
+          "&" +
+          encodeURI(this.colorList[i].name) +
+          "=" +
+          encodeURIComponent(this.colorList[i].color);
+      }
+
+      axios
+        .post(
+          `${
+            this.baseURL
+          }/api/Config/entitycolor?user=skuser1&datastoreName=${encodeURI(
+            this.selectDataStore
+          )}&scenarioName=${encodeURI(this.selectSce)}${str}`,
+          {}
+        )
+        .then((res) => {
+          alert("颜色设置保存成功")
+          this.colorVisible = false;
+          this.colorList = [];
+          this.selectDataStore = "";
+          this.selectSce = "";
+          this.otherColorList = [];
+          this.lastScen = "";
+          this.selectSce = "";
+        });
+    },
+
+    checkColor(color) {
+      return /^#([0-9a-fA-F]{6})$/.test(color) ? false : true;
+    },
+    //
+
+    getDataStore(){
+      // this.radio = this.r
+    },
+    changeDataStore() {
+      if (
+        this.selectDataStore == "" ||
+        this.selectDataStore == this.lastDataStore
+      ) {
+        return;
+      }
+      this.lastDataStore = this.selectDataStore;
+      this.getScenarios();
+      this.lastScen = "";
+      this.selectSce = "";
+    },
+
+    getScenarios() {
+      this.scenariosList = [];
+      axios
+        .get(
+          `${this.baseURL}/api/Graph/scenarios?datastoreName=${this.selectDataStore}`
+        )
+        .then((response) => {
+          for (let i = 0; i < response.data.scenarioNames.length; i++) {
+            this.scenariosList.push({
+              id: i,
+              name: response.data.scenarioNames[i],
+            });
+          }
+        });
+    },
+    //
+
     download() {
       window.location.href = `./SmartKG_KGDesc_Template.xlsx`;
     },
@@ -160,7 +380,6 @@ export default {
       });
     },
     del() {
-      console.log(this.radio, 3434);
       let config = {
         headers: {
           accept: "text/plain",
@@ -171,6 +390,7 @@ export default {
       axios.delete(`${this.baseURL}/api/DataStoreMgmt`, config).then((res) => {
         this.getList();
         this.dialogDelVisible = false;
+        this.radio = "";
       });
     },
 
@@ -178,6 +398,10 @@ export default {
       item.file = event.target.files[0];
     },
     openUploadwin(name) {
+      if(this.radio == ""){
+        alert("请选择要上传的数据库");
+        return;
+      }
       this.currentDataStore = name;
       this.uploadFiles = [];
       this.uploadFiles.push({ scenario: "", file: "" });
@@ -216,6 +440,7 @@ export default {
           if (result.every((item) => item == true)) {
             alert("上传成功");
             this.dialogUploadVisible = false;
+            this.radio = "";
             let formData = new FormData();
             formData.append("DatastoreName", this.currentDataStore);
             axios
