@@ -25,8 +25,8 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 
 	(1) git: https://gitforwindows.org/
 	(2) Visual Studio 2019: https://visualstudio.microsoft.com/zh-hans/downloads/ 	
-	(3) Node JS: https://nodejs.org/zh-cn/download/
-	(4) Python 3
+	(3) Node.JS: https://nodejs.org/zh-cn/download/ (推荐 14.15.4)
+	(4) Python 3 (推荐 3.7)
 
 ### 1.2 Clone Repositry
 
@@ -36,16 +36,15 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 
 ### 1.3 目录结构
 
-	在目录src下面，是SmartKG后端服务的源代码。这部分源代码是基于Asp.NET 框架，用C# 开发的。
+	在目录dockers里，是已经编译好前后端服务的二进制码、配置文件，以及对应的docker image。
 
-	在目录SmartKGUI下面，是SmartKG UI的源代码。是基于Node.js, 用JavaScript开发的。
+	在目录Resources里，有用户上传数据的模板和用来做测试的图谱数据。其中，template子目录中是模板，用户如果要创建自己的知识图谱，就需要按照模板的格式要求，填入相应实体和实体关系。Input子目录内有包括西游记、红楼梦、中学物理课以及COVID19等数据。
 
 	在目录SmartKGLocalBase里，是SmartKG后端服务会调用的一些Python文件和用于存储运行时数据的本地文件的目录。
 
-	在目录Resources里，有用户上传数据的模板和用来做测试的图谱数据。其中，template子目录中是模板，用户如果要创建自己的知识图谱，就需要按照模板的格式要求，填入相应实体和实体关系。Input子目录内有包括西游记、红楼梦、中学物理课以及COVID19等数据。
- 
-	在目录dockers里，是已经编译好前后端服务的二进制码、配置文件，以及对应的docker image。
+	在目录SmartKGUI下面，是SmartKG UI的源代码。是基于Node.js, 用JavaScript开发的。
 
+	在目录src下面，是SmartKG后端服务的源代码。这部分源代码是基于Asp.NET 框架，用C# 开发的。
 
 ## 2. 运行SmartKG
 
@@ -76,18 +75,18 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 
 ### 2.2 Linux 上运行 SmartKG
 
-	(0) 在Linux环境部署前，需要提前安装好Docker和 Docker Compose。
+	(0) 在Linux环境部署前，需要提前安装好 docker 和 docker-compose。
 
-	(1) 打开目录dockers，将里面的smartkg_services目录整体压缩，并拷贝到Linux机器上，一般放在用户目录下。
+	(1) 打开 Repo 中的 dockers 目录，将里面的 smartkg_services 目录整体压缩，并拷贝到Linux机器上，一般放在用户目录下。
 
 	(2) 在 Linux 系统进入用户目录，并解压缩 smartkg_services.zip。
 	
-	(2) enter smartkg_services/ 目录，运行下列命令启动 SmartKG docker-compose OneBox:
+	(3) 进入 smartkg_services/ 目录，运行下列命令启动 SmartKG docker-compose OneBox:
 
 		1) sudo docker-compose build --build-arg DOCKER_HOST=${docker_host_ip}
 		2) sudo docker-compose up
 
-	     访问后端：http://${docker_host_ip}:8082/swagger/index.html to view all API of smartkg 
+	     访问后端：http://${docker_host_ip}:8082/swagger/index.html 能够获得 API 列表
 
              访问前端：http://${docker_host_ip}:8083 主页面
                        http://${docker_host_ip}:8083/upload 上传页面
@@ -106,11 +105,11 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 ### 4.1 用 Visual Studio 2019 编译 SmartKG
 
 	回到Repo目录，进入src文件夹，启动SmartKG.sln。
-	进入到VS后，点击Build的Bulid Solution，编译源代码
+	进入到VS后，点击Build的Bulid Solution，编译源代码。
 
 ### 4.2 Publish SmartKG
 
-	在 Visual Studio 中打开 SmartKG solution 后，右键点击 SmartKG.KGBot project，选择点击Publish，接着点击Folder，以及Next。
+	在 Visual Studio 中打开 SmartKG solution 后，右键点击 SmartKG.KGBot project，选择点击 Publish，接着点击 Folder，以及 Next。
 	
 	配置 Publish 选项：
 
