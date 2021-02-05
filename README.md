@@ -17,7 +17,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根据用户输入的实体和关系数据自动生成知识图谱，并提供图谱可视化及基于图谱的智能对话机器人。
 
-## 0. 更将详细的安装、编译和使用方法请见：https://github.com/microsoft/SmartKG/blob/master/SmartKG_Spec.pdf
+## 0. 更加详细的安装、编译和使用方法请见：https://github.com/microsoft/SmartKG/blob/master/SmartKG_Spec.pdf
 
 ## 1. 下载 SmartKG
 
