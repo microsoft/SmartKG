@@ -4,6 +4,7 @@
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using SmartKG.Common.Data;
+using SmartKG.Common.Data.Configuration;
 using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataPersistence;
 using System;
@@ -142,6 +143,7 @@ namespace SmartKG.Common.DataStoreMgmt
         {
             FileUploadConfig uploadConfig = this.dataLoader.GetUploadConfig();
             PersistanceType persistanceType = this.dataLoader.GetPersistanceType();
+            FilePathConfig filePathConfig = this.dataLoader.GetFilePathConfig();
 
             string excelDir = uploadConfig.ExcelDir;
 
@@ -159,9 +161,9 @@ namespace SmartKG.Common.DataStoreMgmt
 
             string targetDir = null;
 
-            if (persistanceType == PersistanceType.File)
-            {
-                targetDir = uploadConfig.LocalRootPath + Path.DirectorySeparatorChar + datastoreName;
+            if (persistanceType == PersistanceType.File && filePathConfig != null)
+            {                                
+                targetDir = filePathConfig.RootPath + Path.DirectorySeparatorChar + datastoreName;
             }
             else
             {

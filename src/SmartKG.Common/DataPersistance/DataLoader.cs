@@ -24,6 +24,7 @@ namespace SmartKG.Common.DataPersistence
         private IDataAccessor dataAccessor;
         private PersistanceType persistanceType;
         private FileUploadConfig uploadConfig;
+        private FilePathConfig filePathConfig = null;
 
 
         public DataLoader(IConfiguration config)
@@ -35,7 +36,7 @@ namespace SmartKG.Common.DataPersistence
 
             if (persistanceType == PersistanceType.File)
             {
-               FilePathConfig filePathConfig = config.GetSection("FileDataPath").Get<FilePathConfig>();
+               this.filePathConfig = config.GetSection("FileDataPath").Get<FilePathConfig>();
                this.dataAccessor = new FileDataAccessor(filePathConfig.RootPath);
             }
             else
@@ -140,6 +141,11 @@ namespace SmartKG.Common.DataPersistence
         public FileUploadConfig GetUploadConfig()
         {
             return this.uploadConfig;
+        }
+
+        public FilePathConfig GetFilePathConfig()
+        {
+            return this.filePathConfig;
         }
     }
 }

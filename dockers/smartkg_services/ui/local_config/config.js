@@ -1,3 +1,3 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-var urlapi = "https://localhost:5001"
+var urlapi = "http://localhost:5000"

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace SmartKG.Common.Data
+namespace SmartKG.Common.Data.Configuration
 {
     public class FileUploadConfig
     {
@@ -9,8 +9,6 @@ namespace SmartKG.Common.Data
         public string ConvertScriptPath { get; set; }
 
         public string ColorConfigPath { get; set; }
-        public string ExcelDir { get; set; }   
-        
-        public string LocalRootPath { get; set; }
+        public string ExcelDir { get; set; }                   
     }
 }

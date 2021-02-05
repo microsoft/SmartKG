@@ -24,9 +24,12 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 ### 1.1 下载安装下列软件： 
 
 	(1) git: https://gitforwindows.org/
-	(2) Visual Studio 2019: https://visualstudio.microsoft.com/zh-hans/downloads/ 	
+	(2) .NET Core 2.1 运行时环境	
 	(3) Node.JS: https://nodejs.org/zh-cn/download/ (推荐 14.15.4)
 	(4) Python 3 (推荐 3.7)
+	(5) Python 的 xlrd 支持库 1.2.0 版本
+      	    注意：xlrd 新版不再支持处理xlsx 文档，因此必须要1.2.0 版本，所用命令为：pip install xlrd==1.2.0
+	(6) 如果要改写或重新编译源代码，还需要安装 Visual Studio 2019: https://visualstudio.microsoft.com/zh-hans/downloads/ 
 
 ### 1.2 Clone Repositry
 

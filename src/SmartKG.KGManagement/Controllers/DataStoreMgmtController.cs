@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
+using SmartKG.Common.Data.Configuration;
 using SmartKG.Common.DataStoreMgmt;
 using SmartKG.KGManagement.Data.Request;
 using SmartKG.KGManagement.Data.Response;
