@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson.Serialization.IdGenerators;
 using Serilog;
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.Configuration;
@@ -138,6 +139,42 @@ namespace SmartKG.Common.DataStoreMgmt
         {
             return this.dataLoader.GetPersistanceType();
         }
+
+        public string GetSavedExcelFilePath(string savedFileName)
+        {
+            FileUploadConfig uploadConfig = this.dataLoader.GetUploadConfig();
+            
+            string excelDir = uploadConfig.ExcelDir;
+
+            
+            string savedExcelFilePath =  excelDir + Path.DirectorySeparatorChar + savedFileName ;
+
+            return savedExcelFilePath;
+        }
+
+        public (string, string) GetTargetDirPath(string datastoreName)
+        {
+            FileUploadConfig uploadConfig = this.dataLoader.GetUploadConfig();
+            PersistanceType persistanceType = this.dataLoader.GetPersistanceType();
+            FilePathConfig filePathConfig = this.dataLoader.GetFilePathConfig();
+
+            string configPath = uploadConfig.ColorConfigPath;
+
+            string targetDir = null;
+
+            if (persistanceType == PersistanceType.File && filePathConfig != null)
+            {
+                targetDir = filePathConfig.RootPath + Path.DirectorySeparatorChar + datastoreName;
+            }
+            else
+            {
+                string excelDir = uploadConfig.ExcelDir;
+                targetDir = excelDir + Path.DirectorySeparatorChar + DateTime.Now.ToString("MMddyyyyHHmmss");
+            }
+
+            return (configPath, targetDir);
+        }
+
 
         public (FileUploadConfig, string, string) GenerateConvertDirs(string datastoreName, string savedFileName, string scenario)
         {

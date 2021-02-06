@@ -13,7 +13,9 @@ using Serilog;
 using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.Configuration;
+using SmartKG.Common.Data.KG;
 using SmartKG.Common.DataStoreMgmt;
+using SmartKG.Common.Parser;
 using SmartKG.KGManagement.Data.Request;
 using SmartKG.KGManagement.Data.Response;
 
@@ -185,6 +187,15 @@ namespace SmartKG.KGManagement.Controllers
 
         private void ConvertFiles(string savedFileName, string scenario, string datastoreName)
         {
+            string savedFilePath = dsManager.GetSavedExcelFilePath(savedFileName);
+
+            ExcelParser eParser = new ExcelParser();
+            (List<ExcelSheetVertexesRow> vRows, List<ExcelSheetEdgesRow> eRows) =  eParser.ParserExcel(savedFilePath);
+
+            (string configPathh, string targetDir) = dsManager.GetTargetDirPath(datastoreName);
+
+
+            /*
             (FileUploadConfig uploadConfig, string pythonArgs, string targetDir) = dsManager.GenerateConvertDirs(datastoreName, savedFileName, scenario);
 
             RunCommand(uploadConfig.PythonEnvPath, uploadConfig.ConvertScriptPath, pythonArgs);
@@ -194,7 +205,7 @@ namespace SmartKG.KGManagement.Controllers
                 SmartKG.DataUploader.Executor.DataUploader uploader = new SmartKG.DataUploader.Executor.DataUploader();
                 uploader.UploadDataFile(targetDir, datastoreName);
             }
-
+            */
             return;
         }
 
