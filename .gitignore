@@ -363,6 +363,7 @@ SmartKGLocalBase/kgbot_context.json
 SmartKGLocalBase/DataStores
 SmartKGLocalBase/temp
 dockers/smartkg_services.zip
+SmartKGLocalBase/kgbot_context.json
 
 .DS_Store
 node_modules
