@@ -157,7 +157,13 @@ namespace SmartKG.KGManagement.Controllers
 
             }
 
-            ConvertFiles(savedFileName, datastoreName, scenario);
+            string targetDir = ConvertFiles(savedFileName, datastoreName, scenario);
+
+            if (this.dsManager.GetPersistanceType() == PersistanceType.MongoDB)
+            {
+                SmartKG.DataUploader.Executor.DataUploader uploader = new SmartKG.DataUploader.Executor.DataUploader();
+                uploader.UploadDataFile(targetDir, datastoreName);
+            }
 
             ResponseResult msg = new ResponseResult();
             msg.success = true;
@@ -190,20 +196,20 @@ namespace SmartKG.KGManagement.Controllers
             return newFileName;
         }
 
-        private void ConvertFiles(string savedFileName, string datastoreName, string scenario)
+        private string ConvertFiles(string savedFileName, string datastoreName, string scenario)
         {
             string savedFilePath = dsManager.GetSavedExcelFilePath(savedFileName);
 
             ExcelParser eParser = new ExcelParser();
             (List<Vertex> vertexes, List<Edge> edges) =  eParser.ParserExcel(savedFilePath, scenario);
 
-            GenerateKGNLUConfigFiles(vertexes, edges, datastoreName, scenario);
+            string targetDir = GenerateKGNLUConfigFiles(vertexes, edges, datastoreName, scenario);
             
-            return;
+            return targetDir;
         }
 
 
-        private void GenerateKGNLUConfigFiles(List<Vertex> vertexes, List<Edge> edges, string datastoreName, string scenario)
+        private string GenerateKGNLUConfigFiles(List<Vertex> vertexes, List<Edge> edges, string datastoreName, string scenario)
         {
             (string configPath, string targetDir) = dsManager.GetTargetDirPath(datastoreName);
 
@@ -234,6 +240,8 @@ namespace SmartKG.KGManagement.Controllers
             System.IO.File.WriteAllText(intentPath, JsonConvert.SerializeObject(new List<NLUIntentRule>() { intentRule }, Formatting.Indented), Encoding.UTF8);
             System.IO.File.WriteAllText(entityMapPath, JsonConvert.SerializeObject(entityDatas, Formatting.Indented), Encoding.UTF8);            
             System.IO.File.WriteAllText(colorJsonPath, JsonConvert.SerializeObject(new List<VisulizationConfig>() { vConfig }, Formatting.Indented), Encoding.UTF8);
+
+            return targetDir;
         }
 
 
