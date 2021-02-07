@@ -26,10 +26,7 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 	(1) git: https://gitforwindows.org/
 	(2) .NET Core 2.1 运行时环境	
 	(3) Node.JS: https://nodejs.org/zh-cn/download/ (推荐 14.15.4)
-	(4) Python 3 (推荐 3.7)
-	(5) Python 的 xlrd 支持库 1.2.0 版本
-      	    注意：xlrd 新版不再支持处理xlsx 文档，因此必须要1.2.0 版本，所用命令为：pip install xlrd==1.2.0
-	(6) 如果要改写或重新编译源代码，还需要安装 Visual Studio 2019: https://visualstudio.microsoft.com/zh-hans/downloads/ 
+	(4) 如果要改写或重新编译源代码，还需要安装 Visual Studio 2019: https://visualstudio.microsoft.com/zh-hans/downloads/ 
 
 ### 1.2 Clone Repositry
 
@@ -99,7 +96,8 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 ### 3.1 填写模板
 
 	(1) 模板位于 ${SourceCode_Base_Path}/SmartKG/Resources/_Template/SmartKG_KGDesc_Template.xlsx
-	(2) 模板分为两页：顶点页和边页。前者为图谱中的实体，后者为实体间的关系。根据模板样例填写你自己的顶点和边数据。
+	(2) 模板分为两页：顶点页和边页。前者为图谱中的实体，后者为实体间的关系。根据模板样例填写你自己的顶点和边数据。	
+	(3) 做测试，建议使用 ${SourceCode_Base_Path}/SmartKG/Resources/Data/Excel/input/XYJ/SmartKG_Xiyouji_relations_new.xlsx
 
 ### 3.2 将填写好的 excel 文件通过 SmartKG 的前端 upload 页面上传
 
