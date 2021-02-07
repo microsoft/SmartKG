@@ -216,5 +216,10 @@ namespace SmartKG.Common.DataStoreMgmt
         {
             return this.dataLoader.UpdateColorConfig(user, dsName, scenarioName, colorConfigs);
         }
+
+        public int GetMaxDisplayedEntityNumber()
+        {
+            return this.dataLoader.GetMaxDisplayedEntityNumber();
+        }
     }
 }

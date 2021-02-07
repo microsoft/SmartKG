@@ -64,23 +64,25 @@ namespace SmartKG.Common.Parser.DataPersistance
 
                 string headVertexId = edge.headVertexId;
                 string tailVertexId = edge.tailVertexId;
+                string relationType = edge.relationType;
 
                 if (!vertexIdNameMap.ContainsKey(headVertexId) || !vertexIdNameMap.ContainsKey(tailVertexId))
                 {
-                    throw new Exception("VertexId is invalid: " + headVertexId + "; " + tailVertexId);
-                }
+                    log.Warning("VertexId is invalid: " + headVertexId + "; " + tailVertexId);
 
-                string relationType = edge.relationType;
-                
+                    continue;
+                }                
                 
                 if (relationType == null)
                 {
-                    throw new Exception("relationType is empty in Edge from " + headVertexId + " to " + tailVertexId + ".\nIf you have no dedicated scenarios, please set the default value of relationType as \"contains\"");
+                    log.Warning("relationType is empty in Edge from " + headVertexId + " to " + tailVertexId + ".\nIf you have no dedicated scenarios, please set the default value of relationType as \"contains\"");
+                    continue;
                 }
 
                 if (edge.scenarios == null || edge.scenarios.Count == 0)
                 {
-                    throw new Exception("scenarios is empty in Edge from " + headVertexId + " to " + tailVertexId + ".\nIf you have no dedicated scenarios, please set the default value of secanrios as [\"Default\"]");                   
+                    log.Warning("scenarios is empty in Edge from " + headVertexId + " to " + tailVertexId + ".\nIf you have no dedicated scenarios, please set the default value of secanrios as [\"Default\"]");
+                    continue;
                 }
 
                 List<RelationLink> links = new List<RelationLink>();

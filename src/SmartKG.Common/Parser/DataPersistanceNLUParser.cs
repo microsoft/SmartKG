@@ -26,7 +26,8 @@ namespace SmartKG.Common.DataPersistance
 
             if (iList == null || iList.Count == 0)
             {
-                throw new Exception("No Intent is defined.");
+                //throw new Exception("No Intent is defined.");
+                log.Warning("No Intent is defined.");
             }
             else
             {
@@ -38,7 +39,8 @@ namespace SmartKG.Common.DataPersistance
 
             if (eList == null || eList.Count == 0)
             {
-                throw new Exception("No Entity is defined.");
+                //throw new Exception("No Entity is defined.");
+                log.Warning("No Entity is defined.");
             }
             else
             {
@@ -75,7 +77,6 @@ namespace SmartKG.Common.DataPersistance
                     scenarioCache.Add(setting.scenarioName, setting);
                 }
             }
-
 
             foreach (Vertex vertex in rootVertexes)
             {

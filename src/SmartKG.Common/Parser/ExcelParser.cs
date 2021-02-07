@@ -12,7 +12,7 @@ namespace SmartKG.Common.Parser
     public class ExcelParser
     {
 
-        public (List<Vertex>, List<Edge>) ParserExcel(string path)
+        public (List<Vertex>, List<Edge>) ParserExcel(string path, string scenario)
         {
             var fi = new FileInfo(path);
 
@@ -32,6 +32,10 @@ namespace SmartKG.Common.Parser
                 for (int row = 2; row <= rowCount; row++)
                 {
                     Vertex aVertex = new Vertex();
+                    aVertex.properties = new List<VertexProperty>();
+                    aVertex.scenarios = new List<string>() { scenario};
+
+                         
                     VertexProperty p = null;
 
                     for (int col = 1; col <= colCount; col++)
@@ -92,6 +96,7 @@ namespace SmartKG.Common.Parser
                 for (int row = 2; row <= rowCount; row++)
                 {
                     Edge aEdge = new Edge();
+                    aEdge.scenarios = new List<string>() { scenario };
 
                     for (int col = 1; col <= colCount; col++)
                     {

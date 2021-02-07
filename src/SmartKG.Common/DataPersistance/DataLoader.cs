@@ -25,6 +25,7 @@ namespace SmartKG.Common.DataPersistence
         private PersistanceType persistanceType;
         private FileUploadConfig uploadConfig;
         private FilePathConfig filePathConfig = null;
+        private KGDisplayConfig kgDisplayConfig;
 
 
         public DataLoader(IConfiguration config)
@@ -46,6 +47,8 @@ namespace SmartKG.Common.DataPersistence
 
                 this.dataAccessor = new MongoDataAccessor(connectionString, mgmtDBName);
             }
+
+            kgDisplayConfig = config.GetSection("KGDisplayConfig").Get<KGDisplayConfig>();
         }        
 
         public List<DataStoreFrame> Load()
@@ -146,6 +149,11 @@ namespace SmartKG.Common.DataPersistence
         public FilePathConfig GetFilePathConfig()
         {
             return this.filePathConfig;
+        }
+
+        public int GetMaxDisplayedEntityNumber()
+        {
+            return this.kgDisplayConfig.MaxEntityNumOfScenarioToDisplay;
         }
     }
 }

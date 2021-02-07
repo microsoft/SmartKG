@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Serilog;
 using SmartKG.Common.Data.Visulization;
+using SmartKG.Common.DataStoreMgmt;
 using SmartKG.Common.Logger;
 using SmartKG.Common.Utils;
 using SmartKG.KGManagement.Data.Response;
@@ -23,6 +24,8 @@ namespace SmartKG.KGManagement.Controllers
     public class GraphController : Controller
     {
         private ILogger log;
+        DataStoreManager dsManager = DataStoreManager.GetInstance();
+
 
         public GraphController(IConfiguration configuration)
         {
@@ -243,9 +246,11 @@ namespace SmartKG.KGManagement.Controllers
                 relationResult = new RelationResult(false, "datastoreName 和 scenario 不能为空");                
             }
             else
-            { 
+            {
+                int displayMax = dsManager.GetMaxDisplayedEntityNumber();
+
                 GraphExecutor executor = new GraphExecutor(datastoreName);
-                (bool isDSExist, bool isScenarioExist, List<VisulizedVertex> vvs, List<VisulizedEdge> ves) = executor.GetVertexesAndEdgesByScenarios(new List<string>() { scenarioName });
+                (bool isDSExist, bool isScenarioExist, bool isDisplable, string message, List<VisulizedVertex> vvs, List<VisulizedEdge> ves) = executor.GetVertexesAndEdgesByScenarios(new List<string>() { scenarioName }, displayMax);
 
                 if (!isDSExist)
                 {
@@ -259,12 +264,20 @@ namespace SmartKG.KGManagement.Controllers
                     }
                     else
                     { 
-                        string scenarioStr = "scenario: " + scenarioName + " 的图谱如下：";
 
-                        relationResult = new RelationResult(true, scenarioStr + " 的图谱如下：");
-                        relationResult.nodes = vvs;
+                        if (!isDisplable)
+                        {
+                            relationResult = new RelationResult(false, "Scenario " + scenarioName + " 包含的实体超过了设置，无法显示完整图谱，请通过搜索查看部分图谱。");
+                        }
+                        else
+                        { 
+                            string scenarioStr = "scenario: " + scenarioName + " 的图谱如下：";
 
-                        relationResult.relations = ves;
+                            relationResult = new RelationResult(true, scenarioStr + " 的图谱如下：");
+                            relationResult.nodes = vvs;
+
+                            relationResult.relations = ves;
+                        }
                     }
                 }
             }

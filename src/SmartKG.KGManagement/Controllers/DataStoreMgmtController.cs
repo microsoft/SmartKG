@@ -195,7 +195,7 @@ namespace SmartKG.KGManagement.Controllers
             string savedFilePath = dsManager.GetSavedExcelFilePath(savedFileName);
 
             ExcelParser eParser = new ExcelParser();
-            (List<Vertex> vertexes, List<Edge> edges) =  eParser.ParserExcel(savedFilePath);
+            (List<Vertex> vertexes, List<Edge> edges) =  eParser.ParserExcel(savedFilePath, scenario);
 
             GenerateKGNLUConfigFiles(vertexes, edges, datastoreName, scenario);
             
@@ -237,15 +237,15 @@ namespace SmartKG.KGManagement.Controllers
         }
 
 
-        private ColorConfig GetColor(Dictionary<string, string> hexDict, Dictionary<string, string> predefinedDict, string name)
+        private ColorConfig GetColor(Dictionary<string, string> hexDict, Dictionary<string, string> predefinedDict, string entityType)
         {
             ColorConfig colorConfig = new ColorConfig();
 
-            colorConfig.itemLabel = name;
+            colorConfig.itemLabel = entityType;
 
-            if (predefinedDict.ContainsKey(name))
+            if (predefinedDict.ContainsKey(entityType))
             {
-                string color = predefinedDict[name];
+                string color = predefinedDict[entityType];
 
                 if (hexDict.ContainsKey(color))
                 {
@@ -257,7 +257,7 @@ namespace SmartKG.KGManagement.Controllers
             Random rnd = new Random();
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
-            colorConfig.color = randomColor.ToString();
+            colorConfig.color = "#" + randomColor.R.ToString("X2") + randomColor.G.ToString("X2") + randomColor.B.ToString("X2");
             return colorConfig;
         }
 
@@ -281,15 +281,23 @@ namespace SmartKG.KGManagement.Controllers
             vConfig.labelsOfVertexes = new List<ColorConfig>();
             vConfig.relationTypesOfEdges = new List<ColorConfig>();
 
-            string hexFilePath = configPath + Path.DirectorySeparatorChar + "HexColorCodeDict.txt";
-            string pdFilePath = configPath + Path.DirectorySeparatorChar + "PreDefinedVertexColor.txt";
+            string hexFilePath = configPath + Path.DirectorySeparatorChar + "HexColorCodeDict.tsv";
+            string pdFilePath = configPath + Path.DirectorySeparatorChar + "PreDefinedVertexColor.tsv";
 
             Dictionary<string, string> hexDict = new Dictionary<string, string>();
 
             foreach (var line in System.IO.File.ReadLines(hexFilePath))
             {
                 string[] tmps = line.Split('\t');
-                hexDict.Add(tmps[0], tmps[1]);
+
+                if (hexDict.ContainsKey(tmps[0]))
+                {
+                    hexDict[tmps[0]] = tmps[1];
+                }
+                else
+                { 
+                    hexDict.Add(tmps[0], tmps[1]);
+                }
             }
 
             Dictionary<string, string> predefinedDict = new Dictionary<string, string>();
@@ -297,15 +305,24 @@ namespace SmartKG.KGManagement.Controllers
             foreach (var line in System.IO.File.ReadLines(pdFilePath))
             {
                 string[] tmps = line.Split('\t');
-                predefinedDict.Add(tmps[0], tmps[1]);
+                if (predefinedDict.ContainsKey(tmps[0]))
+                {
+                    predefinedDict[tmps[0]] = tmps[1];
+                }
+                else
+                { 
+                    predefinedDict.Add(tmps[0], tmps[1]);
+                }
             }
             // ---
             
             HashSet<string> entityNameSet = new HashSet<string>();
+            HashSet<string> entityTypeSet = new HashSet<string>();
             HashSet<string> propertyNameSet = new HashSet<string>();
 
             foreach (Vertex vertex in vertexes)
             {
+                entityTypeSet.Add(vertex.label);
                 entityNameSet.Add(vertex.name);
                 if (vertex.properties != null && vertex.properties.Count > 0)
                 {
@@ -319,7 +336,7 @@ namespace SmartKG.KGManagement.Controllers
             HashSet<string> relationTypeSet = new HashSet<string>();
             foreach (Edge edge in edges)
             {
-                relationTypeSet.Add(edge.relationType);
+                relationTypeSet.Add(edge.relationType);                
             }
                         
             NLUIntentRule intentRule = new NLUIntentRule();
@@ -331,14 +348,22 @@ namespace SmartKG.KGManagement.Controllers
 
             List<EntityData> entityDatas = new List<EntityData>();
 
+            string entityRule = "";
+
             foreach (string entityName in entityNameSet)
             {
-                intentRule.ruleSecs.Add(entityName);
-                entityDatas.Add(CreateEntityData(scenario, "NodeName", entityName));
+                entityRule += entityName + "|";                     
+                entityDatas.Add(CreateEntityData(scenario, "NodeName", entityName));                
+            }
 
-                vConfig.labelsOfVertexes.Add(GetColor(hexDict, predefinedDict, entityName));
-            }          
+
+            entityRule = entityRule.Substring(0, entityRule.Length - 1);
+            intentRule.ruleSecs.Add(entityRule);                
                             
+            foreach(string entityType in entityTypeSet)
+            {
+                vConfig.labelsOfVertexes.Add(GetColor(hexDict, predefinedDict, entityType));
+            }
 
             foreach (string pName in propertyNameSet)
             {                                
@@ -348,7 +373,7 @@ namespace SmartKG.KGManagement.Controllers
             foreach (string rType in relationTypeSet)
             {                
                 entityDatas.Add(CreateEntityData(scenario, "RelationType", rType));
-                vConfig.labelsOfVertexes.Add(GetColor(hexDict, predefinedDict, rType));
+                vConfig.relationTypesOfEdges.Add(GetColor(hexDict, predefinedDict, rType));
             }
 
             return (intentRule, entityDatas, vConfig);

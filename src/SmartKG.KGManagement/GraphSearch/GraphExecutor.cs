@@ -14,7 +14,7 @@ namespace SmartKG.KGManagement.GraphSearch
 {
     public class GraphExecutor
     {
-        private KnowledgeGraphDataFrame kgDF = null;      
+        private KnowledgeGraphDataFrame kgDF = null;
         private ILogger log;
 
         public GraphExecutor(string datastoreName)
@@ -24,8 +24,8 @@ namespace SmartKG.KGManagement.GraphSearch
             DataStoreFrame dsFrame = DataStoreManager.GetInstance().GetDataStore(datastoreName);
 
             if (dsFrame != null)
-            { 
-                this.kgDF = dsFrame.GetKG();                
+            {
+                this.kgDF = dsFrame.GetKG();
             }
         }
 
@@ -44,21 +44,21 @@ namespace SmartKG.KGManagement.GraphSearch
             if (this.kgDF == null)
                 return (false, null);
 
-            Vertex vertex =  this.kgDF.GetVertexById(vId);
+            Vertex vertex = this.kgDF.GetVertexById(vId);
 
             if (vertex == null)
                 return (true, null);
             else
                 return (true, ConvertVertex(vertex));
         }
-        
+
         public (bool, List<VisulizedVertex>) SearchVertexesByName(string keyword)
         {
 
             if (this.kgDF == null)
                 return (false, null);
 
-            List<Vertex> searchedVertexes =  this.kgDF.GetVertexByKeyword(keyword);
+            List<Vertex> searchedVertexes = this.kgDF.GetVertexByKeyword(keyword);
 
             if (searchedVertexes == null || searchedVertexes.Count == 0)
             {
@@ -66,8 +66,8 @@ namespace SmartKG.KGManagement.GraphSearch
             }
 
             List<VisulizedVertex> results = new List<VisulizedVertex>();
-            
-            foreach(Vertex vertex in searchedVertexes)
+
+            foreach (Vertex vertex in searchedVertexes)
             {
                 results.Add(ConvertVertex(vertex));
             }
@@ -98,7 +98,7 @@ namespace SmartKG.KGManagement.GraphSearch
 
             List<VisulizedVertex> results = new List<VisulizedVertex>();
 
-            foreach(Vertex vertex in allVertexes)
+            foreach (Vertex vertex in allVertexes)
             {
                 string value = vertex.GetPropertyValue(propertyName);
 
@@ -129,18 +129,25 @@ namespace SmartKG.KGManagement.GraphSearch
                 return (true, null);
             }
             else
-            { 
+            {
                 return (true, this.kgDF.GetScenarioNames().ToList());
             }
-        }               
+        }
 
-        public (bool, bool, List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios)
+        public (bool, bool, bool, string, List<VisulizedVertex>, List<VisulizedEdge>) GetVertexesAndEdgesByScenarios(List<string> scenarios, int MaxEntityNumOfScenarioToDisplay)
         {
 
             if (this.kgDF == null)
-                return (false, false, null, null);
+                return (false, false, false, "KG Data doesn't exist.", null, null);
 
             (bool isSceanrioExist, List<Vertex> catchedVertexes) = this.kgDF.GetVertexesByScenarios(scenarios);
+
+            if ((!isSceanrioExist) || catchedVertexes == null || catchedVertexes.Count == 0)
+                return (true, false, false, "Scenario doesn't exist or has no data.", null, null);
+
+            if ((isSceanrioExist) && (catchedVertexes.Count > MaxEntityNumOfScenarioToDisplay))
+                return (true, true, false, "The scenario size is out of setting. Please refer to the \"MaxEntityNumOfScenarioToDisplay\" parameter in appsettings.", null, null); 
+
 
             List<VisulizedVertex> vvs = new List<VisulizedVertex>();
 
@@ -158,7 +165,7 @@ namespace SmartKG.KGManagement.GraphSearch
                 ves.Add(ConvertEdge(edge));
             }
             
-            return (true, isSceanrioExist, vvs, ves);
+            return (true, isSceanrioExist, true, "", vvs, ves);
         }
 
         public (bool, List<VisulizedVertex>, List<VisulizedEdge>) GetFirstLevelRelationships(string vId)
