@@ -12,14 +12,14 @@ namespace SmartKG.Common.Parser
     public class ExcelParser
     {
 
-        public (List<ExcelSheetVertexesRow>, List<ExcelSheetEdgesRow>) ParserExcel(string path)
+        public (List<Vertex>, List<Edge>) ParserExcel(string path)
         {
             var fi = new FileInfo(path);
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            Dictionary<string, ExcelSheetVertexesRow> vRows = new Dictionary<string, ExcelSheetVertexesRow>();
-            Dictionary<string, ExcelSheetEdgesRow> eRows = new Dictionary<string, ExcelSheetEdgesRow>();
+            Dictionary<string, Vertex> vRows = new Dictionary<string, Vertex>();
+            Dictionary<string, Edge> eRows = new Dictionary<string, Edge>();
 
             using (ExcelPackage package = new ExcelPackage(fi))
             {
@@ -31,7 +31,7 @@ namespace SmartKG.Common.Parser
                 
                 for (int row = 2; row <= rowCount; row++)
                 {
-                    ExcelSheetVertexesRow vRow = new ExcelSheetVertexesRow();
+                    Vertex aVertex = new Vertex();
                     VertexProperty p = null;
 
                     for (int col = 1; col <= colCount; col++)
@@ -44,16 +44,16 @@ namespace SmartKG.Common.Parser
                             {
                                 case 1:
 
-                                    vRow.entityId = cellStr;
+                                    aVertex.id = cellStr;
                                     break;
                                 case 2:
-                                    vRow.entityName = cellStr;
+                                    aVertex.name = cellStr;
                                     break;
                                 case 3:
-                                    vRow.entityType = cellStr;
+                                    aVertex.label = cellStr;
                                     break;
                                 case 4:
-                                    vRow.leadingSentence = cellStr;
+                                    aVertex.leadSentence = cellStr;
                                     break;
                                 default:
                                     if (col % 2 == 1)
@@ -67,7 +67,7 @@ namespace SmartKG.Common.Parser
                                         if (!string.IsNullOrWhiteSpace(cellStr))
                                         { 
                                             p.value = cellStr;
-                                            vRow.properties.Add(p);
+                                            aVertex.properties.Add(p);
                                         }
                                     }
                                     
@@ -76,11 +76,11 @@ namespace SmartKG.Common.Parser
                         }
                     }
 
-                    if (!string.IsNullOrWhiteSpace(vRow.entityId) && !string.IsNullOrWhiteSpace(vRow.entityName) && !string.IsNullOrWhiteSpace(vRow.entityType))
+                    if (!string.IsNullOrWhiteSpace(aVertex.id) && !string.IsNullOrWhiteSpace(aVertex.name) && !string.IsNullOrWhiteSpace(aVertex.label))
                     {
-                        if (!vRows.ContainsKey(vRow.entityId))
+                        if (!vRows.ContainsKey(aVertex.id))
                         {
-                            vRows.Add(vRow.entityId, vRow);
+                            vRows.Add(aVertex.id, aVertex);
                         }                       
                     }
                 }
@@ -91,7 +91,7 @@ namespace SmartKG.Common.Parser
                 rowCount = worksheet.Dimension.End.Row;     //get row count
                 for (int row = 2; row <= rowCount; row++)
                 {
-                    ExcelSheetEdgesRow eRow = new ExcelSheetEdgesRow();
+                    Edge aEdge = new Edge();
 
                     for (int col = 1; col <= colCount; col++)
                     {
@@ -103,34 +103,34 @@ namespace SmartKG.Common.Parser
                             {
                                 case 1:
 
-                                    eRow.relationType = cellStr;
+                                    aEdge.relationType = cellStr;
                                     break;
                                 case 2:
-                                    eRow.sourceEntityId = cellStr;
+                                    aEdge.headVertexId = cellStr;
                                     break;
                                 case 3:
-                                    eRow.targetEntityId = cellStr;
+                                    aEdge.tailVertexId = cellStr;
                                     break;
                             }
                         }
                     }
 
-                    if (!string.IsNullOrWhiteSpace(eRow.relationType) && !string.IsNullOrWhiteSpace(eRow.sourceEntityId) && !string.IsNullOrWhiteSpace(eRow.targetEntityId))
+                    if (!string.IsNullOrWhiteSpace(aEdge.relationType) && !string.IsNullOrWhiteSpace(aEdge.headVertexId) && !string.IsNullOrWhiteSpace(aEdge.tailVertexId))
                     {
-                        if (vRows.ContainsKey(eRow.sourceEntityId) && vRows.ContainsKey(eRow.targetEntityId))
+                        if (vRows.ContainsKey(aEdge.headVertexId) && vRows.ContainsKey(aEdge.tailVertexId))
                         {
-                            string key = eRow.relationType + eRow.sourceEntityId + eRow.targetEntityId;
+                            string key = aEdge.relationType + aEdge.headVertexId + aEdge.tailVertexId;
 
                             if (!eRows.ContainsKey(key))
                             {
-                                eRows.Add(key, eRow);
+                                eRows.Add(key, aEdge);
                             }
                         }
                     }                    
                 }
             }
 
-            return (vRows.Values.ToList<ExcelSheetVertexesRow>(), eRows.Values.ToList<ExcelSheetEdgesRow>());
+            return (vRows.Values.ToList<Vertex>(), eRows.Values.ToList<Edge>());
         }
     }
 }

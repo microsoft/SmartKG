@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Newtonsoft.Json;
 using Serilog;
 using SmartKG.Common.Data.LU;
 using SmartKG.Common.Utils;
@@ -32,9 +33,15 @@ namespace SmartKG.Common.Importer
         {
             List<NLUIntentRule> list = new List<NLUIntentRule>();           
 
-            string[] fileNamess = Directory.GetFiles(rootPath, "intentrules*.tsv").Select(Path.GetFileName).ToArray();
+            string[] fileNamess = Directory.GetFiles(rootPath, "intentrules*.json").Select(Path.GetFileName).ToArray();
 
-            List<string> lines = new List<string>();
+            foreach (string fileName in fileNamess)
+            {
+                string content = File.ReadAllText(this.rootPath + fileName);
+                list.AddRange(JsonConvert.DeserializeObject<List<NLUIntentRule>>(content));
+            }
+
+            /*List<string> lines = new List<string>();
 
             foreach (string fileName in fileNamess)
             {
@@ -80,7 +87,8 @@ namespace SmartKG.Common.Importer
 
                     list.Add(rule);
                 }
-            }
+            }*/
+
 
             return list;
         }
@@ -89,9 +97,15 @@ namespace SmartKG.Common.Importer
         {
             List<EntityData> list = new List<EntityData>();
             
-            string[] fileNamess = Directory.GetFiles(rootPath, "entitymap*.tsv").Select(Path.GetFileName).ToArray();
+            string[] fileNamess = Directory.GetFiles(rootPath, "entitymap*.json").Select(Path.GetFileName).ToArray();
 
-            List<string> lines = new List<string>();
+            foreach (string fileName in fileNamess)
+            {
+                string content = File.ReadAllText(this.rootPath + fileName);
+                list.AddRange(JsonConvert.DeserializeObject<List<EntityData>>(content));
+            }
+
+            /*List<string> lines = new List<string>();
 
             foreach (string fileName in fileNamess)
             {
@@ -133,6 +147,7 @@ namespace SmartKG.Common.Importer
                 }
 
             }
+            */
 
             return list;
         }
@@ -141,9 +156,16 @@ namespace SmartKG.Common.Importer
         {
             List<EntityAttributeData> list = new List<EntityAttributeData>();
 
-            string[] fileNamess = Directory.GetFiles(rootPath, "entityAttributeMap*.tsv").Select(Path.GetFileName).ToArray();
+            string[] fileNamess = Directory.GetFiles(rootPath, "entityAttributeMap*.json").Select(Path.GetFileName).ToArray();
 
-            List<string> lines = new List<string>();
+            foreach (string fileName in fileNamess)
+            {
+                string content = File.ReadAllText(this.rootPath + fileName);
+                list.AddRange(JsonConvert.DeserializeObject<List<EntityAttributeData>>(content));
+            }
+
+
+            /*List<string> lines = new List<string>();
 
             foreach (string fileName in fileNamess)
             {
@@ -188,7 +210,7 @@ namespace SmartKG.Common.Importer
                     seqNo += 1;
                 }
             }
-
+            */
             return list;
         }
     }

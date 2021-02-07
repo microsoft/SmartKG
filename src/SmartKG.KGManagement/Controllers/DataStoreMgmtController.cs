@@ -6,18 +6,23 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Serilog;
 using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
 using SmartKG.Common.Data.Configuration;
 using SmartKG.Common.Data.KG;
+using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataStoreMgmt;
 using SmartKG.Common.Parser;
 using SmartKG.KGManagement.Data.Request;
 using SmartKG.KGManagement.Data.Response;
+using System.Drawing;
+using SmartKG.Common.Data.LU;
 
 namespace SmartKG.KGManagement.Controllers
 {
@@ -152,7 +157,7 @@ namespace SmartKG.KGManagement.Controllers
 
             }
 
-            ConvertFiles(savedFileName, scenario, datastoreName);
+            ConvertFiles(savedFileName, datastoreName, scenario);
 
             ResponseResult msg = new ResponseResult();
             msg.success = true;
@@ -185,48 +190,169 @@ namespace SmartKG.KGManagement.Controllers
             return newFileName;
         }
 
-        private void ConvertFiles(string savedFileName, string scenario, string datastoreName)
+        private void ConvertFiles(string savedFileName, string datastoreName, string scenario)
         {
             string savedFilePath = dsManager.GetSavedExcelFilePath(savedFileName);
 
             ExcelParser eParser = new ExcelParser();
-            (List<ExcelSheetVertexesRow> vRows, List<ExcelSheetEdgesRow> eRows) =  eParser.ParserExcel(savedFilePath);
+            (List<Vertex> vertexes, List<Edge> edges) =  eParser.ParserExcel(savedFilePath);
 
-            (string configPathh, string targetDir) = dsManager.GetTargetDirPath(datastoreName);
-
-
-            /*
-            (FileUploadConfig uploadConfig, string pythonArgs, string targetDir) = dsManager.GenerateConvertDirs(datastoreName, savedFileName, scenario);
-
-            RunCommand(uploadConfig.PythonEnvPath, uploadConfig.ConvertScriptPath, pythonArgs);
-
-            if (this.dsManager.GetPersistanceType() == PersistanceType.MongoDB)
-            {
-                SmartKG.DataUploader.Executor.DataUploader uploader = new SmartKG.DataUploader.Executor.DataUploader();
-                uploader.UploadDataFile(targetDir, datastoreName);
-            }
-            */
+            GenerateKGNLUConfigFiles(vertexes, edges, datastoreName, scenario);
+            
             return;
         }
 
-        private void RunCommand(string envPath, string cmd, string args)
+
+        private void GenerateKGNLUConfigFiles(List<Vertex> vertexes, List<Edge> edges, string datastoreName, string scenario)
         {
+            (string configPath, string targetDir) = dsManager.GetTargetDirPath(datastoreName);
 
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = envPath;
+            string kgPath = targetDir + Path.DirectorySeparatorChar + "KG" + Path.DirectorySeparatorChar;
+            string nluPath = targetDir + Path.DirectorySeparatorChar + "NLU" + Path.DirectorySeparatorChar;
+            string vcPath = targetDir + Path.DirectorySeparatorChar + "Visulization" + Path.DirectorySeparatorChar;
 
-            start.Arguments = string.Format("{0} {1}", cmd, args);
-            start.UseShellExecute = false;
-            start.RedirectStandardOutput = true;
-            using (Process process = Process.Start(start))
+            System.IO.Directory.CreateDirectory(kgPath);
+            System.IO.Directory.CreateDirectory(nluPath);
+            System.IO.Directory.CreateDirectory(vcPath);
+
+
+            string vJsonPath = kgPath + "Vertexes_" + scenario + ".json";            
+            string vJsonContent = JsonConvert.SerializeObject(vertexes, Formatting.Indented);
+            System.IO.File.WriteAllText(vJsonPath, vJsonContent, Encoding.UTF8);
+
+            string eJsonPath = kgPath + "Edges_" + scenario + ".json";
+            string eJsonContent = JsonConvert.SerializeObject(edges, Formatting.Indented);
+            System.IO.File.WriteAllText(eJsonPath, eJsonContent, Encoding.UTF8);
+
+            string intentPath = nluPath + "intentrules_" + scenario + ".json";
+            string entityMapPath = nluPath + "entitymap_" + scenario + ".json";
+            string colorJsonPath = vcPath + "VisulizationConfig_" + scenario + ".json";
+
+
+            (NLUIntentRule intentRule, List<EntityData> entityDatas, VisulizationConfig vConfig) = GenerateNLUAndConfig(vertexes, edges, scenario, configPath);
+
+            System.IO.File.WriteAllText(intentPath, JsonConvert.SerializeObject(new List<NLUIntentRule>() { intentRule }, Formatting.Indented), Encoding.UTF8);
+            System.IO.File.WriteAllText(entityMapPath, JsonConvert.SerializeObject(entityDatas, Formatting.Indented), Encoding.UTF8);            
+            System.IO.File.WriteAllText(colorJsonPath, JsonConvert.SerializeObject(new List<VisulizationConfig>() { vConfig }, Formatting.Indented), Encoding.UTF8);
+        }
+
+
+        private ColorConfig GetColor(Dictionary<string, string> hexDict, Dictionary<string, string> predefinedDict, string name)
+        {
+            ColorConfig colorConfig = new ColorConfig();
+
+            colorConfig.itemLabel = name;
+
+            if (predefinedDict.ContainsKey(name))
             {
-                using (StreamReader reader = process.StandardOutput)
+                string color = predefinedDict[name];
+
+                if (hexDict.ContainsKey(color))
                 {
-                    string result = reader.ReadToEnd();
-                    Console.Write(result);
+                    colorConfig.color = hexDict[color];
+                    return colorConfig;
                 }
             }
+
+            Random rnd = new Random();
+            Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+
+            colorConfig.color = randomColor.ToString();
+            return colorConfig;
         }
+
+        private EntityData CreateEntityData(string scenario, string entityType, string entityValue)
+        {
+            EntityData eData = new EntityData();
+            eData.intentName = scenario;
+            eData.entityType = entityType;
+            eData.entityValue = entityValue;
+            eData.similarWord = entityValue;
+
+            eData.id = Guid.NewGuid().ToString();
+
+            return eData;
+        }
+
+        private (NLUIntentRule, List<EntityData>, VisulizationConfig) GenerateNLUAndConfig(List<Vertex> vertexes, List<Edge> edges, string scenario, string configPath)
+        {
+            VisulizationConfig vConfig = new VisulizationConfig();
+            vConfig.scenario = scenario;
+            vConfig.labelsOfVertexes = new List<ColorConfig>();
+            vConfig.relationTypesOfEdges = new List<ColorConfig>();
+
+            string hexFilePath = configPath + Path.DirectorySeparatorChar + "HexColorCodeDict.txt";
+            string pdFilePath = configPath + Path.DirectorySeparatorChar + "PreDefinedVertexColor.txt";
+
+            Dictionary<string, string> hexDict = new Dictionary<string, string>();
+
+            foreach (var line in System.IO.File.ReadLines(hexFilePath))
+            {
+                string[] tmps = line.Split('\t');
+                hexDict.Add(tmps[0], tmps[1]);
+            }
+
+            Dictionary<string, string> predefinedDict = new Dictionary<string, string>();
+
+            foreach (var line in System.IO.File.ReadLines(pdFilePath))
+            {
+                string[] tmps = line.Split('\t');
+                predefinedDict.Add(tmps[0], tmps[1]);
+            }
+            // ---
+            
+            HashSet<string> entityNameSet = new HashSet<string>();
+            HashSet<string> propertyNameSet = new HashSet<string>();
+
+            foreach (Vertex vertex in vertexes)
+            {
+                entityNameSet.Add(vertex.name);
+                if (vertex.properties != null && vertex.properties.Count > 0)
+                {
+                    foreach(VertexProperty p in vertex.properties)
+                    {
+                        propertyNameSet.Add(p.name);                            
+                    }
+                }
+            }
+
+            HashSet<string> relationTypeSet = new HashSet<string>();
+            foreach (Edge edge in edges)
+            {
+                relationTypeSet.Add(edge.relationType);
+            }
+                        
+            NLUIntentRule intentRule = new NLUIntentRule();
+            intentRule.id = Guid.NewGuid().ToString();
+            intentRule.intentName = scenario;
+            intentRule.type = IntentRuleType.POSITIVE;
+            intentRule.ruleSecs = new List<string>();
+
+
+            List<EntityData> entityDatas = new List<EntityData>();
+
+            foreach (string entityName in entityNameSet)
+            {
+                intentRule.ruleSecs.Add(entityName);
+                entityDatas.Add(CreateEntityData(scenario, "NodeName", entityName));
+
+                vConfig.labelsOfVertexes.Add(GetColor(hexDict, predefinedDict, entityName));
+            }          
+                            
+
+            foreach (string pName in propertyNameSet)
+            {                                
+                entityDatas.Add(CreateEntityData(scenario, "PropertyName", pName));
+            }
+
+            foreach (string rType in relationTypeSet)
+            {                
+                entityDatas.Add(CreateEntityData(scenario, "RelationType", rType));
+                vConfig.labelsOfVertexes.Add(GetColor(hexDict, predefinedDict, rType));
+            }
+
+            return (intentRule, entityDatas, vConfig);
+        }       
 
         // POST api/datastoremgmt/preprocess/reload
         [HttpPost]
