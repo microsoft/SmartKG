@@ -235,9 +235,9 @@ namespace SmartKG.KGManagement.Controllers
             string colorJsonPath = vcPath + "VisulizationConfig_" + scenario + ".json";
 
 
-            (NLUIntentRule intentRule, List<EntityData> entityDatas, VisulizationConfig vConfig) = GenerateNLUAndConfig(vertexes, edges, scenario, configPath);
+            (List<NLUIntentRule> intentRules, List<EntityData> entityDatas, VisulizationConfig vConfig) = GenerateNLUAndConfig(vertexes, edges, scenario, configPath);
 
-            System.IO.File.WriteAllText(intentPath, JsonConvert.SerializeObject(new List<NLUIntentRule>() { intentRule }, Formatting.Indented), Encoding.UTF8);
+            System.IO.File.WriteAllText(intentPath, JsonConvert.SerializeObject(intentRules , Formatting.Indented), Encoding.UTF8);
             System.IO.File.WriteAllText(entityMapPath, JsonConvert.SerializeObject(entityDatas, Formatting.Indented), Encoding.UTF8);            
             System.IO.File.WriteAllText(colorJsonPath, JsonConvert.SerializeObject(new List<VisulizationConfig>() { vConfig }, Formatting.Indented), Encoding.UTF8);
 
@@ -282,7 +282,7 @@ namespace SmartKG.KGManagement.Controllers
             return eData;
         }
 
-        private (NLUIntentRule, List<EntityData>, VisulizationConfig) GenerateNLUAndConfig(List<Vertex> vertexes, List<Edge> edges, string scenario, string configPath)
+        private (List<NLUIntentRule>, List<EntityData>, VisulizationConfig) GenerateNLUAndConfig(List<Vertex> vertexes, List<Edge> edges, string scenario, string configPath)
         {
             VisulizationConfig vConfig = new VisulizationConfig();
             vConfig.scenario = scenario;
@@ -346,29 +346,49 @@ namespace SmartKG.KGManagement.Controllers
             {
                 relationTypeSet.Add(edge.relationType);                
             }
-                        
+
+
+            List<EntityData> entityDatas = new List<EntityData>();
+
+            List<NLUIntentRule> intentRuleList = new List<NLUIntentRule>();
             NLUIntentRule intentRule = new NLUIntentRule();
             intentRule.id = Guid.NewGuid().ToString();
             intentRule.intentName = scenario;
             intentRule.type = IntentRuleType.POSITIVE;
             intentRule.ruleSecs = new List<string>();
 
-
-            List<EntityData> entityDatas = new List<EntityData>();
-
-            string entityRule = "";
+            string entityRule = "";                        
+            int count = 0;
 
             foreach (string entityName in entityNameSet)
             {
+                if (count % 20 == 0  && count > 0)
+                {
+                    entityRule = entityRule.Substring(0, entityRule.Length - 1);
+                    intentRule.ruleSecs.Add(entityRule);
+
+                    intentRuleList.Add(intentRule);
+
+                    intentRule = new NLUIntentRule();
+                    intentRule.id = Guid.NewGuid().ToString();
+                    intentRule.intentName = scenario;
+                    intentRule.type = IntentRuleType.POSITIVE;
+                    intentRule.ruleSecs = new List<string>();
+
+                    entityRule = "";                    
+                }
+
                 entityRule += entityName + "|";                     
-                entityDatas.Add(CreateEntityData(scenario, "NodeName", entityName));                
+                entityDatas.Add(CreateEntityData(scenario, "NodeName", entityName));
+                count++;
             }
 
-
             entityRule = entityRule.Substring(0, entityRule.Length - 1);
-            intentRule.ruleSecs.Add(entityRule);                
-                            
-            foreach(string entityType in entityTypeSet)
+            intentRule.ruleSecs.Add(entityRule);
+
+            intentRuleList.Add(intentRule);
+
+            foreach (string entityType in entityTypeSet)
             {
                 vConfig.labelsOfVertexes.Add(GetColor(hexDict, predefinedDict, entityType));
             }
@@ -384,7 +404,7 @@ namespace SmartKG.KGManagement.Controllers
                 vConfig.relationTypesOfEdges.Add(GetColor(hexDict, predefinedDict, rType));
             }
 
-            return (intentRule, entityDatas, vConfig);
+            return (intentRuleList, entityDatas, vConfig);
         }       
 
         // POST api/datastoremgmt/preprocess/reload

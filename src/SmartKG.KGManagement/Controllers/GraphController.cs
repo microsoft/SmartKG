@@ -267,7 +267,7 @@ namespace SmartKG.KGManagement.Controllers
 
                         if (!isDisplable)
                         {
-                            relationResult = new RelationResult(false, "Scenario " + scenarioName + " 包含的实体超过了设置，无法显示完整图谱，请通过搜索查看部分图谱。");
+                            relationResult = new RelationResult(false, "Scenario " + scenarioName + " 包含的实体数量超过了最大显示量的设置（最多显示 " + displayMax + " 个实体），无法显示完整图谱，请通过搜索查看部分图谱。" );
                         }
                         else
                         { 
