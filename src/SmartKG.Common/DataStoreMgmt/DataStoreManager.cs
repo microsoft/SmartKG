@@ -101,6 +101,12 @@ namespace SmartKG.Common.DataStoreMgmt
 
             string dsName = dsFrame.GetName();
 
+            if (dsFrame.GetKG().GetAllVertexes().Count == 0)
+            {
+                log.Error("Error: DataStoreFrame " + dsName + " is empty.");
+                return (false, "DataStoreFrame " + dsName + " is empty.");
+            }            
+
             if (this.datastoreDict.ContainsKey(dsName))
             {
                 log.Warning("Warning: DataStore Name cannot be duplicated. The " + dsName + " has existed.");                

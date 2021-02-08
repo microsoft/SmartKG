@@ -122,7 +122,6 @@ namespace SmartKG.KGManagement.Controllers
             }
         }
 
-
         // POST api/datastoremgmt/preprocess/upload
         [HttpPost]
         [Route("api/[controller]/preprocess/upload")]
@@ -134,41 +133,91 @@ namespace SmartKG.KGManagement.Controllers
             string datastoreName = form.DatastoreName;
             var file = form.UploadFile;
 
+            
             string excelDir = dsManager.GetUploadedFileSaveDir();
 
-            Directory.CreateDirectory(excelDir);
+            ResponseResult msg = new ResponseResult();
+
+            try
+            { 
+                Directory.CreateDirectory(excelDir);
+            }   
+            catch (Exception e)
+            {
+                msg.success = false;
+                msg.responseMessage = "创建临时目录失败，请确认您有创建 " + excelDir + " 目录的权限";
+
+                return Ok(msg);
+            }
 
             string savedFileName = null;
             if (file != null)
             {
                 if (file.Length > 0)
                 {
-                    string newFileName = GenerateTempFileName(file.FileName);
+                    try
+                    { 
+                        string newFileName = GenerateTempFileName(file.FileName);
 
-                    var filePath = excelDir + Path.DirectorySeparatorChar + newFileName;
+                        var filePath = excelDir + Path.DirectorySeparatorChar + newFileName;
 
-                    using (var stream = System.IO.File.Create(filePath))
-                    {
-                        await file.CopyToAsync(stream);
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        savedFileName = newFileName;
                     }
+                    catch (Exception e)
+                    {
+                        msg.success = false;
+                        msg.responseMessage = "在临时目录内保存 Excel 文件失败，请确认您有访问 " + excelDir + " 目录的权限";
 
-                    savedFileName = newFileName;
+                        return Ok(msg);
+                    }
                 }
 
             }
+            
+            try
+            { 
+                (bool success, string message, string targetDir) = ConvertFiles(savedFileName, datastoreName, scenario);
 
-            string targetDir = ConvertFiles(savedFileName, datastoreName, scenario);
+                if (success)
+                { 
 
-            if (this.dsManager.GetPersistanceType() == PersistanceType.MongoDB)
-            {
-                SmartKG.DataUploader.Executor.DataUploader uploader = new SmartKG.DataUploader.Executor.DataUploader();
-                uploader.UploadDataFile(targetDir, datastoreName);
+                    if (this.dsManager.GetPersistanceType() == PersistanceType.MongoDB)
+                    {
+                        try
+                        { 
+                            SmartKG.DataUploader.Executor.DataUploader uploader = new SmartKG.DataUploader.Executor.DataUploader();
+                            uploader.UploadDataFile(targetDir, datastoreName);
+                        }
+                        catch (Exception e)
+                        {
+                            success = false;
+                            message = "上传数据到 MongoDB 失败，请确认 MongoDB 链接";
+                        }
+                    }
+                }
+
+                msg.success = success;
+
+                if (msg.success)
+                {
+                    msg.responseMessage = "File: " + savedFileName + " has been received.\n";
+                }
+                else
+                { 
+                    msg.responseMessage = message;
+                }
             }
-
-            ResponseResult msg = new ResponseResult();
-            msg.success = true;
-            msg.responseMessage = "File: " + savedFileName + " has been received.\n";
-
+            catch (Exception e)
+            {
+                msg.success = false;
+                msg.responseMessage = "解析 Excel 文件失败，请确认 Excel 有效。";
+            }
+                        
             return Ok(msg);
         }
 
@@ -196,18 +245,29 @@ namespace SmartKG.KGManagement.Controllers
             return newFileName;
         }
 
-        private string ConvertFiles(string savedFileName, string datastoreName, string scenario)
+        private (bool, string, string) ConvertFiles(string savedFileName, string datastoreName, string scenario)
         {
+            bool success = false;
+            string message = "";
+
             string savedFilePath = dsManager.GetSavedExcelFilePath(savedFileName);
 
             ExcelParser eParser = new ExcelParser();
             (List<Vertex> vertexes, List<Edge> edges) =  eParser.ParserExcel(savedFilePath, scenario);
 
-            string targetDir = GenerateKGNLUConfigFiles(vertexes, edges, datastoreName, scenario);
-            
-            return targetDir;
-        }
+            string targetDir = null;
+            if (vertexes != null && vertexes.Count > 0)
+            { 
+                targetDir = GenerateKGNLUConfigFiles(vertexes, edges, datastoreName, scenario);
+                success = true;
+            }
+            else
+            {
+                message = "无法从上传的 Excel 中解析出实体，请确认该 Excel 与模板格式一致。";
+            }
 
+            return (success, message, targetDir);
+        }
 
         private string GenerateKGNLUConfigFiles(List<Vertex> vertexes, List<Edge> edges, string datastoreName, string scenario)
         {
@@ -225,10 +285,17 @@ namespace SmartKG.KGManagement.Controllers
             string vJsonPath = kgPath + "Vertexes_" + scenario + ".json";            
             string vJsonContent = JsonConvert.SerializeObject(vertexes, Formatting.Indented);
             System.IO.File.WriteAllText(vJsonPath, vJsonContent, Encoding.UTF8);
-
+            
             string eJsonPath = kgPath + "Edges_" + scenario + ".json";
-            string eJsonContent = JsonConvert.SerializeObject(edges, Formatting.Indented);
-            System.IO.File.WriteAllText(eJsonPath, eJsonContent, Encoding.UTF8);
+            if (edges != null && edges.Count > 0)
+            { 
+                string eJsonContent = JsonConvert.SerializeObject(edges, Formatting.Indented);
+                System.IO.File.WriteAllText(eJsonPath, eJsonContent, Encoding.UTF8);
+            }
+            else
+            {
+                System.IO.File.WriteAllText(eJsonPath, "[]", Encoding.UTF8);
+            }
 
             string intentPath = nluPath + "intentrules_" + scenario + ".json";
             string entityMapPath = nluPath + "entitymap_" + scenario + ".json";

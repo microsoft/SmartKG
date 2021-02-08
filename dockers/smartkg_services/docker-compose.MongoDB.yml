@@ -1,9 +1,6 @@
 version: '2.3'
 
 services:
-  python36:
-    image: python36
-    build: ./python36/
   aspnetcore:
     image: aspnetcore
     build: ./aspnetcore/
