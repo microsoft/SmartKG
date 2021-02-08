@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +13,6 @@ using Newtonsoft.Json;
 using Serilog;
 using SmartKG.Common.ContextStore;
 using SmartKG.Common.Data;
-using SmartKG.Common.Data.Configuration;
 using SmartKG.Common.Data.KG;
 using SmartKG.Common.Data.Visulization;
 using SmartKG.Common.DataStoreMgmt;
@@ -280,7 +278,6 @@ namespace SmartKG.KGManagement.Controllers
             System.IO.Directory.CreateDirectory(kgPath);
             System.IO.Directory.CreateDirectory(nluPath);
             System.IO.Directory.CreateDirectory(vcPath);
-
 
             string vJsonPath = kgPath + "Vertexes_" + scenario + ".json";            
             string vJsonContent = JsonConvert.SerializeObject(vertexes, Formatting.Indented);

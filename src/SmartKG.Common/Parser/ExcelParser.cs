@@ -1,4 +1,7 @@
-﻿using OfficeOpenXml;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using OfficeOpenXml;
 using SmartKG.Common.Data.KG;
 using System;
 using System.Collections.Generic;

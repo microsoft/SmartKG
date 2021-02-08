@@ -1,13 +1,14 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
+using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace SmartKG.Common.Data.Visulization
 {
     [BsonIgnoreExtraElements]
     public class VisulizationConfig
-    {
-        //public string id { get; set; }
+    {        
         public string scenario { get; set; }
         public List<ColorConfig> labelsOfVertexes { get; set; }
         public List<ColorConfig> relationTypesOfEdges { get; set; }

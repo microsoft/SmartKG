@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using System.IO;
-using System.Text;
 
 namespace SmartKG.Common.Utils
 {
