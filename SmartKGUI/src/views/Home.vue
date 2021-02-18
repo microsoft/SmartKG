@@ -83,7 +83,6 @@
             v-model="selectSce"
             placeholder="请选择场景"
             style="left: -88px; width: 222px"
-            :change="changeScen()"
           >
             <el-option
               v-for="item in scenariosList"
@@ -92,6 +91,11 @@
               :value="item.name"
             ></el-option>
           </el-select>
+          <el-button
+            @click="changeScen()"
+            style="left: 236px; top: 50px; position: absolute;"
+            >展示</el-button
+          >
         </div>
         <div class="chart-result">
           <p class="title" v-if="isExpand">
@@ -198,9 +202,6 @@ export default {
       }, 150);
     },
     changeScen() {
-      
-      
-
       if (this.selectSce == "" || this.selectSce == this.lastScen) {
         return;
       }
@@ -236,10 +237,14 @@ export default {
               )}&scenarioName=${encodeURI(this.selectSce)}`
             )
             .then((res) => {
-              this.nodes = res.data.nodes;
-              this.edges = res.data.relations;
-              this.process();
-              this.generate();
+              if (res.data.success == false) {
+                alert(res.data.responseMessage);
+              } else {
+                this.nodes = res.data.nodes;
+                this.edges = res.data.relations;
+                this.process();
+                this.generate();
+              }
             });
         });
     },
@@ -395,12 +400,11 @@ export default {
         ],
       };
       this.charts.setOption(option);
-      if(this.charts){
-        this.charts.off('click');
+      if (this.charts) {
+        this.charts.off("click");
       }
       this.charts.on("click", (e) => {
         this.charts = echarts.init(document.getElementById("echart"));
-        console.log(e, 5555)
         this.charts.showLoading({
           text: "正在加载数据",
           color: "none",
@@ -431,10 +435,10 @@ export default {
           method: "get",
           url,
         }).then((res) => {
-            this.nodes = res.data.nodes;
-            this.edges = res.data.relations;
-            this.process();
-            resolve();
+          this.nodes = res.data.nodes;
+          this.edges = res.data.relations;
+          this.process();
+          resolve();
         });
       });
       return promise;

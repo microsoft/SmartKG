@@ -193,7 +193,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 import axios from "axios";
-import qs from 'qs';
+import qs from "qs";
 
 export default {
   name: "Upload",
@@ -218,7 +218,7 @@ export default {
       otherColorList: [],
       lastScen: "",
       lastDataStore: "",
-      selectRadioDataStore: ""
+      selectRadioDataStore: "",
     };
   },
   components: {},
@@ -242,24 +242,25 @@ export default {
         });
     },
 
-    openDel(){
-      if(this.radio == ""){
+    openDel() {
+      if (this.radio == "") {
         alert("请选择要删除的数据库");
         return;
       }
       this.dialogDelVisible = true;
     },
 
-    reloadData(){
-      if(this.radio == ""){
+    reloadData() {
+      if (this.radio == "") {
         alert("请选择要加载的数据库");
         return;
       }
       axios
         .post(
-          `${this.baseURL}/api/DataStoreMgmt/preprocess/reload`,qs.stringify({"DatastoreName": this.radio})
+          `${this.baseURL}/api/DataStoreMgmt/preprocess/reload`,
+          qs.stringify({ DatastoreName: this.radio })
         )
-        .then(res => {
+        .then((res) => {
           console.log(res);
         });
     },
@@ -295,8 +296,8 @@ export default {
     saveColor() {
       let str = "";
       for (let i = 0; i < this.colorList.length; i++) {
-        if(this.checkColor(this.colorList[i].color)){
-          alert("颜色格式错误")
+        if (this.checkColor(this.colorList[i].color)) {
+          alert("颜色格式错误");
           return false;
         }
         str +=
@@ -316,7 +317,7 @@ export default {
           {}
         )
         .then((res) => {
-          alert("颜色设置保存成功")
+          alert("颜色设置保存成功");
           this.colorVisible = false;
           this.colorList = [];
           this.selectDataStore = "";
@@ -332,7 +333,7 @@ export default {
     },
     //
 
-    getDataStore(){
+    getDataStore() {
       // this.radio = this.r
     },
     changeDataStore() {
@@ -398,7 +399,7 @@ export default {
       item.file = event.target.files[0];
     },
     openUploadwin(name) {
-      if(this.radio == ""){
+      if (this.radio == "") {
         alert("请选择要上传的数据库");
         return;
       }
@@ -431,7 +432,12 @@ export default {
               config
             )
             .then((res) => {
-              result.push(true);
+              if (res.data.success == false) {
+                alert(res.data.responseMessage);
+                this.dialogUploadVisible = false;
+              } else {
+                result.push(true);
+              }
             });
         }, i * 1000);
       }
