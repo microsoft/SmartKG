@@ -82,21 +82,21 @@ namespace SmartKG.KGManagement.Controllers
         [Route("api/[controller]/search")]
         [ProducesResponseType(typeof(SearchResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IResult>> Search(string datastoreName, string keyword)
+        public async Task<ActionResult<IResult>> Search(string datastoreName, string keyword, string scenarioName = null)
         {
             SearchResult searchResult;
 
             if (string.IsNullOrWhiteSpace(datastoreName) || string.IsNullOrWhiteSpace(keyword))
             {
-                searchResult = new SearchResult(false, "datastoreName 和关键字不能为空");                
-            }
-            else
+                searchResult = new SearchResult(false, "数据库名和关键字都不能为空");                
+            }            
+            else 
             {
                 keyword = keyword.Trim();
 
                 searchResult = new SearchResult(true, "根据\"" + keyword + "\"为您搜索到以下节点：");
                 GraphExecutor executor = new GraphExecutor(datastoreName);
-                (bool isDSExist, List < VisulizedVertex> vvs) = executor.SearchVertexesByName(keyword);
+                (bool isDSExist, List <VisulizedVertex> vvs) = executor.SearchVertexesByName(scenarioName, keyword);
 
                 if (!isDSExist)
                 {

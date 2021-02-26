@@ -52,13 +52,13 @@ namespace SmartKG.KGManagement.GraphSearch
                 return (true, ConvertVertex(vertex));
         }
 
-        public (bool, List<VisulizedVertex>) SearchVertexesByName(string keyword)
+        public (bool, List<VisulizedVertex>) SearchVertexesByName(string scenarioName, string keyword)
         {
 
             if (this.kgDF == null)
                 return (false, null);
 
-            List<Vertex> searchedVertexes = this.kgDF.GetVertexByKeyword(keyword);
+            List<Vertex> searchedVertexes = this.kgDF.GetVertexByKeyword(scenarioName, keyword);
 
             if (searchedVertexes == null || searchedVertexes.Count == 0)
             {

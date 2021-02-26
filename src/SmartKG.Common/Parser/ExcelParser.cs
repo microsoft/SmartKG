@@ -37,7 +37,6 @@ namespace SmartKG.Common.Parser
                     Vertex aVertex = new Vertex();
                     aVertex.properties = new List<VertexProperty>();
                     aVertex.scenarios = new List<string>() { scenario};
-
                          
                     VertexProperty p = null;
 
@@ -51,7 +50,7 @@ namespace SmartKG.Common.Parser
                             {
                                 case 1:
 
-                                    aVertex.id = cellStr;
+                                    aVertex.id = cellStr + "_" + scenario;
                                     break;
                                 case 2:
                                     aVertex.name = cellStr;
@@ -114,10 +113,10 @@ namespace SmartKG.Common.Parser
                                     aEdge.relationType = cellStr;
                                     break;
                                 case 2:
-                                    aEdge.headVertexId = cellStr;
+                                    aEdge.headVertexId = cellStr + "_" + scenario; 
                                     break;
                                 case 3:
-                                    aEdge.tailVertexId = cellStr;
+                                    aEdge.tailVertexId = cellStr + "_" + scenario;
                                     break;
                             }
                         }

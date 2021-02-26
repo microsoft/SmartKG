@@ -134,7 +134,7 @@ namespace SmartKG.Common.DataStoreMgmt
             }
         }
 
-        public List<Vertex> GetVertexByKeyword(string keyword)
+        public List<Vertex> GetVertexByKeyword(string scenarioName, string keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
             {
@@ -149,7 +149,21 @@ namespace SmartKG.Common.DataStoreMgmt
             {
                 if (vName.Contains(keyword))
                 {
-                    matchedNames.Add(vName);
+                    if (scenarioName != null)
+                    { 
+                        foreach(Vertex v in this.vertexNameCache[vName])
+                        {
+                            if (v.scenarios.Contains(scenarioName))
+                            {
+                                matchedNames.Add(vName);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        matchedNames.Add(vName);
+                    }
                 }
             }
 
