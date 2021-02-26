@@ -69,7 +69,7 @@ namespace SmartKG.KGManagement.Controllers
                 result.responseMessage = "scenarioName不能为空。";
             }
             else
-            { 
+            {
                 ConfigExecutor executor = new ConfigExecutor(null, datastoreName);
 
                 (bool isDSExist, bool isScenarioExist, List<ColorConfig> configs) = executor.GetColorConfigs(scenarioName);
@@ -80,14 +80,14 @@ namespace SmartKG.KGManagement.Controllers
                     result.responseMessage = "Datastore " + datastoreName + "不存在，或没有数据导入。";
                 }
                 else
-                { 
+                {
                     if (!isScenarioExist)
                     {
                         result.success = false;
                         result.responseMessage = "scenario " + scenarioName + " 不存在。";
                     }
                     else
-                    { 
+                    {
                         result.success = true;
 
                         if (configs == null)
@@ -97,12 +97,12 @@ namespace SmartKG.KGManagement.Controllers
                         else
                         {
                             result.responseMessage = "一共有 " + configs.Count + " color config 的定义。";
-                            result.entityColorConfig = new Dictionary<string,string>();
+                            result.entityColorConfig = new Dictionary<string, string>();
 
-                            foreach(ColorConfig config in configs)
+                            foreach (ColorConfig config in configs)
                             {
                                 if (!result.entityColorConfig.ContainsKey(config.itemLabel))
-                                { 
+                                {
                                     result.entityColorConfig.Add(config.itemLabel, config.color);
                                 }
                             }
@@ -116,26 +116,26 @@ namespace SmartKG.KGManagement.Controllers
             return Ok(result);
         }
 
-         [HttpPost]
-         [Route("api/[controller]/entitycolor")]
-         [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]
-         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-         public async Task<ActionResult<IResult>> Post(string user, string datastoreName, string scenarioName, Dictionary<string, string> entityColorConfig)
-         {
-             ConfigResult result = new ConfigResult();
+        [HttpPost]
+        [Route("api/[controller]/entitycolor")]
+        [ProducesResponseType(typeof(ConfigResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IResult>> Post(string user, string datastoreName, string scenarioName, Dictionary<string, string> entityColorConfig)
+        {
+            ConfigResult result = new ConfigResult();
 
-             if (string.IsNullOrWhiteSpace(datastoreName))
-             {
-                 result.success = false;
-                 result.responseMessage = "datastoreName不能为空。";
-             }
-             else if (string.IsNullOrWhiteSpace(scenarioName))
-             {
-                 result.success = false;
-                 result.responseMessage = "scenarioName不能为空。";
-             }
-             else
-             {
+            if (string.IsNullOrWhiteSpace(datastoreName))
+            {
+                result.success = false;
+                result.responseMessage = "datastoreName不能为空。";
+            }
+            else if (string.IsNullOrWhiteSpace(scenarioName))
+            {
+                result.success = false;
+                result.responseMessage = "scenarioName不能为空。";
+            }
+            else
+            {
                 ConfigExecutor executor = new ConfigExecutor(user, datastoreName);
 
                 if (entityColorConfig == null || entityColorConfig.Count == 0)
@@ -146,22 +146,33 @@ namespace SmartKG.KGManagement.Controllers
 
                 List<ColorConfig> colorConfigs = new List<ColorConfig>();
 
-                foreach(string eName in entityColorConfig.Keys)
+                foreach (string entityName in entityColorConfig.Keys)
                 {
-                    ColorConfig config = new ColorConfig();
-                    config.itemLabel = eName;
-                    config.color = entityColorConfig[eName];
+                    string colorHexCode = entityColorConfig[entityName].Trim();
 
-                    colorConfigs.Add(config);
+                    if (colorHexCode.StartsWith('#'))
+                    {
+                        long output;
+                        bool isHex = long.TryParse(colorHexCode.Substring(1), System.Globalization.NumberStyles.HexNumber, null, out output);
+
+                        if (isHex)
+                        {
+                            ColorConfig config = new ColorConfig();
+                            config.itemLabel = entityName;
+                            config.color = colorHexCode;
+
+                            colorConfigs.Add(config);
+                        }
+                    }
                 }
 
                 (bool success, string msg) = executor.UpdateColorConfigs(scenarioName, colorConfigs);
                 result.success = success;
                 result.responseMessage = msg;
 
-              }
+            }
 
             return Ok(result);
-         }
+        }
     }
 }
