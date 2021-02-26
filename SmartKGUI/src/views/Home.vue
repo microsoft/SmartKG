@@ -266,6 +266,7 @@ export default {
       }
       this.lastDataStore = this.selectDataStore;
       this.getScenarios();
+      this.keyWord = "";
       this.lastScen = "";
       this.selectSce = "";
     },
@@ -314,7 +315,7 @@ export default {
         }
         axios
           .get(
-            `${this.baseURL}/api/Graph/search?datastoreName=${this.selectDataStore}&keyword=${this.keyWord}`
+            `${this.baseURL}/api/Graph/search?datastoreName=${this.selectDataStore}&keyword=${this.keyWord}&scenarioName=${this.selectSce}`
           )
           .then((response) => {
             if (response.data.nodes === null) {
