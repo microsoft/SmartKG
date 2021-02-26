@@ -55,11 +55,14 @@
             <input
               class="chart-search-input"
               type="text"
-              placeholder="请输入实体名称"
+              :placeholder="
+                selectSce == '' ? '请先选择数据库和场景' : '请输入实体名称'
+              "
               v-model="keyWord"
               v-on:input="gotochart"
               v-on:keyup.enter="gotochartEnter"
               ref="search"
+              :disabled="selectSce == ''"
             />
             <button
               class="chart-search-btn"
@@ -83,6 +86,7 @@
             v-model="selectSce"
             placeholder="请选择场景"
             style="left: -88px; width: 222px"
+            :change="getScenColor()"
           >
             <el-option
               v-for="item in scenariosList"
@@ -93,7 +97,7 @@
           </el-select>
           <el-button
             @click="changeScen()"
-            style="left: 236px; top: 50px; position: absolute;"
+            style="left: 236px; top: 50px; position: absolute"
             >展示</el-button
           >
         </div>
@@ -201,6 +205,24 @@ export default {
         document.querySelector("#history").scrollTop = 99999;
       }, 150);
     },
+    getScenColor() {
+      if (this.selectSce == "" || this.selectSce == this.lastScen) {
+        return;
+      }
+      axios
+        .get(
+          `${this.baseURL}/api/Config/entitycolor?datastoreName=${encodeURI(
+            this.selectDataStore
+          )}&scenarioName=${encodeURI(this.selectSce)}`
+        )
+        .then((response) => {
+          for (let [key, value] of Object.entries(
+            response.data.entityColorConfig
+          )) {
+            this.colorList.push({ name: key, color: value });
+          }
+        });
+    },
     changeScen() {
       if (this.selectSce == "" || this.selectSce == this.lastScen) {
         return;
@@ -220,32 +242,19 @@ export default {
       //   });
       axios
         .get(
-          `${this.baseURL}/api/Config/entitycolor?datastoreName=${encodeURI(
+          `${this.baseURL}/api/Graph/visulize?datastoreName=${encodeURI(
             this.selectDataStore
           )}&scenarioName=${encodeURI(this.selectSce)}`
         )
-        .then((response) => {
-          for (let [key, value] of Object.entries(
-            response.data.entityColorConfig
-          )) {
-            this.colorList.push({ name: key, color: value });
+        .then((res) => {
+          if (res.data.success == false) {
+            alert(res.data.responseMessage);
+          } else {
+            this.nodes = res.data.nodes;
+            this.edges = res.data.relations;
+            this.process();
+            this.generate();
           }
-          axios
-            .get(
-              `${this.baseURL}/api/Graph/visulize?datastoreName=${encodeURI(
-                this.selectDataStore
-              )}&scenarioName=${encodeURI(this.selectSce)}`
-            )
-            .then((res) => {
-              if (res.data.success == false) {
-                alert(res.data.responseMessage);
-              } else {
-                this.nodes = res.data.nodes;
-                this.edges = res.data.relations;
-                this.process();
-                this.generate();
-              }
-            });
         });
     },
     changeDataStore() {
