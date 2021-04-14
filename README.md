@@ -59,10 +59,14 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 
 	(4) 将local_confing的appsettings.File.json文件复制一份，并改名为appsettings.json，移动到temp/smartkg中。
 
-	(5) 命令行进入 temp/smartkg，运行命令：dotnet SmartKG.KGBot.dll
+	(5) 【启动后端】
+	    命令行进入 temp/smartkg，运行命令：dotnet SmartKG.KGBot.dll
 	    此命令用于启动 SmartKG 后端。启动后，会生成一个Now listening on地址，我们直接访问地址就可以。在浏览器中输入地址 http://localhost:5000/swagger/index.html，可以访问后，说明后台启动成功了。
 
-	(6) 进入temp/smartkgui目录下，输入命令：
+	    *注意：后端启动成功后不要关闭，在使用SmartKG的整个过程中，前后端都要保持打开状态。*
+
+	(6) 【启动前端】
+	    进入temp/smartkgui目录下，输入命令：
 		npm i
 	    这个命令只需要第一次使用时运行，如果已经运行过，就可以跳过了。
 
