@@ -4,6 +4,7 @@
 from xlrd import open_workbook
 import uuid
 import csv
+import sys, getopt
 
 import xlsxwriter
 
@@ -154,7 +155,38 @@ def genNewDoc(newPath, nodes, relations):
     workbook.close()
 
 if __name__ == '__main__':
-    nodes, relations = convertFile("KG_springautumn_1.xlsx", True)
-    genNewDoc("SmartKG_KG_springautumn_1.xlsx", nodes, relations)
 
-    print("Finished!")
+    argv = sys.argv[1:]
+    inputfile = ''
+    outputfile = ''
+    try:
+        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
+    except getopt.GetoptError:
+        print('Convertor.py -i <inputfile> [-o <outputfile>]')
+        sys.exit(2)
+
+    if len(opts) < 1:
+        print('Convertor.py -i <inputfile> [-o <outputfile>]')
+        sys.exit(1)
+
+    for opt, arg in opts:
+        if opt == '-h':
+            print('Convertor.py -i <inputfile> [-o <outputfile>]')
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            inputfile = arg
+        elif opt in ("-o", "--ofile"):
+            outputfile = arg
+
+    print(inputfile)
+    if inputfile == '':
+        print('Convertor.py -i <inputfile> [-o <outputfile>]')
+        sys.exit(1)
+
+    if outputfile == '':
+        outputfile = "SmartKG_" + inputfile
+
+    nodes, relations = convertFile(inputfile, True)
+    genNewDoc(outputfile, nodes, relations)
+
+    print("Finished! " + outputfile + " is generated based on " + inputfile + ".")
