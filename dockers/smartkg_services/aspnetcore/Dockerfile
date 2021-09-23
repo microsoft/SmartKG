@@ -1,4 +1,4 @@
-FROM python36
+FROM podshumok/python36
 
 COPY aspnetcore-runtime-2.1.16-linux-x64.tar.gz /data/
 
