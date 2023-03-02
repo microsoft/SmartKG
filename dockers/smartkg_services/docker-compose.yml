@@ -8,8 +8,8 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: dialogdatabase
-      MONGO_INITDB_ROOT_PASSWORD: erN9XzDa785DSKrB
+      MONGO_INITDB_ROOT_USERNAME: ""
+      MONGO_INITDB_ROOT_PASSWORD: "" 
     volumes:
       # Persist data
       - ./MongoData:/data/db

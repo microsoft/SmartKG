@@ -85,7 +85,8 @@ SmartKG是一款轻量级知识图谱可视化+智能对话框架。它能够根
 
 	(2) 在 Linux 系统进入用户目录，并解压缩 smartkg_services.zip。
 	
-	(3) 进入 smartkg_services/ 目录，运行下列命令启动 SmartKG docker-compose OneBox:
+	(3) 进入 smartkg_services/ 目录，运行下列命令启动 SmartKG docker-compose OneBox
+                注：需要先修改docker-compose.yml中的MONGO_INITDB_ROOT_USERNAME及MONGO_INITDB_ROOT_PASSWORD的值,并修改smartkg/appsetting.json中MongoDbConnection的MONGO_INITDB_ROOT_USERNAME及MONGO_INITDB_ROOT_PASSWORD对应docker-compose.yml中的值
 
 		1) sudo docker-compose build --build-arg DOCKER_HOST=${docker_host_ip}
 		2) sudo docker-compose up
