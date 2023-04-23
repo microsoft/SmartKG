@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div style="height: 10%; padding-left: 10px; margin-top: 15px; margin-left: 15px">
+        <input type="file" id="file_input">
+        <input type="text" id="kg_name_input" placeholder="KG Name">
+        <button id="upload_button">Upload</button>
+    </div>
+    <div style="height: 10%; padding-left: 10px; margin-top: 15px; margin-left: 15px">
+        <select id="kg_name_selector" style="width: 150px;">
+        </select>
+        <button id="setting_button" data-toggle="modal" data-target="#settings-modal">Setting</button>
+        <button id="delete_button" data-toggle="modal" data-target="#confirm-delete-modal">Delete</button>
+    </div>
+
+    <!-- 确认删除模态框 -->
+    <div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete KG</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the selected KG?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete-button">Confirm Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置模态框 -->
+    <div class="modal fade" id="settings-modal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped" id="type-color-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Entity Type</th>
+                                <th scope="col">Color</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-settings-button">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 请求所有知识图谱名称并填充下拉菜单
+        function load_kg_names() {
+            $.get('/get_all_kg_names', function (data) {
+                var kg_name_selector = $('#kg_name_selector');
+                kg_name_selector.empty();
+                data.forEach(function (kg_name) {
+                    kg_name_selector.append($('<option>').text(kg_name));
+                });
+            });
+        }
+
+        // 加载实体类型和颜色映射
+        function load_type_color_mappings(kg_name) {
+            $.get('/get_type_color_mappings?kg_name=' + encodeURIComponent(kg_name), function (data) {
+                var type_color_table = $('#type-color-table tbody');
+                type_color_table.empty();
+                data.forEach(function (item) {
+                    var row = $('<tr>');
+                    row.append($('<td>').text(item.entity_type));
+                    row.append($('<td>').append($('<input>').attr('type', 'color').val(item.color)));
+                    type_color_table.append(row);
+                });
+            });
+        }
+
+
+        $(document).ready(function () {
+            // 加载知识图谱名称
+            load_kg_names();
+
+            $('#upload_button').on('click', function () {
+                var file_input = document.getElementById('file_input');
+                var file = file_input.files[0];
+                var kg_name = $('#kg_name_input').val();
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('kg_name', kg_name);
+
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        alert(response.message);
+                        load_kg_names();
+                        $('#kg_name_input').val('');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Error: ' + textStatus);
+                    }
+                });
+            });
+
+            $("#confirm-delete-button").click(function () {
+                var kg_name = $("#kg_name_selector").val();
+                if (kg_name) {
+                    $.ajax({
+                            url: '/delete_kg?kg_name=' + encodeURIComponent(kg_name),
+                            type: 'DELETE',
+                            success: function (data) {
+                                alert(data.message);
+                                load_kg_names();
+                                $("#confirm-delete-modal").trigger('click');
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Error: ' + textStatus);
+                            }
+                    });
+                }
+            });
+
+            $("#setting_button").click(function () {
+                var kg_name = $("#kg_name_selector").val();
+                load_type_color_mappings(kg_name);
+                $("#settings-modal").modal('show');
+            });
+
+            // Save按钮事件处理
+            $("#save-settings-button").click(function () {
+                var kg_name = $("#kg_name_selector").val();
+                var type_color_table = $("#type-color-table tbody");
+                var type_color_mappings = [];
+
+                // 遍历表格行以获取实体类型和颜色值
+                type_color_table.find("tr").each(function () {
+                    var entity_type = $(this).find("td:first").text();
+                    var color = $(this).find("input[type='color']").val();
+                    type_color_mappings.push({ entity_type: entity_type, color: color });
+                });
+
+                // 发送PUT请求更新实体类型和颜色映射
+                $.ajax({
+                    url: "/update_type_color_mappings?kg_name=" + encodeURIComponent(kg_name),
+                    type: "PUT",
+                    data: JSON.stringify(type_color_mappings),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        alert(data.message);
+                        $("#settings-modal").trigger('click');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("Error: " + textStatus);
+                    }
+                });
+
+                $("#settings-modal").modal("hide");
+            });
+        });
+</script>
+</body>
+</html>

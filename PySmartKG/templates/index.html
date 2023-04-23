@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Knowledge Graph Viewer</title>
+    <link href="https://unpkg.com/vis-network@7.7.0/standalone/umd/vis-network.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://unpkg.com/vis-network@7.7.0/standalone/umd/vis-network.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+    select, input, button {
+        display: inline-block;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+    #graph {
+        width: 100%;
+        height: 100%;
+        border: 1px solid lightgray;
+    }
+     .bubble {
+        padding: 8px 12px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    .user-message {
+        background-color: #87CEFA;
+        color: white;
+        align-self: flex-end;
+    }
+
+    .response-message {
+        background-color: #F0E68C;
+    }
+
+    #messages {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #close-button {
+        background-color: white;
+        border: none;
+        color: #666;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 0;
+        font-size: 16px;
+        line-height: 18px;
+        width: 18px;
+        height: 18px;
+        text-align: center;
+        border-radius: 50%;
+    }
+
+    #chat-window {
+        resize: both;
+        overflow-y: hidden;
+    }
+</style>
+</head>
+<body>
+    <div style="height: 10%; padding-left: 10px;">
+        <select id="kg_name_selector" style="width: 100px;">
+        </select>
+        <input id="entity_name_input" type="text" placeholder="Entity Name" style="width: 150px;">
+        <button id="search_button">Search</button>
+        <button id="display_button">Display</button>
+    </div>
+    <div id="graph" style="height: 90%;">
+        <!-- 图谱将在此容器中显示 -->
+    </div>
+
+    <button id="dialog_button" style="position: fixed; right: 20px; bottom: 20px;">Dialog</button>
+
+    <!-- 聊天窗口 -->
+    <div id="chat-window" style="display:none; position:fixed; right:10px; bottom:10px; width:300px; height:400px; background-color:white; border:1px solid lightgray; border-radius:5px;">
+        <div id="header" style="height: 30px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: flex-end; padding: 0 10px;">
+            <button id="close-button" style="background-color: transparent; border: none;">&times;</button>
+        </div>
+        <div id="messages" style="height: calc(80% - 30px); overflow-y: auto; padding: 10px;"></div>
+        <div style="height: 20%; display: flex; align-items: center; padding: 0 10px;">
+            <input id="message-input" type="text" placeholder="Enter your message" style="flex-grow: 1; margin-right: 10px;">
+            <button id="send-button" style="width: 50px;">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // 请求所有知识图谱名称并填充下拉菜单
+        function load_kg_names() {
+            $.get('/get_all_kg_names', function (data) {
+                var kg_name_selector = $('#kg_name_selector');
+                kg_name_selector.empty();
+                data.forEach(function (kg_name) {
+                    kg_name_selector.append($('<option>').text(kg_name));
+                });
+            });
+        }
+
+        function get_type_color_mappings(kg_name, callback) {
+            $.get('/get_type_color_mappings', {kg_name: kg_name}, function (data) {
+                var type_color_map = {};
+                data.forEach(function (item) {
+                    type_color_map[item.entity_type] = item.color;
+                });
+                callback(type_color_map);
+            });
+        }
+
+
+        // 修改此函数以接受 type_color_map 参数
+        function convert_data_to_vis_format(data, type_color_map) {
+            var nodes = [];
+            var edges = [];
+
+            data.entities.forEach(function (entity) {
+                nodes.push({
+                    id: entity.vertex_id,
+                    label: entity.vertex_name,
+                    shape: 'circle',
+                    color: type_color_map[entity.vertex_type] // 使用 color 变量设置颜色
+                });
+            });
+
+            data.relations.forEach(function (relation) {
+                edges.push({
+                    from: relation.source_vertex_id,
+                    to: relation.target_vertex_id,
+                    label: relation.edge_type
+                });
+            });
+
+            return {
+                nodes: nodes,
+                edges: edges
+            };
+        }
+
+        // 在图谱容器中显示图谱
+        function display_graph(data, type_color_map) { // 添加 type_color_map 参数
+            var container = document.getElementById('graph');
+            var graph_data = convert_data_to_vis_format(data, type_color_map); // 将 type_color_map 传递给此函数
+            var options = {
+                edges: {
+                    font: {
+                        size: 12, // 设置字体大小
+                        align: 'middle' // 设置字体位置
+                    },
+                    arrows: {
+                        to: {
+                            enabled: true, // 显示箭头指向目标节点
+                            scaleFactor: 0.5 // 设置箭头大小
+                        }
+                    }
+                }
+            };
+
+            var network = new vis.Network(container, graph_data, options);
+            console.log('Display finished');
+        }
+
+        // 显示和隐藏对话框
+        function toggle_dialog() {
+            const chatWindow = $('#chat-window');
+            if (chatWindow.is(':visible')) {
+                chatWindow.hide();
+            } else {
+                chatWindow.show();
+            }
+        }
+
+        function request_dialog_api(kg_name, query, callback) {
+            $.get('/dialog', { kg_name: kg_name, query: query }, function (data) {
+                //console.log("Received response:", data.resp_message);
+                callback(data.resp_message);
+            });
+        }
+
+        function add_message_to_chat_window(message, is_response) {
+            var messages = $('#messages');
+            var message_element = $('<p>').text(message).addClass('bubble');
+
+            if (is_response) {
+                message_element.addClass('response-message');
+            } else {
+                message_element.addClass('user-message');
+            }
+
+            messages.append(message_element);
+            messages.scrollTop(messages.prop('scrollHeight')); // 滚动到底部
+        }
+
+
+        // 设置按钮事件处理程序
+        $(document).ready(function () {
+            // 加载知识图谱名称
+            load_kg_names();
+
+            // 搜索按钮
+            $('#search_button').click(function () {
+                var kg_name = $('#kg_name_selector').val();
+                var entity_name = $('#entity_name_input').val();
+                if (kg_name && entity_name) {
+                    $.get('/get_entity', {kg_name: kg_name, entity_name: entity_name}, function (data) {
+                        // 在此处处理实体数据，例如显示在图中或以其他方式展示
+                                                console.log(data);
+                    });
+                }
+            });
+
+            // 修改显示按钮事件处理程序以获取 type_color_map
+            $('#display_button').click(function () {
+                var kg_name = $('#kg_name_selector').val();
+                if (kg_name) {
+                    $.get('/get_kg_data', {kg_name: kg_name}, function (data) {
+                            get_type_color_mappings(kg_name, function (type_color_map) {
+                            display_graph(data, type_color_map); // 将 type_color_map 传递给此函数
+                        });
+                    });
+                }
+            });
+
+            // 对话按钮
+            $('#dialog_button').click(function () {
+                toggle_dialog();
+            });
+
+            $('#send-button').click(function () {
+                var kg_name = $('#kg_name_selector').val();
+                var message = $('#message-input').val();
+                $('#message-input').val(''); // 清空输入框
+
+                if (kg_name && message) {
+                    add_message_to_chat_window(message, false); // 添加用户消息
+                    request_dialog_api(kg_name, message, function (resp_message) {
+                        add_message_to_chat_window(resp_message, true); // 添加后端响应消息
+                    });
+                }
+            });
+
+            $('#message-input').on('keypress', function (e) {
+                if (e.which == 13) {
+                    e.preventDefault();
+                    $('#send-button').click();
+                }
+            });
+
+            // 关闭按钮
+            $('#close-button').click(function () {
+                toggle_dialog();
+            });
+
+        });
+    </script>
+</body>
+</html>
+
