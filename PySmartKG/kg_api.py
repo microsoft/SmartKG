@@ -2,9 +2,10 @@ from flask import Flask, request, jsonify, render_template
 import pandas as pd
 import pickle
 import os
-from data_import import read_entities, read_relations
 import shutil
+from data_import import read_entities, read_relations
 from dialog import search_kg_data
+from kg_engine import find_subgraph
 
 app = Flask(__name__)
 
@@ -238,6 +239,27 @@ def dialog():
         resp_message = f"KG: {kg_name}. Matched 0 items"
 
     return jsonify({'resp_message': resp_message}), 200
+
+
+@app.route('/search', methods=['GET'])
+def search():
+    kg_name = request.args.get('kg_name')
+    entity_name = request.args.get('entity_name')
+
+    # 检查 kg_name 和 entity_name 是否为空
+    if not kg_name or not entity_name:
+        return jsonify({"error": "Both kg_name and entity_name must be provided"}), 400
+
+    # 检查 kg_data_cache 是否已加载，如果没有则加载
+    if kg_name not in kg_data_cache:
+        try:
+            load_kg_data(kg_name)
+        except FileNotFoundError as e:
+            return jsonify({"status": "error", "message": str(e)}), 400
+
+    subgraph = find_subgraph(kg_name, entity_name, kg_data_cache)
+
+    return jsonify(subgraph)
 
 
 @app.route('/')

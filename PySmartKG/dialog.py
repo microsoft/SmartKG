@@ -16,14 +16,27 @@ def entity_to_string(entity):
     return entity_string
 
 
-def relation_to_string(relation):
+def relation_to_string(kg_name, relation, kg_data_cache):
     # 提取关系中的 source_id、edge_type 和 target_id
     source_id = relation['source_vertex_id']
     edge_type = relation['edge_type']
     target_id = relation['target_vertex_id']
 
+    # 从实体列表中查找 source_id 和 target_id 对应的 vertex_name
+    entities = kg_data_cache[kg_name]["entities"]
+    source_vertex_name = None
+    target_vertex_name = None
+
+    for entity in entities:
+        if entity['vertex_id'] == source_id:
+            source_vertex_name = entity['vertex_name']
+        if entity['vertex_id'] == target_id:
+            target_vertex_name = entity['vertex_name']
+        if source_vertex_name is not None and target_vertex_name is not None:
+            break
+
     # 创建关系的字符串表示
-    relation_string = f'{source_id} {edge_type} {target_id}'
+    relation_string = f"{source_vertex_name}的{edge_type}是{target_vertex_name}"
 
     return relation_string
 
@@ -38,13 +51,14 @@ def search_kg_data(kg_name, query, kg_data_cache):
 
         for entity in entities:
             vertex_name = entity['vertex_name'].strip()
+            indices = [i for i in range(len(query)) if query.startswith(vertex_name, i)]
 
-            if vertex_name in query or vertex_name == query:
+            for index in indices:
                 results.append({
                     'type': 'entity',
                     'name': entity['vertex_name'],
                     'data': entity_to_string(entity),
-                    'index': query.index(vertex_name)
+                    'index': index
                 })
 
         matched_relations = set()
@@ -52,13 +66,15 @@ def search_kg_data(kg_name, query, kg_data_cache):
             edge_type = relation['edge_type']
             if edge_type in matched_relations:
                 continue
-            if edge_type in query or edge_type == query:
-                matched_relations.add(edge_type)
+            indices = [i for i in range(len(query)) if query.startswith(edge_type, i)]
+            matched_relations.add(edge_type)
+
+            for index in indices:
                 results.append({
                     'type': 'relation',
                     'name': relation['edge_type'],
-                    'data': relation_to_string(relation),
-                    'index': query.index(edge_type)
+                    'data': relation_to_string(kg_name, relation, kg_data_cache),
+                    'index': index
                 })
 
         results.sort(key=lambda x: x['index'])

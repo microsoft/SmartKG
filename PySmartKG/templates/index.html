@@ -206,9 +206,18 @@
                 var kg_name = $('#kg_name_selector').val();
                 var entity_name = $('#entity_name_input').val();
                 if (kg_name && entity_name) {
-                    $.get('/get_entity', {kg_name: kg_name, entity_name: entity_name}, function (data) {
-                        // 在此处处理实体数据，例如显示在图中或以其他方式展示
-                                                console.log(data);
+                    // 调用 search API
+                    $.get('/search', {kg_name: kg_name, entity_name: entity_name}, function (data) {
+                        // 如果返回的数据中存在错误，显示错误信息
+                        if (data.error) {
+                            alert(data.error);
+                            return;
+                        }
+
+                        // 获取 type_color_map 并调用 display_graph 函数
+                        get_type_color_mappings(kg_name, function (type_color_map) {
+                            display_graph(data, type_color_map);
+                        });
                     });
                 }
             });
