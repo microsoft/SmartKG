@@ -11,15 +11,17 @@ app = Flask(__name__)
 # 全局缓存字典
 kg_data_cache = {}
 
+root_path = "data_store"
+
 
 def load_kg_data(kg_name):
-    if os.path.exists(kg_name):
+    if os.path.exists(os.path.join(root_path, kg_name)):
         # 加载实体数据
-        with open(os.path.join(kg_name, 'entities.pkl'), 'rb') as f:
+        with open(os.path.join(root_path, kg_name, 'entities.pkl'), 'rb') as f:
             entities = pickle.load(f)
 
         # 加载关系数据
-        with open(os.path.join(kg_name, 'relations.pkl'), 'rb') as f:
+        with open(os.path.join(root_path, kg_name, 'relations.pkl'), 'rb') as f:
             relations = pickle.load(f)
 
         # 将数据缓存到字典中
@@ -31,13 +33,13 @@ def load_kg_data(kg_name):
 @app.route('/get_all_kg_names', methods=['GET'])
 def get_all_kg_names():
     # 使用 glob 查找当前目录下所有文件夹
-    folders = [f.name for f in os.scandir('.') if f.is_dir()]
+    folders = [f.name for f in os.scandir(root_path) if f.is_dir()]
 
     # 过滤出包含 entities.pkl 和 relations.pkl 的文件夹
     kg_names = []
     for folder in folders:
-        if (os.path.exists(os.path.join(folder, 'entities.pkl')) and
-                os.path.exists(os.path.join(folder, 'relations.pkl'))):
+        if (os.path.exists(os.path.join(root_path, folder, 'entities.pkl')) and
+                os.path.exists(os.path.join(root_path, folder, 'relations.pkl'))):
             kg_names.append(folder)
 
     return jsonify(kg_names)
@@ -50,8 +52,8 @@ def upload_file():
     print(excel_file, kg_name)
     if excel_file and kg_name:
         # 检查文件夹是否存在，如果不存在则创建
-        if not os.path.exists(kg_name):
-            os.makedirs(kg_name)
+        if not os.path.exists(os.path.join(root_path, kg_name)):
+            os.makedirs(os.path.join(root_path, kg_name))
         else:
             return jsonify({"status": "error", "message": "The folder already exists. Please change the kg_name value."})
 
@@ -63,14 +65,14 @@ def upload_file():
         relations = read_relations(relations_sheet)
 
         # 将实体和关系数据保存到本地 pkl 文件
-        with open(os.path.join(kg_name, 'entities.pkl'), 'wb') as f:
+        with open(os.path.join(root_path, kg_name, 'entities.pkl'), 'wb') as f:
             pickle.dump(entities, f)
 
-        with open(os.path.join(kg_name, 'relations.pkl'), 'wb') as f:
+        with open(os.path.join(root_path, kg_name, 'relations.pkl'), 'wb') as f:
             pickle.dump(relations, f)
 
         # 保存 type_color_mappings 为 pkl 文件
-        with open(os.path.join(kg_name, 'type_color_mappings.pkl'), 'wb') as f:
+        with open(os.path.join(root_path, kg_name, 'type_color_mappings.pkl'), 'wb') as f:
             pickle.dump(type_color_mappings, f)
 
         return jsonify({"status": "success", "message": "Entities and relations saved successfully."})
@@ -164,7 +166,7 @@ def get_type_color_mappings():
     if not kg_name:
         return jsonify({"message": "Please provide a valid kg_name"}), 400
 
-    type_color_mappings_path = os.path.join(kg_name, 'type_color_mappings.pkl')
+    type_color_mappings_path = os.path.join(root_path, kg_name, 'type_color_mappings.pkl')
 
     if not os.path.exists(type_color_mappings_path):
         return jsonify({"message": "type_color_mappings.pkl not found"}), 404
@@ -183,7 +185,7 @@ def update_type_color_mappings():
     if not kg_name or not type_color_mappings:
         return jsonify({"message": "Please provide both kg_name and type_color_mappings"}), 400
 
-    type_color_mappings_path = os.path.join(kg_name, 'type_color_mappings.pkl')
+    type_color_mappings_path = os.path.join(root_path, kg_name, 'type_color_mappings.pkl')
 
     if not os.path.exists(type_color_mappings_path):
         return jsonify({"message": "type_color_mappings.pkl not found"}), 404
@@ -201,7 +203,7 @@ def delete_kg():
     if not kg_name:
         return jsonify({"message": "Please provide a valid kg_name"}), 400
 
-    kg_folder_path = kg_name
+    kg_folder_path = os.path.join(root_path, kg_name)
 
     if not os.path.exists(kg_folder_path):
         return jsonify({"message": f"KG folder '{kg_name}' does not exist"}), 404
