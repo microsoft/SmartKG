@@ -1,3 +1,4 @@
 .idea
 __pycache__
 data_store/**/*
+data/openai_key.txt

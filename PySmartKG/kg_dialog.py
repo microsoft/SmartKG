@@ -255,7 +255,7 @@ def process_matched_items(kg_name, matched_items, kg_data_cache):
 
 def generate_response_message(final_entities, tracing):
     print("Tracing...", tracing)
-    
+
     resp_message = f"不好意思，无法基于知识库回答您的问题。"
     if (final_entities is not None) and (len(final_entities) > 0):
         resp_text = ""

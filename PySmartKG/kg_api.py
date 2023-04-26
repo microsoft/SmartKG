@@ -3,7 +3,7 @@ import pandas as pd
 from data_import import read_entities, read_relations, load_kg_data, load_kg_names, \
     read_aliases, save_color_mapping, delete_kg_data, save_kg_data, save_aliases
 
-from dialog import search_kg_data, process_matched_items, generate_response_message
+from kg_dialog import search_kg_data, process_matched_items, generate_response_message
 from kg_engine import find_subgraph
 
 app = Flask(__name__)
@@ -179,6 +179,12 @@ def delete_kg():
 def dialog():
     kg_name = request.args.get('kg_name')
     query = request.args.get('query')
+    llm = request.args.get('is_llm_enabled')
+
+    is_llm_integrated = True
+    if llm == 'false':
+        is_llm_integrated = False
+    #print("is_llm_integrated", is_llm_integrated)
 
     if not kg_name or not query:
         return jsonify({'error': 'Invalid parameters'}), 400

@@ -6,6 +6,7 @@
     <link href="https://unpkg.com/vis-network@7.7.0/standalone/umd/vis-network.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="https://unpkg.com/vis-network@7.7.0/standalone/umd/vis-network.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
     html, body {
         height: 100%;
@@ -62,6 +63,71 @@
         resize: both;
         overflow-y: hidden;
     }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+        margin-left: 5px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(20px);
+        -ms-transform: translateX(20px);
+        transform: translateX(20px);
+    }
+
+    .slider.round {
+        border-radius: 20px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+     .slider {
+            pointer-events: auto;
+            cursor: pointer;
+     }
 </style>
 </head>
 <body>
@@ -80,8 +146,13 @@
 
     <!-- 聊天窗口 -->
     <div id="chat-window" style="display:none; position:fixed; right:10px; bottom:10px; width:300px; height:400px; background-color:white; border:1px solid lightgray; border-radius:5px;">
-        <div id="header" style="height: 30px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: flex-end; padding: 0 10px;">
-            <button id="close-button" style="background-color: transparent; border: none;">&times;</button>
+        <div id="header" style="height: 30px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: flex-start; padding: 0 10px;">
+            <label for="llm_toggle">LLM:</label>
+            <div class="switch">
+                <input type="checkbox" id="llm_toggle" checked>
+                <span class="slider round"></span>
+            </div>
+            <button id="close-button" style="margin-left: auto; background-color: transparent; border: none;">&times;</button>
         </div>
         <div id="messages" style="height: calc(80% - 30px); overflow-y: auto; padding: 10px;"></div>
         <div style="height: 20%; display: flex; align-items: center; padding: 0 10px;">
@@ -174,8 +245,9 @@
             }
         }
 
-        function request_dialog_api(kg_name, query, callback) {
-            $.get('/dialog', { kg_name: kg_name, query: query }, function (data) {
+        function request_dialog_api(kg_name, query, is_llm_enabled, callback) {
+            // 将 is_llm_enabled 作为参数传递给 API
+            $.get('/dialog', { kg_name: kg_name, query: query, is_llm_enabled: is_llm_enabled }, function (data) {
                 //console.log("Received response:", data.resp_message);
                 callback(data.resp_message);
             });
@@ -234,6 +306,12 @@
                 }
             });
 
+            // llm enable button 事件监听器
+            $('.slider').on('click', function() {
+                const checkbox = $(this).prev();
+                checkbox.prop('checked', !checkbox.prop('checked'));
+            });
+
             // 对话按钮
             $('#dialog_button').click(function () {
                 toggle_dialog();
@@ -244,9 +322,12 @@
                 var message = $('#message-input').val();
                 $('#message-input').val(''); // 清空输入框
 
+                // 获取 LLM 开关的状态
+                var is_llm_enabled = $('#llm_toggle').prop('checked');
+
                 if (kg_name && message) {
                     add_message_to_chat_window(message, false); // 添加用户消息
-                    request_dialog_api(kg_name, message, function (resp_message) {
+                    request_dialog_api(kg_name, message, is_llm_enabled, function (resp_message) {
                         add_message_to_chat_window(resp_message, true); // 添加后端响应消息
                     });
                 }
