@@ -1,4 +1,5 @@
 import openai
+from kg_engine import generate_response_message
 
 
 def generate_prompt(query, trace_logs):
@@ -16,7 +17,7 @@ def generate_prompt(query, trace_logs):
 
 
 def gpt_process(prompt):
-    with open('data\\openai_key.txt', 'r') as file:
+    with open('data/openai_key.txt', 'r') as file:
         openai.api_key = file.read().strip()
 
     openai.api_type = 'azure'
@@ -38,13 +39,13 @@ def gpt_process(prompt):
     return text
 
 
-def get_response_from_llm(query, trace_logs):
+def get_response_from_llm(query, final_entities, trace_logs):
 
     try:
         prompt = generate_prompt(query, trace_logs)
         resp_text = gpt_process(prompt)
         resp_message = f"{resp_text}"
     except Exception as e:
-        resp_message = f"在调用大模型的过程中出错"
+        resp_message = generate_response_message(final_entities, trace_logs)#f"在调用大模型的过程中出错"
 
     return resp_message

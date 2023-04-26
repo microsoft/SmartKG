@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
+import os
 from data_import import read_entities, read_relations, load_kg_data, load_kg_names, \
     read_aliases, save_color_mapping, delete_kg_data, save_kg_data, save_aliases
 
-from kg_dialog import search_kg_data, process_matched_items, generate_response_message
-from kg_engine import find_subgraph
+from kg_engine import search_kg_data, process_matched_items, generate_response_message, find_subgraph
 from llm_dialog import get_response_from_llm
 
 app = Flask(__name__)
@@ -185,7 +185,7 @@ def dialog():
     is_llm_integrated = True
     if llm == 'false':
         is_llm_integrated = False
-    #print("is_llm_integrated", is_llm_integrated)
+    print("is_llm_integrated", is_llm_integrated)
 
     if not kg_name or not query:
         return jsonify({'error': 'Invalid parameters'}), 400
@@ -200,7 +200,7 @@ def dialog():
     final_entities, tracing = process_matched_items(kg_name, matched_items, kg_data_cache)
 
     if is_llm_integrated:
-        resp_message = get_response_from_llm(query, tracing)
+        resp_message = get_response_from_llm(query, final_entities, tracing)
     else:
         resp_message = generate_response_message(final_entities, tracing)
 
@@ -262,6 +262,13 @@ def update_aliases():
     kg_data_cache[kg_name]["aliases"] = aliases
 
     return jsonify(message='Aliases updated successfully'), 200
+
+
+@app.route('/check_openai_key', methods=['GET'])
+def check_openai_key():
+    key_file_path = "data/openai_key.txt"
+    key_exists = os.path.isfile(key_file_path)
+    return jsonify({"key_exists": key_exists})
 
 
 @app.route('/')

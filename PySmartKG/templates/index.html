@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Knowledge Graph Viewer</title>
     <link href="https://unpkg.com/vis-network@7.7.0/standalone/umd/vis-network.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="text/javascript" src="https://unpkg.com/vis-network@7.7.0/standalone/umd/vis-network.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -128,6 +130,17 @@
             pointer-events: auto;
             cursor: pointer;
      }
+
+     .tooltip {
+        position: absolute;
+        display: none;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        padding: 5px;
+        border-radius: 3px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
 </style>
 </head>
 <body>
@@ -147,11 +160,15 @@
     <!-- 聊天窗口 -->
     <div id="chat-window" style="display:none; position:fixed; right:10px; bottom:10px; width:300px; height:400px; background-color:white; border:1px solid lightgray; border-radius:5px;">
         <div id="header" style="height: 30px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: flex-start; padding: 0 10px;">
-            <label for="llm_toggle">LLM:</label>
+            <label for="llm-toggle">LLM:</label>
             <div class="switch">
-                <input type="checkbox" id="llm_toggle" checked>
+                <input type="checkbox" id="llm-toggle" checked>
                 <span class="slider round"></span>
             </div>
+            <span tabindex="0" class="ml-2" data-toggle="tooltip" data-placement="top" title="用户需要提供openai的访问关键字，才能启动LLM功能，具体请见README">
+                <i class="fas fa-info-circle"></i>
+            </span>
+
             <button id="close-button" style="margin-left: auto; background-color: transparent; border: none;">&times;</button>
         </div>
         <div id="messages" style="height: calc(80% - 30px); overflow-y: auto; padding: 10px;"></div>
@@ -267,6 +284,16 @@
             messages.scrollTop(messages.prop('scrollHeight')); // 滚动到底部
         }
 
+        function check_openai_key() {
+            $.get('/check_openai_key', function (data) {
+                if (!data.key_exists) {
+                    console.log("key file doesn't exist.");
+                    $('#llm-toggle').prop('checked', false); // 新增：设置 LLM 开关为关闭状态
+                    $('#llm-toggle').prop('disabled', true);
+                    $('#tooltip').text('用户需要提供openai 的访问关键字，才能启动LLM功能，具体请见README');
+                }
+            });
+        }
 
         // 设置按钮事件处理程序
         $(document).ready(function () {
@@ -306,10 +333,20 @@
                 }
             });
 
-            // llm enable button 事件监听器
+            check_openai_key();
+
+            // LLM 开关提示
+            //$('.slider').on('click', function() {
+            //    const checkbox = $(this).prev();
+            //    checkbox.prop('checked', !checkbox.prop('checked'));
+            //});
+
+            // LLM 开关提示
             $('.slider').on('click', function() {
                 const checkbox = $(this).prev();
-                checkbox.prop('checked', !checkbox.prop('checked'));
+                if (!checkbox.prop('disabled')) { // 新增：当 LLM 开关不被禁用时才能够切换状态
+                    checkbox.prop('checked', !checkbox.prop('checked'));
+                }
             });
 
             // 对话按钮
@@ -323,7 +360,7 @@
                 $('#message-input').val(''); // 清空输入框
 
                 // 获取 LLM 开关的状态
-                var is_llm_enabled = $('#llm_toggle').prop('checked');
+                var is_llm_enabled = $('#llm-toggle').prop('checked');
 
                 if (kg_name && message) {
                     add_message_to_chat_window(message, false); // 添加用户消息
