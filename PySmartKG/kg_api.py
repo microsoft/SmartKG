@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
-import pickle
-import os
-import shutil
-from data_import import read_entities, read_relations
-from dialog import search_kg_data
+from data_import import read_entities, read_relations, load_kg_data, load_kg_names, \
+    read_aliases, save_color_mapping, delete_kg_data, save_kg_data, save_aliases
+
+from dialog import search_kg_data, process_matched_items, generate_response_message
 from kg_engine import find_subgraph
 
 app = Flask(__name__)
@@ -12,36 +11,10 @@ app = Flask(__name__)
 # 全局缓存字典
 kg_data_cache = {}
 
-root_path = "data_store"
-
-
-def load_kg_data(kg_name):
-    if os.path.exists(os.path.join(root_path, kg_name)):
-        # 加载实体数据
-        with open(os.path.join(root_path, kg_name, 'entities.pkl'), 'rb') as f:
-            entities = pickle.load(f)
-
-        # 加载关系数据
-        with open(os.path.join(root_path, kg_name, 'relations.pkl'), 'rb') as f:
-            relations = pickle.load(f)
-
-        # 将数据缓存到字典中
-        kg_data_cache[kg_name] = {"entities": entities, "relations": relations}
-    else:
-        raise FileNotFoundError(f"Knowledge graph '{kg_name}' not found.")
-
 
 @app.route('/get_all_kg_names', methods=['GET'])
 def get_all_kg_names():
-    # 使用 glob 查找当前目录下所有文件夹
-    folders = [f.name for f in os.scandir(root_path) if f.is_dir()]
-
-    # 过滤出包含 entities.pkl 和 relations.pkl 的文件夹
-    kg_names = []
-    for folder in folders:
-        if (os.path.exists(os.path.join(root_path, folder, 'entities.pkl')) and
-                os.path.exists(os.path.join(root_path, folder, 'relations.pkl'))):
-            kg_names.append(folder)
+    kg_names = load_kg_names()
 
     return jsonify(kg_names)
 
@@ -52,29 +25,18 @@ def upload_file():
     kg_name = request.form.get('kg_name')
     print(excel_file, kg_name)
     if excel_file and kg_name:
-        # 检查文件夹是否存在，如果不存在则创建
-        if not os.path.exists(os.path.join(root_path, kg_name)):
-            os.makedirs(os.path.join(root_path, kg_name))
-        else:
-            return jsonify({"status": "error", "message": "The folder already exists. Please change the kg_name value."})
-
         # 读取 Excel 文件的实体信息
         entities_sheet = pd.read_excel(excel_file, sheet_name=0, header=1)
         relations_sheet = pd.read_excel(excel_file, sheet_name=1, header=1)
 
         entities, type_color_mappings = read_entities(kg_name, entities_sheet)
         relations = read_relations(relations_sheet)
+        aliases = read_aliases(entities, relations)
 
-        # 将实体和关系数据保存到本地 pkl 文件
-        with open(os.path.join(root_path, kg_name, 'entities.pkl'), 'wb') as f:
-            pickle.dump(entities, f)
+        result = save_kg_data(kg_name, entities, relations, type_color_mappings, aliases)
 
-        with open(os.path.join(root_path, kg_name, 'relations.pkl'), 'wb') as f:
-            pickle.dump(relations, f)
-
-        # 保存 type_color_mappings 为 pkl 文件
-        with open(os.path.join(root_path, kg_name, 'type_color_mappings.pkl'), 'wb') as f:
-            pickle.dump(type_color_mappings, f)
+        if not result:
+            return jsonify({"status": "error", "message": "The folder already exists. Please change the kg_name value."})
 
         return jsonify({"status": "success", "message": "Entities and relations saved successfully."})
     else:
@@ -89,7 +51,7 @@ def get_entities():
         # 加载实体数据
         if kg_name not in kg_data_cache:
             try:
-                load_kg_data(kg_name)
+                kg_data_cache[kg_name] = load_kg_data(kg_name)
             except FileNotFoundError as e:
                 return jsonify({"status": "error", "message": str(e)})
 
@@ -108,7 +70,7 @@ def get_relations():
         # 加载实体数据
         if kg_name not in kg_data_cache:
             try:
-                load_kg_data(kg_name)
+                kg_data_cache[kg_name] = load_kg_data(kg_name)
             except FileNotFoundError as e:
                 return jsonify({"status": "error", "message": str(e)})
 
@@ -126,7 +88,7 @@ def get_kg_data():
     if kg_name:
         if kg_name not in kg_data_cache:
             try:
-                load_kg_data(kg_name)
+                kg_data_cache[kg_name] = load_kg_data(kg_name)
             except FileNotFoundError as e:
                 return jsonify({"status": "error", "message": str(e)})
 
@@ -144,7 +106,7 @@ def get_entity():
     if kg_name and entity_name:
         if kg_name not in kg_data_cache:
             try:
-                load_kg_data(kg_name)
+                kg_data_cache[kg_name] = load_kg_data(kg_name)
             except FileNotFoundError as e:
                 return jsonify({"status": "error", "message": str(e)})
 
@@ -167,13 +129,16 @@ def get_type_color_mappings():
     if not kg_name:
         return jsonify({"message": "Please provide a valid kg_name"}), 400
 
-    type_color_mappings_path = os.path.join(root_path, kg_name, 'type_color_mappings.pkl')
+    if kg_name not in kg_data_cache:
+        try:
+            kg_data_cache[kg_name] = load_kg_data(kg_name)
+        except FileNotFoundError as e:
+            return jsonify({"status": "error", "message": str(e)})
 
-    if not os.path.exists(type_color_mappings_path):
+    type_color_mappings = kg_data_cache[kg_name]["type_color_mappings"]
+
+    if type_color_mappings is None:
         return jsonify({"message": "type_color_mappings.pkl not found"}), 404
-
-    with open(type_color_mappings_path, 'rb') as f:
-        type_color_mappings = pickle.load(f)
 
     return jsonify(type_color_mappings), 200
 
@@ -186,13 +151,9 @@ def update_type_color_mappings():
     if not kg_name or not type_color_mappings:
         return jsonify({"message": "Please provide both kg_name and type_color_mappings"}), 400
 
-    type_color_mappings_path = os.path.join(root_path, kg_name, 'type_color_mappings.pkl')
+    save_color_mapping(kg_name, type_color_mappings)
 
-    if not os.path.exists(type_color_mappings_path):
-        return jsonify({"message": "type_color_mappings.pkl not found"}), 404
-
-    with open(type_color_mappings_path, 'wb') as f:
-        pickle.dump(type_color_mappings, f)
+    kg_data_cache[kg_name]["type_color_mappings"] = type_color_mappings
 
     return jsonify(message='Type-color mappings updated successfully'), 200
 
@@ -200,17 +161,15 @@ def update_type_color_mappings():
 @app.route('/delete_kg', methods=['DELETE'])
 def delete_kg():
     kg_name = request.args.get('kg_name', '')
-    print(kg_name)
+
     if not kg_name:
         return jsonify({"message": "Please provide a valid kg_name"}), 400
 
-    kg_folder_path = os.path.join(root_path, kg_name)
-
-    if not os.path.exists(kg_folder_path):
-        return jsonify({"message": f"KG folder '{kg_name}' does not exist"}), 404
-
     try:
-        shutil.rmtree(kg_folder_path)
+        result = delete_kg_data(kg_name)
+        if not result:
+            return jsonify({"message": f"KG folder '{kg_name}' does not exist"}), 404
+
         return jsonify({"message": f"KG folder '{kg_name}' deleted successfully"}), 200
     except Exception as e:
         return jsonify({"message": f"An error occurred while deleting the KG folder '{kg_name}': {str(e)}"}), 500
@@ -226,17 +185,14 @@ def dialog():
 
     if kg_name not in kg_data_cache:
         try:
-            load_kg_data(kg_name)
+            kg_data_cache[kg_name] = load_kg_data(kg_name)
         except FileNotFoundError as e:
             return jsonify({"status": "error", "message": str(e)}), 400
 
     matched_items = search_kg_data(kg_name, query, kg_data_cache)
-    print("matched_items", matched_items)
+    final_entities, tracing = process_matched_items(kg_name, matched_items, kg_data_cache)
 
-    if len(matched_items) > 0:
-        resp_message = f"KG: {kg_name}. Matched some items"
-    else:
-        resp_message = f"KG: {kg_name}. Matched 0 items"
+    resp_message = generate_response_message(final_entities, tracing)
 
     return jsonify({'resp_message': resp_message}), 200
 
@@ -253,13 +209,45 @@ def search():
     # 检查 kg_data_cache 是否已加载，如果没有则加载
     if kg_name not in kg_data_cache:
         try:
-            load_kg_data(kg_name)
+            kg_data_cache[kg_name] = load_kg_data(kg_name)
         except FileNotFoundError as e:
             return jsonify({"status": "error", "message": str(e)}), 400
 
     subgraph = find_subgraph(kg_name, entity_name, kg_data_cache)
 
     return jsonify(subgraph)
+
+
+@app.route('/get_aliases', methods=['GET'])
+def get_aliases():
+    kg_name = request.args.get('kg_name')
+
+    if not kg_name:
+        return jsonify({"message": "Please provide a valid kg_name"}), 400
+
+    if kg_name not in kg_data_cache:
+        try:
+            kg_data_cache[kg_name] = load_kg_data(kg_name)
+        except FileNotFoundError as e:
+            return jsonify({"status": "error", "message": str(e)})
+
+    aliases = kg_data_cache[kg_name]["aliases"]
+
+    return jsonify(aliases), 200
+
+
+@app.route('/update_aliases', methods=['PUT'])
+def update_aliases():
+    kg_name = request.args.get('kg_name')
+    aliases = request.get_json()
+
+    if not kg_name or not aliases:
+        return jsonify({"message": "Please provide both kg_name and aliases"}), 400
+
+    save_aliases(kg_name, aliases)
+    kg_data_cache[kg_name]["aliases"] = aliases
+
+    return jsonify(message='Aliases updated successfully'), 200
 
 
 @app.route('/')
