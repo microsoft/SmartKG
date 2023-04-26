@@ -306,5 +306,5 @@ def find_subgraph(kg_name, entity_id, kg_data_cache):
                         break
 
     subgroup = {'entities': subgraph_entities, 'relations': subgraph_relations}
-    print(subgroup)
+    #print(subgroup)
     return subgroup
