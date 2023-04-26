@@ -5,6 +5,7 @@ from data_import import read_entities, read_relations, load_kg_data, load_kg_nam
 
 from kg_dialog import search_kg_data, process_matched_items, generate_response_message
 from kg_engine import find_subgraph
+from llm_dialog import get_response_from_llm
 
 app = Flask(__name__)
 
@@ -198,7 +199,10 @@ def dialog():
     matched_items = search_kg_data(kg_name, query, kg_data_cache)
     final_entities, tracing = process_matched_items(kg_name, matched_items, kg_data_cache)
 
-    resp_message = generate_response_message(final_entities, tracing)
+    if is_llm_integrated:
+        resp_message = get_response_from_llm(query, tracing)
+    else:
+        resp_message = generate_response_message(final_entities, tracing)
 
     return jsonify({'resp_message': resp_message}), 200
 
@@ -219,7 +223,11 @@ def search():
         except FileNotFoundError as e:
             return jsonify({"status": "error", "message": str(e)}), 400
 
-    subgraph = find_subgraph(kg_name, entity_name, kg_data_cache)
+    matched_items = search_kg_data(kg_name, entity_name, kg_data_cache)
+
+    if len(matched_items) > 0 and matched_items[0]["category"] == "entity":
+        entity_id = matched_items[0]["id"]
+        subgraph = find_subgraph(kg_name, entity_id, kg_data_cache)
 
     return jsonify(subgraph)
 

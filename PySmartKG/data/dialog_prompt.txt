@@ -1,0 +1,4 @@
+Please obtain an answer to "{query_str}" from the following related information. It is required to use the original sentence in the related information as much as possible without omitting additional information in Chinese.
+---------------------
+{related_information}
+---------------------

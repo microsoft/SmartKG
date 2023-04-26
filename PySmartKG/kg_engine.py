@@ -1,14 +1,14 @@
-def find_subgraph(kg_name, entity_name, kg_data_cache):
+def find_subgraph(kg_name, entity_id, kg_data_cache):
     entities = kg_data_cache[kg_name]["entities"]
     relations = kg_data_cache[kg_name]["relations"]
 
-    entity_id = None
+    #entity_id = None
     subgraph_entities = []
     subgraph_relations = []
 
     for entity in entities:
-        if entity['vertex_name'] == entity_name:
-            entity_id = entity['vertex_id']
+        if entity['vertex_id'] == entity_id:
+            #entity_id = entity['vertex_id']
             subgraph_entities.append(entity)
             break
 
