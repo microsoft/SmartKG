@@ -27,8 +27,8 @@ def upload_file():
     print(excel_file, kg_name)
     if excel_file and kg_name:
         # 读取 Excel 文件的实体信息
-        entities_sheet = pd.read_excel(excel_file, sheet_name=0, header=1)
-        relations_sheet = pd.read_excel(excel_file, sheet_name=1, header=1)
+        entities_sheet = pd.read_excel(excel_file, sheet_name=0, header=0)
+        relations_sheet = pd.read_excel(excel_file, sheet_name=1, header=0)
 
         entities, type_color_mappings = read_entities(kg_name, entities_sheet)
         relations = read_relations(relations_sheet)
@@ -224,12 +224,12 @@ def search():
             return jsonify({"status": "error", "message": str(e)}), 400
 
     matched_items = search_kg_data(kg_name, entity_name, kg_data_cache)
-
+    subgraph = {}
     if len(matched_items) > 0 and matched_items[0]["category"] == "entity":
         entity_id = matched_items[0]["id"]
         subgraph = find_subgraph(kg_name, entity_id, kg_data_cache)
 
-    return jsonify(subgraph)
+    return jsonify(subgraph), 200
 
 
 @app.route('/get_aliases', methods=['GET'])

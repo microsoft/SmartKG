@@ -162,25 +162,3 @@ def delete_kg_data(kg_name):
 
     shutil.rmtree(kg_folder_path)
     return True
-
-
-def main():
-    file_path = 'data\\SmartKG_Xiyouji_org.xlsx'
-    excel_data = pd.read_excel(file_path, sheet_name=None, engine='openpyxl')
-
-    entities_sheet = pd.read_excel(excel_data, sheet_name=0, header=1)
-
-    relations_sheet = pd.read_excel(excel_data, sheet_name=1, header=1)
-
-    entities = read_entities(entities_sheet)
-    relations = read_relations(relations_sheet)
-
-    with open('entities.pkl', 'wb') as f:
-        pickle.dump(entities, f)
-
-    with open('relations.pkl', 'wb') as f:
-        pickle.dump(relations, f)
-
-
-if __name__ == "__main__":
-    main()

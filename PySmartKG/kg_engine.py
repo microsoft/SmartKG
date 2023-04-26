@@ -274,15 +274,18 @@ def find_subgraph(kg_name, entity_id, kg_data_cache):
     entities = kg_data_cache[kg_name]["entities"]
     relations = kg_data_cache[kg_name]["relations"]
 
-    #entity_id = None
     subgraph_entities = []
     subgraph_relations = []
+    entity_id_set = set()
 
     for entity in entities:
         if entity['vertex_id'] == entity_id:
-            #entity_id = entity['vertex_id']
             subgraph_entities.append(entity)
+            entity_id_set.add(entity_id)
             break
+
+    if len(subgraph_entities) == 0:
+        return {}
 
     if entity_id is not None:
         for relation in relations:
@@ -297,7 +300,11 @@ def find_subgraph(kg_name, entity_id, kg_data_cache):
 
                 for entity in entities:
                     if entity['vertex_id'] == related_entity_id:
-                        subgraph_entities.append(entity)
+                        if not entity['vertex_id'] in entity_id_set:
+                            subgraph_entities.append(entity)
+                            entity_id_set.add(entity['vertex_id'])
                         break
 
-    return {'entities': subgraph_entities, 'relations': subgraph_relations}
+    subgroup = {'entities': subgraph_entities, 'relations': subgraph_relations}
+    print(subgroup)
+    return subgroup
