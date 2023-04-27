@@ -233,7 +233,7 @@ def process_matched_items(kg_name, matched_items, kg_data_cache):
     #print("Processing:", matched_items)
     segments = split_list_by_category(matched_items)
     #print("Segment number:", len(segments))
-
+    entities = None
     tracing = []
     index = 0
     while index < len(segments):

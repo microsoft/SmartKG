@@ -206,23 +206,33 @@
             var nodes = [];
             var edges = [];
 
-            data.entities.forEach(function (entity) {
+            if (!data.entities || data.entities.length === 0) {
                 nodes.push({
-                    id: entity.vertex_id,
-                    label: entity.vertex_name,
+                    id: 'not_found',
+                    label: '没有查找到相应实体',
                     shape: 'circle',
-                    color: type_color_map[entity.vertex_type] // 使用 color 变量设置颜色
+                    color: 'grey' // 设置一个显眼的颜色，如红色
                 });
-            });
+            } else {
+                    data.entities.forEach(function (entity) {
+                        nodes.push({
+                            id: entity.vertex_id,
+                            label: entity.vertex_name,
+                            shape: 'circle',
+                            color: type_color_map[entity.vertex_type] // 使用 color 变量设置颜色
+                        });
+                    });
 
-            data.relations.forEach(function (relation) {
-                edges.push({
-                    from: relation.source_vertex_id,
-                    to: relation.target_vertex_id,
-                    label: relation.edge_type
-                });
-            });
-
+                    if (data.relations && data.relations.length > 0) {
+                        data.relations.forEach(function (relation) {
+                            edges.push({
+                                from: relation.source_vertex_id,
+                                to: relation.target_vertex_id,
+                                label: relation.edge_type
+                            });
+                        });
+                    }
+            }
             return {
                 nodes: nodes,
                 edges: edges
