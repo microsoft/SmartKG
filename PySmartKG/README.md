@@ -4,25 +4,24 @@
 
 ## 开始使用
 
-#1. 克隆此代码库。
-
-#2. 设置虚拟环境（可选但推荐）并安装所需的软件包：
+1. 克隆此代码库。
+2. 设置虚拟环境（可选但推荐）并安装所需的软件包：
 
 python -m venv venv
-source venv/bin/activate （在Windows上使用 venv\Scripts\activate）
+source venv/bin/activate # 在Windows上使用 venv\Scripts\activate
 pip install -r requirements.txt
 
-#3. 运行应用程序：
 
-python kg_api.py
+3. 运行应用程序：
 
-#4. 访问网页 
+python app.py
 
-打开浏览器并导航至 `http://localhost:5000` 以使用该应用程序。
+
+4. 打开浏览器并导航至 `http://localhost:5000` 以使用该应用程序。
 
 ## LLM 集成
 
-要启用 LLM 集成，您需要提供自己的 OpenAI API 密钥。请将 API 密钥应存储在名为 `openai_key.txt` 的文本文件中，并将该文件存放到 `data` 目录下。
+要启用 LLM 集成，您需要提供自己的 OpenAI API 密钥。API 密钥应存储在名为 `openai_key.txt` 的文本文件中，该文件位于 `data` 目录下。
 
 **注意**：如果 `data` 目录下没有 `openai_key.txt` 文件，即使在应用程序中启用 LLM 集成，它也将被禁用。
 
@@ -33,11 +32,8 @@ python kg_api.py
 your-project/
 ├── data/
 │ ├── openai_key.txt
+├── app.py
 ├── templates/
-├── kg_api.py
-├── kg_engine.py
-├── llm_dialog.py
-├── data_import.py
 └── README.md
 
 

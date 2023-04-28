@@ -141,6 +141,43 @@
         font-size: 12px;
         white-space: nowrap;
     }
+
+    #clear-button {
+            background-color: white;
+            border: 1px solid lightgray;
+            color: #666;
+            font-weight: bold;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 18px;
+            width: 50px;
+            height: 26px;
+            text-align: center;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #left-content {
+            display: flex;
+            align-items: center;
+        }
+
+        #right-content {
+            display: flex;
+            align-items: center;
+        }
+
+        #clear-button-container {
+            margin: 0 auto
+        }
+
 </style>
 </head>
 <body>
@@ -159,17 +196,23 @@
 
     <!-- 聊天窗口 -->
     <div id="chat-window" style="display:none; position:fixed; right:10px; bottom:10px; width:300px; height:400px; background-color:white; border:1px solid lightgray; border-radius:5px;">
-        <div id="header" style="height: 30px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: flex-start; padding: 0 10px;">
-            <label for="llm-toggle">LLM:</label>
-            <div class="switch">
-                <input type="checkbox" id="llm-toggle" checked>
-                <span class="slider round"></span>
+        <div id="header" style="height: 30px; background-color: #f0f0f0; padding: 0 10px;">
+            <div id="left-content">
+                <label for="llm-toggle" style="border: none; padding-top: 5px;">LLM:</label>
+                <div class="switch">
+                    <input type="checkbox" id="llm-toggle" checked>
+                    <span class="slider round"></span>
+                </div>
+                <span tabindex="0" class="ml-2" data-toggle="tooltip" data-placement="top" title="用户需要提供openai的访问关键字，才能启动LLM功能，具体请见README">
+                    <i class="fas fa-info-circle"></i>
+                </span>
             </div>
-            <span tabindex="0" class="ml-2" data-toggle="tooltip" data-placement="top" title="用户需要提供openai的访问关键字，才能启动LLM功能，具体请见README">
-                <i class="fas fa-info-circle"></i>
-            </span>
-
-            <button id="close-button" style="margin-left: auto; background-color: transparent; border: none;">&times;</button>
+            <div id="clear-button-container" style="border: none; padding-bottom: 10px;">
+                <button id="clear-button" class="btn btn-danger">Clear</button>
+            </div>
+            <div id="right-content">
+                <button id="close-button" style="background-color: transparent; border: none;">&times;</button>
+            </div>
         </div>
         <div id="messages" style="height: calc(80% - 30px); overflow-y: auto; padding: 10px;"></div>
         <div style="height: 20%; display: flex; align-items: center; padding: 0 10px;">
@@ -177,6 +220,8 @@
             <button id="send-button" style="width: 50px;">Send</button>
         </div>
     </div>
+
+
 
     <script>
         // 请求所有知识图谱名称并填充下拉菜单
@@ -333,6 +378,8 @@
 
             // 修改显示按钮事件处理程序以获取 type_color_map
             $('#display_button').click(function () {
+                $('#entity_name_input').val('');
+
                 var kg_name = $('#kg_name_selector').val();
                 if (kg_name) {
                     $.get('/get_kg_data', {kg_name: kg_name}, function (data) {
@@ -390,6 +437,11 @@
             // 关闭按钮
             $('#close-button').click(function () {
                 toggle_dialog();
+            });
+
+            // 清除按钮
+            $('#clear-button').click(function () {
+                $('#messages').empty(); // Clear the ChatWindow content
             });
 
         });
