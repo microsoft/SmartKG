@@ -5,7 +5,8 @@
 ## 开始使用
 
 1. 克隆此代码库。
-2. 安装Python
+
+2. 安装Python：
 
 Python的版本需要 >= 3.8, 建议 3.10
 
@@ -33,12 +34,23 @@ python kg_api.py
 
 ### 示例目录结构
 
-your-project/
+PySmartKG 的源代码位于：
+
+PySmartKG/
 ├── data/
-│ ├── openai_key.txt
+│ 	├── openai_key.txt
 ├── app.py
 ├── templates/
 └── README.md
+
+SmartKG的模板和部分样例数据位于：
+
+Resources/
+├── Data/
+	├── Excel/
+		├── input/
+		├── template/
+			├── SmartKG_KGDesc_Template.xlsx
 
 
 ## 许可
