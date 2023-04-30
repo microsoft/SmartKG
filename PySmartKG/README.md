@@ -5,19 +5,23 @@
 ## 开始使用
 
 1. 克隆此代码库。
-2. 设置虚拟环境（可选但推荐）并安装所需的软件包：
+2. 安装Python
+
+Python的版本需要 >= 3.8, 建议 3.10
+
+3. 设置虚拟环境（可选但推荐）并安装所需的软件包：
 
 python -m venv venv
 source venv/bin/activate # 在Windows上使用 venv\Scripts\activate
 pip install -r requirements.txt
 
 
-3. 运行应用程序：
+4. 运行应用程序：
 
-python app.py
+python kg_api.py
 
 
-4. 打开浏览器并导航至 `http://localhost:5000` 以使用该应用程序。
+5. 打开浏览器并导航至 `http://localhost:5000` 以使用该应用程序。
 
 ## LLM 集成
 
@@ -25,7 +29,7 @@ python app.py
 
 **注意**：如果 `data` 目录下没有 `openai_key.txt` 文件，即使在应用程序中启用 LLM 集成，它也将被禁用。
 
-要获取 API 密钥，请在 [OpenAI](https://beta.openai.com/signup/) 上注册帐户。
+要获取 API 密钥，请在 OpenAI 或 Microsoft Azure 上注册帐户。
 
 ### 示例目录结构
 

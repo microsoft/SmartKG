@@ -230,16 +230,13 @@ def split_list_by_category(matched_items):
 
 
 def process_matched_items(kg_name, matched_items, kg_data_cache):
-    #print("Processing:", matched_items)
     segments = split_list_by_category(matched_items)
-    #print("Segment number:", len(segments))
     entities = None
     tracing = []
     index = 0
     while index < len(segments):
         entities, processing_trace = process_single_segment(kg_name, segments[index], kg_data_cache)
         tracing.extend(processing_trace)
-        #print("Loop", index, entities)
         if entities is None or len(entities) == 0:
             return None, tracing
         elif index < len(segments) - 1:
