@@ -229,6 +229,7 @@ def search():
         entity_id = matched_items[0]["id"]
         subgraph = find_subgraph(kg_name, entity_id, kg_data_cache)
 
+    print("subgraph", subgraph)
     return jsonify(subgraph), 200
 
 

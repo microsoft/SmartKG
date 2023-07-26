@@ -26,6 +26,10 @@ def read_entities(kg_name, sheet):
                 break
             attribute_key = row[i]
             attribute_value = row[i + 1]
+
+            if (not attribute_key) or (not attribute_value):
+                continue
+
             attributes.append({"attribute_key": attribute_key, "attribute_value": attribute_value})
         entity = {
             "vertex_id": vertex_id,

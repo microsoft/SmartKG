@@ -24,7 +24,15 @@
         height: 100%;
         border: 1px solid lightgray;
     }
-     .bubble {
+
+    .node text {
+        display: none;
+    }
+    .node:hover text {
+        display: inline;
+    }
+
+    .bubble {
         padding: 8px 12px;
         border-radius: 10px;
         margin-bottom: 10px;
@@ -259,30 +267,40 @@
                     color: 'grey' // 设置一个显眼的颜色，如红色
                 });
             } else {
-                    data.entities.forEach(function (entity) {
-                        nodes.push({
-                            id: entity.vertex_id,
-                            label: entity.vertex_name,
-                            shape: 'circle',
-                            color: type_color_map[entity.vertex_type] // 使用 color 变量设置颜色
+                data.entities.forEach(function (entity) {
+                    // Modify the label based on its length
+                    var label = entity.vertex_name;
+                    if (label.length > 7) {
+                        label = label.slice(0, 6) + '...';
+                    } else {
+                        label = '';
+                    }
+
+                    nodes.push({
+                        id: entity.vertex_id,
+                        label: label,
+                        shape: 'circle',
+                        title: entity.vertex_name, // Full name will be displayed as tooltip
+                        color: type_color_map[entity.vertex_type] // 使用 color 变量设置颜色
+                    });
+                });
+
+                if (data.relations && data.relations.length > 0) {
+                    data.relations.forEach(function (relation) {
+                        edges.push({
+                            from: relation.source_vertex_id,
+                            to: relation.target_vertex_id,
+                            label: relation.edge_type
                         });
                     });
-
-                    if (data.relations && data.relations.length > 0) {
-                        data.relations.forEach(function (relation) {
-                            edges.push({
-                                from: relation.source_vertex_id,
-                                to: relation.target_vertex_id,
-                                label: relation.edge_type
-                            });
-                        });
-                    }
+                }
             }
             return {
                 nodes: nodes,
                 edges: edges
             };
         }
+
 
         // 在图谱容器中显示图谱
         function display_graph(data, type_color_map) { // 添加 type_color_map 参数
@@ -367,6 +385,7 @@
                             alert(data.error);
                             return;
                         }
+                        console.log(data)
 
                         // 获取 type_color_map 并调用 display_graph 函数
                         get_type_color_mappings(kg_name, function (type_color_map) {
@@ -383,6 +402,7 @@
                 var kg_name = $('#kg_name_selector').val();
                 if (kg_name) {
                     $.get('/get_kg_data', {kg_name: kg_name}, function (data) {
+                            console.log(data)
                             get_type_color_mappings(kg_name, function (type_color_map) {
                             display_graph(data, type_color_map); // 将 type_color_map 传递给此函数
                         });
@@ -391,12 +411,6 @@
             });
 
             check_openai_key();
-
-            // LLM 开关提示
-            //$('.slider').on('click', function() {
-            //    const checkbox = $(this).prev();
-            //    checkbox.prop('checked', !checkbox.prop('checked'));
-            //});
 
             // LLM 开关提示
             $('.slider').on('click', function() {
