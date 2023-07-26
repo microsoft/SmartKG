@@ -24,6 +24,9 @@ def read_entities(kg_name, sheet):
         for i in range(4, len(row), 2):
             if pd.isna(row[i]):
                 break
+            elif pd.isna(row[i+1]):
+                continue
+
             attribute_key = row[i]
             attribute_value = row[i + 1]
 
