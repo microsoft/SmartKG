@@ -253,6 +253,10 @@
             });
         }
 
+        // Function to check if the string contains Chinese characters
+        function isChinese(str) {
+            return /[\u4e00-\u9fa5]/.test(str);
+        }
 
         // 修改此函数以接受 type_color_map 参数
         function convert_data_to_vis_format(data, type_color_map) {
@@ -270,10 +274,15 @@
                 data.entities.forEach(function (entity) {
                     // Modify the label based on its length
                     var label = entity.vertex_name;
-                    if (label.length > 7) {
-                        label = label.slice(0, 6) + '...';
+                    if (isChinese(label)) {
+                        label_display_length = 3
                     } else {
-                        label = '';
+                        label_display_length = 6
+                    }
+                    if (label.length > label_display_length) {
+                        label = label.slice(0, label_display_length) + '...';
+                    } else {
+                        label = label;
                     }
 
                     nodes.push({

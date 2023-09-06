@@ -30,8 +30,8 @@ def upload_file():
         entities_sheet = pd.read_excel(excel_file, sheet_name=0, header=0)
         relations_sheet = pd.read_excel(excel_file, sheet_name=1, header=0)
 
-        entities, type_color_mappings = read_entities(kg_name, entities_sheet)
-        relations = read_relations(relations_sheet)
+        entities, type_color_mappings, entity_id_set = read_entities(kg_name, entities_sheet)
+        relations = read_relations(relations_sheet, entity_id_set)
         aliases = read_aliases(entities, relations)
 
         result = save_kg_data(kg_name, entities, relations, type_color_mappings, aliases)

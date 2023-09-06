@@ -14,13 +14,26 @@ def random_color():
 def read_entities(kg_name, sheet):
     entities = []
     entity_types = set()
+    entity_id_set = set()
 
     for _, row in sheet.iterrows():
+        if pd.isna(row[0]) or pd.isna(row[1]) or pd.isna(row[2]):
+            print("Warning: The entity id, entity name and entity type must not be none.", row[0], row[1], row[2])
+            continue
+
         vertex_id = row[0]
+
+        if vertex_id in entity_id_set:
+            print("Warning: The entity id has existed.", row[0])
+            continue
+        else:
+            entity_id_set.add(vertex_id)
+
         vertex_name = row[1]
         vertex_type = row[2]
         entity_types.add(vertex_type)
         attributes = []
+
         for i in range(4, len(row), 2):
             if pd.isna(row[i]):
                 break
@@ -40,6 +53,7 @@ def read_entities(kg_name, sheet):
             "vertex_type": vertex_type,
             "attributes": attributes
         }
+
         entities.append(entity)
 
     type_color_mappings = []
@@ -51,15 +65,28 @@ def read_entities(kg_name, sheet):
         }
         type_color_mappings.append(type_color_mapping)
 
-    return entities, type_color_mappings
+    return entities, type_color_mappings, entity_id_set
 
 
-def read_relations(sheet):
+def read_relations(sheet, entity_id_set):
     relations = []
     for _, row in sheet.iterrows():
+        if pd.isna(row[0]) or pd.isna(row[1]) or pd.isna(row[2]):
+            print("Warning: The relation type, source id, and target id must not be none.", row[0], row[1], row[2])
+            continue
+
         edge_type = row[0]
         source_vertex_id = row[1]
         target_vertex_id = row[2]
+
+        if not(source_vertex_id in entity_id_set):
+            print("Warning: The source id (2nd data) is invalid.", row[0], row[1], row[2])
+            continue
+
+        if not(target_vertex_id in entity_id_set):
+            print("Warning: The target id (3rd data) is invalid.", row[0], row[1], row[2])
+            continue
+
         relation = {
             "edge_type": edge_type,
             "source_vertex_id": source_vertex_id,
