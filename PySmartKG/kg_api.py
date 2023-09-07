@@ -211,7 +211,7 @@ def dialog():
 def search():
     kg_name = request.args.get('kg_name')
     entity_name = request.args.get('entity_name')
-
+    print("entity_name:", entity_name)
     # 检查 kg_name 和 entity_name 是否为空
     if not kg_name or not entity_name:
         return jsonify({"error": "Both kg_name and entity_name must be provided"}), 400
@@ -229,7 +229,7 @@ def search():
         entity_id = matched_items[0]["id"]
         subgraph = find_subgraph(kg_name, entity_id, kg_data_cache)
 
-    print("subgraph", subgraph)
+    #print("subgraph", subgraph)
     return jsonify(subgraph), 200
 
 
