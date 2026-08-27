@@ -14,7 +14,8 @@ namespace SmartKG.DataUploader.Executor
     {
         static IConfigurationBuilder builder = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory()) // requires Microsoft.Extensions.Configuration.Json
-                    .AddJsonFile("appsettings.json"); // requires Microsoft.Extensions.Configuration.Json                    
+                    .AddJsonFile("appsettings.json") // requires Microsoft.Extensions.Configuration.Json
+                    .AddEnvironmentVariables();
         static IConfiguration config = builder.Build();
         static MDBWriter writer = new MDBWriter(config);
 
